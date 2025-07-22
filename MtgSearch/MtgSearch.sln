@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34723.18
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MtgSearch.Server", "MtgSearch.Server\MtgSearch.Server.csproj", "{8B7FF6E0-BE41-4532-A7B2-301A2B05340F}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "mtgsearch.client", "mtgsearch.client\mtgsearch.client.esproj", "{E535F569-BB04-4578-886F-E55EC9ECC95C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8B7FF6E0-BE41-4532-A7B2-301A2B05340F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B7FF6E0-BE41-4532-A7B2-301A2B05340F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B7FF6E0-BE41-4532-A7B2-301A2B05340F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B7FF6E0-BE41-4532-A7B2-301A2B05340F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E535F569-BB04-4578-886F-E55EC9ECC95C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E535F569-BB04-4578-886F-E55EC9ECC95C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E535F569-BB04-4578-886F-E55EC9ECC95C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{E535F569-BB04-4578-886F-E55EC9ECC95C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E535F569-BB04-4578-886F-E55EC9ECC95C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E535F569-BB04-4578-886F-E55EC9ECC95C}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3325DD9E-36BE-410B-AD72-5D76EBE6FA4E}
+	EndGlobalSection
+EndGlobal
