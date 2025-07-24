@@ -2,6 +2,6 @@
 {
     public class SearchResults
     {
-        public SearchResult[] Results { get; set; }
+        public SearchResultCard[] Results { get; set; }
     }
 }

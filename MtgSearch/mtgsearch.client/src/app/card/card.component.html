@@ -1,0 +1,142 @@
+<style>
+  .highlighted{
+    background: #FFC107;
+  }
+  .card {
+    background: black;
+    border-top: 1em solid black;
+    border-left: .6em solid black;
+    border-right: .6em solid black;
+    border-radius: 1em;
+    width: 18em;
+    font-family: 'Times New Roman';
+    font-size: 1.15em;
+
+  }
+  .nameBox{
+    font-weight: bold;
+    border: 2px solid black;
+    border-radius: 8px;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-image: linear-gradient(to right, #B5A166,#D6C189,#B5A166);
+  }
+  .name{
+    padding: .2em;
+  }
+  .cost{
+    padding: .2em;
+    padding-right: .4em;
+    transform: scale(115%);
+  }
+  .imgBox{
+    border: .3em solid black;
+    background: gray;
+    height: 1em;
+
+  }
+  .typeBox{
+    border-radius: .3em;
+    display:flex;
+    flex-direction: row;
+    font-weight: bold;
+    justify-content: left;
+    padding: .2em;
+    background-image: linear-gradient(to right, #B5A166,#D6C189,#B5A166);
+    border: 2px solid black;
+  }
+  .textBoxBorder{
+    border-left: .2em solid black;
+    border-right: .3em solid black;
+  }
+  .textBox{
+    background: #F0ECD3;
+    text-align: left;
+    border-top: .3em groove #D6C189;
+    border-left: .3em groove #D6C189;
+    border-right: .3em groove #D6C189;
+    padding-left: .2em;
+    padding-right: .2em;
+    padding-bottom: .2em;
+  }
+  .debugBorder{
+    border: 1px solid red;
+  }
+  .ptContainer{
+    padding-right: .2em;
+    display: flex;
+    justify-content: right;
+  }
+  .ptTextBox{
+    font-weight: bold;
+    padding-top: .2em;
+    padding-bottom: .2em;
+    padding-left: .4em;
+    padding-right: .4em;
+    border-radius: .5em;
+    border-style: groove;
+    border-color: #D6C189;
+    border-width: .2em;
+    background-image: linear-gradient(to right, #B5A166,#D6C189,#B5A166);
+    transform:translateY(-1em);
+    box-shadow: -.2em .1em 5px;
+  }
+</style>
+<div class="card">
+  <div class="nameBox">
+    <div class="name">
+      <!--TODO: altface name as abbr title-->
+      {{name}}
+    </div>
+    <div class="cost">
+      <!--cost-->
+      <ng-container *ngFor="let symbolToken of manaSymbolTexts">
+        <card-symbol [symbolText]="symbolToken"></card-symbol>
+      </ng-container>
+    </div>
+  </div>
+  <div class="imgBox">
+    <!--maybe do a box in the middle where the art normally is
+      where you hover to float a tool tip with the image of the actual card,
+    can use https://scryfall.com/docs/api/cards/named to fetch the image on hover
+    -->
+  </div>
+  <div class="typeBox">
+    {{typeLine}}
+  </div>
+  <div class="textBoxBorder">
+    <div class="textBox">
+      <!--texts-->
+      <p *ngFor="let line of textLines" class="textLine">
+        <ng-container *ngFor="let segment of line.segments">
+          <card-symbol *ngIf="segment.isSymbol; else nonSymbol" [symbolText]="segment.text"></card-symbol>
+          <ng-template #nonSymbol>
+            <span *ngIf="segment.isHighlighted" class="highlighted">
+              {{segment.text}}
+            </span>
+            <span *ngIf="!segment.isHighlighted">
+              {{segment.text}}
+            </span>
+          </ng-template>
+        </ng-container>
+      </p>
+    </div>
+  </div>
+  <div *ngIf="powerToughness" class="ptContainer">
+    <!--pt or loyalty container-->
+      <div class="ptTextBox">
+        <!--pt text, css shenanigains float on top-->
+        {{powerToughness}}
+      </div>
+  </div>
+  <div *ngIf="loyalty">
+      <div>
+        <!--loyalty box-->
+      </div>
+      <div>
+        <!--loyalty text, css shenanigains float on top-->
+        {{loyalty}}
+      </div>
+  </div>
+</div>

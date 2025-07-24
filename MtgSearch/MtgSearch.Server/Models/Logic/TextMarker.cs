@@ -1,24 +1,79 @@
-﻿using MtgSearch.Server.Models.Data;
+﻿using MtgSearch.Server.Models.Api;
+using MtgSearch.Server.Models.Data;
 using System.Text.RegularExpressions;
 
 namespace MtgSearch.Server.Models.Logic
 {
-    public class TextMarker
+    public interface ITextMarker 
     {
-        public const string HighlightStartMarker = "{HighlightStart}";
-        public const string HighlightEndMarker = "{HighlightEnd}";
-        private const char HlStartMarkerInternal = '\u3898';//arbitrary code point outside of what can show up on the card
-        private const char HlEndMarkerInternal = '\u3899';
-        public string MarkText(MtgJsonAtomicCard card, Regex[] Highlighters)
+        List<CardTextLine> MarkText(MtgJsonAtomicCard card, Regex[] highlighters);
+    }
+    public class TextMarker : ITextMarker
+    {
+
+        private const char HlStart = '\u3898';//arbitrary codes point outside of what can show up on the card
+        private const char HlEnd = '\u3899';//used to mark spots
+        private static readonly Regex ManaSymbol = new Regex(@"({(?:[TQ0-9WUBRGCSP])(?:/?(?:[TQ0-9WUBRGCSP]?))?})", RegexOptions.Compiled);
+        private static readonly Regex HlOrSymbol = new Regex(@"(["+HlStart+HlEnd+"])|" + ManaSymbol, RegexOptions.Compiled);
+        /// <summary>
+        /// tokenizes the string by highlights start stops and symbols
+        /// </summary>
+        public List<CardTextLine> MarkText(MtgJsonAtomicCard card, Regex[] highlighters)
         {
-            //mark start and end of each section matching the regexs,
-            //loop through chars with a depth counter to catch nested highlights and erase them
-            //replace internal marker with external one
-            //return this to the presentation layer to deal with
+            if (card.text == null) return [];
+            var text = card.text;
+            //mark start and end of each hl section matching the regexs,
 
-            //because .* will match our markers, just replace the search text each time
-            foreach()
+            //because .* will match our hl markers, just replace the search text each time
+            foreach(var highlighter in highlighters)
+            {
+                text = highlighter.Replace(text, x => HlStart.ToString() + x + HlEnd);
+            }
 
+
+            var lines = new List<CardTextLine>();
+            int depth = 0;
+            //split the string on newline
+            //loop through list of lists of strings setting highlight flag based on start marker,
+            //removing the markers and ignoring nested while building the new list per line
+            foreach(var line in text.Split((char[])['\r', '\n'], StringSplitOptions.RemoveEmptyEntries))
+            {
+                var segments = new List<CardTextLineSegment>();
+                //foreach line, split on symbol keeping it because of the capture group in the regex
+                var splits = HlOrSymbol.Split(line);
+                foreach(var token in splits)
+                {
+                    if(token == HlStart.ToString())
+                    {
+                        depth++;
+                    }
+                    else if(token == HlEnd.ToString())
+                    {
+                        depth--;
+                    }
+                    else if (ManaSymbol.IsMatch(token))
+                    {
+                        segments.Add(new CardTextLineSegment { Text = token, IsSymbol = true });
+                    }
+                    else
+                    {
+                        segments.Add(new CardTextLineSegment { Text = token, IsHighlighted = depth > 1 });
+                    }
+                }
+                //because we could have "text hlStart text hlStart text hlEnd hlEnd",
+                //we would get two segments that should be merged
+                for(int i = segments.Count; i>0; i--)
+                {
+                    if (!segments[i-1].IsSymbol && !segments[i].IsSymbol && 
+                        segments[i-1].IsHighlighted && segments[i].IsHighlighted)
+                    {
+                        segments[i - 1].Text += segments[i].Text;
+                        segments.RemoveAt(i);
+                    }
+                }
+                lines.Add(new CardTextLine { Segments = segments });
+            }
+            return lines;
         }
     }
 }

@@ -2,10 +2,10 @@
 
 namespace MtgSearch.Server.Models.Api
 {
-    public class SearchResult
+    public class SearchResultCard
     {
-        public SearchResult() { }
-        public SearchResult(MtgJsonAtomicCard card) 
+        public SearchResultCard() { }
+        public SearchResultCard(MtgJsonAtomicCard card) 
         {
             Name = card.name;
             Power = card.power;
@@ -24,6 +24,6 @@ namespace MtgSearch.Server.Models.Api
         public string[] SuperTypes { get; set; }
         public string[] Types { get; set; }
         public string[] SubTypes { get; set; }
-        public string Text { get; set; }
+        public CardTextLine[] TextLines { get; set; }
     }
 }
