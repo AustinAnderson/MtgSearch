@@ -5,6 +5,10 @@ using System.Linq;
 namespace MtgSearch.Server.Models.Data
 {
 
+    public class MtgJsonCardData
+    {
+        public Dictionary<string, MtgJsonAtomicCard[]> data;
+    }
     public class MtgJsonAtomicCard
     {
         public string name;

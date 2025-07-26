@@ -24,6 +24,6 @@ namespace MtgSearch.Server.Models.Api
         public string[] SuperTypes { get; set; }
         public string[] Types { get; set; }
         public string[] SubTypes { get; set; }
-        public CardTextLine[] TextLines { get; set; }
+        public List<CardTextLine> TextLines { get; set; }
     }
 }

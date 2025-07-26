@@ -6,19 +6,19 @@ namespace MtgSearch.Server.Models.Logic
 {
     public interface ITextMarker 
     {
-        List<CardTextLine> MarkText(MtgJsonAtomicCard card, Regex[] highlighters);
+        List<CardTextLine> MarkText(MtgJsonAtomicCard card, List<Regex> highlighters);
     }
     public class TextMarker : ITextMarker
     {
 
         private const char HlStart = '\u3898';//arbitrary codes point outside of what can show up on the card
         private const char HlEnd = '\u3899';//used to mark spots
-        private static readonly Regex ManaSymbol = new Regex(@"({(?:[TQ0-9WUBRGCSP])(?:/?(?:[TQ0-9WUBRGCSP]?))?})", RegexOptions.Compiled);
+        private static readonly Regex ManaSymbol = new Regex(@"({(?:[TQ0-9WUBRGCSPXE])(?:/?(?:[TQ0-9WUBRGCSPXE]?))?})", RegexOptions.Compiled);
         private static readonly Regex HlOrSymbol = new Regex(@"(["+HlStart+HlEnd+"])|" + ManaSymbol, RegexOptions.Compiled);
         /// <summary>
         /// tokenizes the string by highlights start stops and symbols
         /// </summary>
-        public List<CardTextLine> MarkText(MtgJsonAtomicCard card, Regex[] highlighters)
+        public List<CardTextLine> MarkText(MtgJsonAtomicCard card, List<Regex> highlighters)
         {
             if (card.text == null) return [];
             var text = card.text;
@@ -67,7 +67,7 @@ namespace MtgSearch.Server.Models.Logic
                     if (!segments[i-1].IsSymbol && !segments[i].IsSymbol && 
                         segments[i-1].IsHighlighted && segments[i].IsHighlighted)
                     {
-                        segments[i - 1].Text += segments[i].Text;
+                        segments[i-1].Text += segments[i].Text;
                         segments.RemoveAt(i);
                     }
                 }

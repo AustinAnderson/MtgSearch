@@ -2,9 +2,8 @@
 
 namespace MtgSearch.Server.Models.Logic.Predicates
 {
-    public class TypeSearchPredicate : ISearchPredicate
+    public class TypeSearchPredicate : AbstractTypeSearchPredicate
     {
-        public string Type { get; set; }
-        public bool Apply(MtgJsonAtomicCard card) => card.types.Contains(Type);
+        protected override string[] SelectTypeArray(MtgJsonAtomicCard card) => card.types;
     }
 }

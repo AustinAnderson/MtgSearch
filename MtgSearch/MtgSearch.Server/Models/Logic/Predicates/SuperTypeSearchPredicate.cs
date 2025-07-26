@@ -2,10 +2,8 @@
 
 namespace MtgSearch.Server.Models.Logic.Predicates
 {
-    public class SuperTypeSearchPredicate : ISearchPredicate
+    public class SuperTypeSearchPredicate: AbstractTypeSearchPredicate
     {
-        public string SuperType { get; set; }
-        public bool Apply(MtgJsonAtomicCard card) => card.supertypes.Contains(SuperType);
-
+        protected override string[] SelectTypeArray(MtgJsonAtomicCard card) => card.supertypes;
     }
 }

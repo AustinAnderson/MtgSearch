@@ -3,10 +3,15 @@ using System.Text.RegularExpressions;
 
 namespace MtgSearch.Server.Models.Logic.Predicates
 {
-    public class ActivatedAbilitySearchPredicate : ISearchPredicate
+    public class ActivatedAbilitySearchPredicate : ISearchPredicate, IHasHighlighter
     {
         public Regex? CostText { get; set; }
+        public Regex? CostAntiText { get; set; }
         public Regex? AbilityText { get; set; }
+        public Regex? AbilityAntiText { get; set; }
+
+        public Regex[] Highlighters => [CostText, AbilityText];//TODO: too highlighty? 
+
         public bool Apply(MtgJsonAtomicCard card)
         {
             if (!card.activatedAbilities.Any()) return false;

@@ -3,17 +3,11 @@ using System.Text.RegularExpressions;
 
 namespace MtgSearch.Server.Models.Logic.Predicates
 {
-    public class TextSearchPredicate : ISearchPredicate
+    public class TextSearchPredicate : ISearchPredicate, IHasHighlighter
     {
-        public Regex? TextMatch1 { get; set; }
-        public Regex? TextMatch2 { get; set; }
-        public Regex? DontMatch { get; set; }
-
-        public bool Apply(MtgJsonAtomicCard card)
-        {
-            return (TextMatch1 == null || TextMatch1.IsMatch(card.text)) &&
-                   (TextMatch2 == null || TextMatch2.IsMatch(card.text)) &&
-                   (DontMatch == null || !DontMatch.IsMatch(card.text));
-        }
+        public TextSearchPredicate(Regex reg) => Regex = reg;
+        public Regex Regex { get; }
+        public Regex[] Highlighters => [Regex];//TODO: what about & !reg("jalsdkfj") ?
+        public bool Apply(MtgJsonAtomicCard card) => Regex.IsMatch(card.text);
     }
 }
