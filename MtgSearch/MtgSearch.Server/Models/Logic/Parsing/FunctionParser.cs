@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MtgSearch.Server.Models.Logic.Parsing
 {
-    //grammar for this part is regular, just use simple fsm
+    //grammar for this part is regular, just use simple loop
     public class FunctionParser
     {
         //loop fullInput, starting at readPos end at eof, at end of everything add pred to dict and return key
@@ -15,13 +15,13 @@ namespace MtgSearch.Server.Models.Logic.Parsing
             var functionName = lookaheadMatch;
             if (!Function.ByName.ContainsKey(functionName))
             {
-                throw new QueryParseException($"unknown function `{functionName}` at ...{TryToGetContext(readPos,fullInput)}");
+                throw new QueryParseException($"unknown function `{functionName}`, at `...{TryToGetContext(readPos,fullInput)}`");
             }
             //should be at the space before the function start, calling should ignore and tokenize so
             readPos+=lookaheadMatch.Length+1; //to consume function name and (
             if (fullInput[readPos - 1] != '(')
             {
-                throw new QueryParseException($"function call must start with open paren after the name, for function '{functionName}' at ...{TryToGetContext(readPos,fullInput)}");
+                throw new QueryParseException($"function call must start with open paren after the name, for function `{functionName}` at `...{TryToGetContext(readPos,fullInput)}`");
             }
             //                                                        ,--------------_____________
             //                                                        v             v              \
@@ -39,7 +39,7 @@ namespace MtgSearch.Server.Models.Logic.Parsing
                 }
                 else if (c == '"')
                 {
-                    args.Add(ParseString(ref readPos, fullInput));
+                    args.Add(ParseString(ref readPos, fullInput).TrimStart('"').TrimEnd('"'));
                 }
                 else if (c == ')')
                 {
@@ -47,7 +47,7 @@ namespace MtgSearch.Server.Models.Logic.Parsing
                 }
                 else
                 {
-                    throw new QueryParseException($"unexpected symbol `{fullInput[readPos]}` at char {readPos} ...{TryToGetContext(readPos,fullInput)}");
+                    throw new QueryParseException($"unexpected symbol `{fullInput[readPos]}` at char {readPos} `...{TryToGetContext(readPos,fullInput)}`");
                 }
             }
 
@@ -74,7 +74,7 @@ namespace MtgSearch.Server.Models.Logic.Parsing
             }
 
             //got to end of string, no closing ", 
-            throw new QueryParseException($"missing closing '\"' at ...{TryToGetContext(readPos,fullInput)}");
+            throw new QueryParseException($"missing closing '\"' at `...{TryToGetContext(readPos,fullInput)}`");
             //look ahead 1 for \"
         }
         public static string TryToGetContext(int position, string fullText)

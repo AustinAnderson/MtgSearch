@@ -1,4 +1,5 @@
 ﻿using MtgSearch.Server.Models.Data;
+using MtgSearch.Server.Models.Logic.Highlighting;
 
 namespace MtgSearch.Server.Models.Logic.Predicates
 {
@@ -6,5 +7,6 @@ namespace MtgSearch.Server.Models.Logic.Predicates
     {
         public ISearchPredicate Predicate { get; set; }
         public bool Apply(MtgJsonAtomicCard card) => !Predicate.Apply(card);
+        public List<Highlighter> FetchHighlighters() => [];//tree negated, don't want to highlight matches
     }
 }

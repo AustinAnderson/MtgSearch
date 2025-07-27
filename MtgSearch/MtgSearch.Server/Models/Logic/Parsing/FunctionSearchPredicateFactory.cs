@@ -11,35 +11,40 @@ namespace MtgSearch.Server.Models.Logic.Parsing
         public Func<string[],string, ISearchPredicate> Factory { get; }
         public string[] Signitures { get; }
         public string[] Comments { get; }
+        public string[] Examples { get; }
         public string Name { get; }
-        private Function(string name, string[] comments, string[] signitures, Func<string[],string, ISearchPredicate> factory)
+        private Function(string name, string[] signitures, string[] comments, string[] examples, Func<string[],string, ISearchPredicate> factory)
         {
             Name = name;
             _functionsByName[name] = this;
             Comments = comments;
+            Examples = examples;
             Signitures = signitures;
             Factory = factory;
         }
-        public static readonly Function Reg = new("reg",
+        public static readonly Function TextRegex = new("text",
+            ["text(regex: string)"],
             ["search the text box with the regex, ignoring case"],
-            ["reg(regex: string)"],
+            ["text(\"gain life.*draw\")"],
             (args, ctx) =>
             {
                 if (args.Length != 1)
                 {
-                    throw new QueryParseException($"reg takes exactly one argument, at ...{ctx}");
+                    throw new QueryParseException($"text takes exactly one argument, at ...{ctx}");
                 }
                 return new TextSearchPredicate(ParseRegexOrThrow(args[0], ctx, 0));
             }
         );
         public static readonly Function Activated = new("activated",
+            ["activated(costReg:string, costAntiReg: string, abilityReg: string, abilityAntiReg: string)",
+             "activated(costReg:string, abilityReg: string)"
+            ],
             ["matches if any of it's abilities match where the costReg matches a cost and the abilityReg matches the ability",
              "costAntiReg and abilityAntiReg will return false if they match on that same ability line",
              "example: {T}, sac a creature: draw a card; could be matched by activated(\"sac\",\"draw\") but not activated(\"sac\",\"{T}\",\"draw\",\"\")"
             ],
-            ["activated(costReg:string, costAntiReg: string, abilityReg: string, abilityAntiReg: string)",
-             "activated(costReg:string, abilityReg: string)"
-            ],
+            ["activated(\"sacrifice\", \"{T}\", \"put.*counter\", \"\\+1/\\+1\")",
+             "activated(\"{T}\", \"draw\")"],
             (args, ctx) =>
             {
                 if(args.Length != 2 && args.Length != 4) 
@@ -78,67 +83,87 @@ namespace MtgSearch.Server.Models.Logic.Parsing
         );
         */
         public static readonly Function SuperType = new("superType",
-            ["matches if the card's list of super types is just this one",
-             "you can use 'or' with two of these for exactly this or the other and no others"],
             ["superType(value: string)"],
+            ["matches if the card's list of super types includes this one"],
+            ["superType(\"Legendary\")"],
             (args, ctx) => {
                 if (args.Length != 1)
                 {
                     throw new QueryParseException($"superType takes exactly one argument, at ...{ctx}");
                 }
-                return new SuperTypeSearchPredicate { Exact = args[0] };
+                return new SuperTypeSearchPredicate { Includes = args[0] };
             }
         );
         public static readonly Function SuperType_Any = new("superTypes.any",
-            ["matches if any of the supplied super types show up in the card's super type list"],
             ["superTypes.any(...values: string[])"],
+            ["matches if any of the supplied super types show up in the card's super type list",
+             "shorthand for (superType(<type1>) or superType(<type2>)...)"
+            ],
+            ["superTypes.any(\"Legendary\",\"Snow\")"],
             (args, ctx) => new SuperTypeSearchPredicate { Any = args }
         );
         public static readonly Function SuperType_All = new("superTypes.all",
-            ["matches if all of the supplied super types show up in the card's super type list"],
             ["superTypes.all(...values: string[])"],
+            ["matches if all of the supplied super types show up in the card's super type list",
+             "shorthand for (superType(<type1>) and superType(<type2>)...)"
+            ],
+            ["superTypes.all(\"Legendary\",\"Snow\")"],
             (args, ctx) => new SuperTypeSearchPredicate { All = args }
         );
         public static readonly Function Type = new("type",
-            ["matches if the card's list of types is just this one"],
             ["type(value: string)"],
+            ["matches if the card's list of types includes this one"],
+            ["type(\"Creature\")"],
             (args, ctx) => {
                 if (args.Length != 1)
                 {
                     throw new QueryParseException($"type takes exactly one argument, at ...{ctx}");
                 }
-                return new TypeSearchPredicate { Exact = args[0] };
+                return new TypeSearchPredicate { Includes = args[0] };
             }
         );
         public static readonly Function Type_Any = new("types.any",
-            ["matches if any of the supplied types show up in the card's type list"],
             ["types.any(...values: string[])"],
+            ["matches if any of the supplied types show up in the card's type list",
+             "shorthand for (type(<type1>) or type(<type2>)...)"
+            ],
+            ["types.any(\"Enchantment\",\"Creature\")"],
             (args, ctx) => new TypeSearchPredicate { Any = args }
         );
         public static readonly Function Type_All = new("types.all",
-            ["matches if all of the supplied types show up in the card's type list"],
             ["types.all(...values: string[])"],
+            ["matches if all of the supplied types show up in the card's type list",
+             "shorthand for (type(<type1>) and type(<type2>)...)"
+            ],
+            ["types.all(\"Enchantment\",\"Creature\")"],
             (args, ctx) => new TypeSearchPredicate { All = args }
         );
         public static readonly Function SubType = new("subType",
-            ["matches if the card's list of subtypes is just this one"],
             ["subType(value: string)"],
+            ["matches if the card's list of subtypes includes this one"],
+            ["subType(\"Eldrazi\")"],
             (args, ctx) => {
                 if (args.Length != 1)
                 {
                     throw new QueryParseException($"subType takes exactly one argument, at ...{ctx}");
                 }
-                return new SubTypeSearchPredicate { Exact = args[0] };
+                return new SubTypeSearchPredicate { Includes = args[0] };
             }
         );
         public static readonly Function SubType_Any = new("subTypes.any",
-            ["matches if any of the supplied sub types show up in the card's sub type list"],
             ["subTypes.any(...values: string[])"],
+            ["matches if any of the supplied sub types show up in the card's sub type list",
+             "shorthand for (subType(<type1>) or subType(<type2>)...)"
+            ],
+            ["subTypes.any(\"Phyrexian\",\"Dog\")"],
             (args, ctx) => new SubTypeSearchPredicate { Any = args }
         );
         public static readonly Function SubType_All = new("subTypes.all",
-            ["matches if all of the supplied sub types show up in the card's sub type list"],
             ["subTypes.all(...values: string[])"],
+            ["matches if all of the supplied sub types show up in the card's sub type list",
+             "shorthand for (subType(<type1>) and subType(<type2>)...)"
+            ],
+            ["subTypes.all(\"Phyrexian\",\"Dog\")"],
             (args, ctx) => new SubTypeSearchPredicate { All = args }
         );
 

@@ -1,16 +1,15 @@
 ﻿using MtgSearch.Server.Models.Data;
+using MtgSearch.Server.Models.Logic.Highlighting;
 using System.Text.RegularExpressions;
 
 namespace MtgSearch.Server.Models.Logic.Predicates
 {
-    public class ActivatedAbilitySearchPredicate : ISearchPredicate, IHasHighlighter
+    public class ActivatedAbilitySearchPredicate : ISearchPredicate
     {
         public Regex? CostText { get; set; }
         public Regex? CostAntiText { get; set; }
         public Regex? AbilityText { get; set; }
         public Regex? AbilityAntiText { get; set; }
-
-        public Regex[] Highlighters => [CostText, AbilityText];//TODO: too highlighty? 
 
         public bool Apply(MtgJsonAtomicCard card)
         {
@@ -27,6 +26,20 @@ namespace MtgSearch.Server.Models.Logic.Predicates
                 }
             }
             return isMatch;
+        }
+
+        public List<Highlighter> FetchHighlighters()
+        {
+            var highlighters = new List<Highlighter>();
+            if(CostText != null && CostAntiText == null) 
+            { 
+                highlighters.Add(new Highlighter { Regex = CostText, Target = Highlighter.HlTarget.ActivationCost });
+            }
+            if (AbilityText != null && AbilityAntiText == null)
+            {
+                highlighters.Add(new Highlighter { Regex = AbilityText , Target = Highlighter.HlTarget.ActivatedAbility });
+            }
+            return highlighters;
         }
     }
 }

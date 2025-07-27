@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using MtgSearch.Server.Models.Api;
 using MtgSearch.Server.Models.Data;
 using MtgSearch.Server.Models.Logic;
+using MtgSearch.Server.Models.Logic.Highlighting;
 using MtgSearch.Server.Models.Logic.Parsing;
 using MtgSearch.Server.Models.Logic.Parsing.Tokens;
 using MtgSearch.Server.Models.Logic.Predicates;
@@ -25,23 +26,28 @@ namespace MtgSearch.Server.Controllers
         }
 
         [HttpPost("CheckSearchCount")]
-        public IActionResult CountSearch([FromBody] SearchRequest request)
+        public async Task<IActionResult> CountSearch([FromBody] SearchRequest request)
         {
-            var error = TryDoSearch(request, out var result);
-            if (error != null) return error;
-            return Ok(result.Count);
+            var res = await TryDoSearch(request);
+            if (res.Error != null) return res.Error;
+            return Ok(res.Matches.Count);
         }
         [HttpPost("RunSearch")]
-        public IActionResult DoSearch([FromBody] SearchRequest request)
+        public async Task<IActionResult> DoSearch([FromBody] SearchRequest request)
         {
-            var error = TryDoSearch(request, out var result);
-            if (error != null) return error;
-            List<Regex> highlighters = new List<Regex>();
-            return Ok(result.Select(x=>new SearchResultCard(x) { TextLines = textMarker.MarkText(x,highlighters)}).ToList());
+            var res = await TryDoSearch(request);
+            if (res.Error != null) return res.Error;
+            return Ok(res.Matches.Select(x=>new SearchResultCard(x) { TextLines = textMarker.MarkText(x, res.Highlighters)}).ToList());
         }
-        private BadRequestObjectResult? TryDoSearch(SearchRequest request, out List<MtgJsonAtomicCard> cards)
+
+        private class SearchResult
         {
-            cards = [];
+            public BadRequestObjectResult? Error { get; set; }
+            public List<MtgJsonAtomicCard> Matches { get; set; }
+            public List<Highlighter> Highlighters { get; set; }
+        }
+        private async Task<SearchResult> TryDoSearch(SearchRequest request)
+        {
             ColorIdentity colorId;
             try
             {
@@ -49,7 +55,7 @@ namespace MtgSearch.Server.Controllers
             }
             catch(InvalidColorIdentityException ex)
             {
-                return BadRequest(ex.Message);
+                return new SearchResult { Error = BadRequest(ex.Message) };
             }
             ISearchPredicate predicate;
             try
@@ -58,10 +64,13 @@ namespace MtgSearch.Server.Controllers
             }
             catch(QueryParseException ex)
             {
-                return BadRequest(ex.Message);
+                return new SearchResult { Error = BadRequest(ex.Message) };
             }
-            cards = repo.Search(colorId, predicate);
-            return null;
+            return new SearchResult
+            {
+                Highlighters = predicate.FetchHighlighters(),
+                Matches = await repo.Search(colorId, predicate)
+            };
         }
     }
 }

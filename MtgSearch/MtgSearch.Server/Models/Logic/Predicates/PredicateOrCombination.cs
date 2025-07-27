@@ -1,4 +1,5 @@
 ﻿using MtgSearch.Server.Models.Data;
+using MtgSearch.Server.Models.Logic.Highlighting;
 
 namespace MtgSearch.Server.Models.Logic.Predicates
 {
@@ -12,6 +13,12 @@ namespace MtgSearch.Server.Models.Logic.Predicates
                 if (predicate.Apply(card)) return true;
             }
             return false;
+        }
+        public List<Highlighter> FetchHighlighters()
+        {
+            var highlighters = new List<Highlighter>();
+            highlighters.AddRange(Predicates.SelectMany(x => x.FetchHighlighters()));
+            return highlighters;
         }
     }
 }

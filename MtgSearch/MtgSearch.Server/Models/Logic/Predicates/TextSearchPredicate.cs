@@ -1,13 +1,21 @@
 ﻿using MtgSearch.Server.Models.Data;
+using MtgSearch.Server.Models.Logic.Highlighting;
 using System.Text.RegularExpressions;
 
 namespace MtgSearch.Server.Models.Logic.Predicates
 {
-    public class TextSearchPredicate : ISearchPredicate, IHasHighlighter
+    public class TextSearchPredicate : ISearchPredicate 
     {
         public TextSearchPredicate(Regex reg) => Regex = reg;
         public Regex Regex { get; }
-        public Regex[] Highlighters => [Regex];//TODO: what about & !reg("jalsdkfj") ?
-        public bool Apply(MtgJsonAtomicCard card) => Regex.IsMatch(card.text);
+        public bool Apply(MtgJsonAtomicCard card)
+        {
+            if(card.text == null) return false;
+            return Regex.IsMatch(card.text);
+        }
+        
+        //TODO: what about & !reg("jalsdkfj") ?
+        public List<Highlighter> FetchHighlighters() 
+            => [new Highlighter { Regex =  Regex, Target = Highlighter.HlTarget.FullText }];
     }
 }
