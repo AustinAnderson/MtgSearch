@@ -1,9 +1,111 @@
-<h1 id="tableLabel">Weather forecast</h1>
+<style>
+  .mainBox{
+      display:flex;
+      flex-direction:column;
+      height: 100vh;
+  }
+  .padBox{
+      padding: .3em;
+  }
+  .queryLineContainer{
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+  }
+  .queryInput{
+      display:flex;
+      justify-content: center;
+      background: #202040;
+      height: 2em;
+      width: 100%;
+  }
+  .queryInputBox{
+      background: #77A;
+      font-family: Consolas;
+      font-size: 1.1em;
+      overflow-x: scroll;
+      width: 50%;
+  }
+  .queryLabel{
+    justify-content: center;
+    align-content: center;
+    margin: .3em;
+    font-weight: bold;
+    color: #B5A166;
+    font-size: 1.3em;
+    text-shadow:
+      .1em .1em 0 black,
+      -.1em .1em 0 black,
+      .1em -.1em 0 black,
+      -.1em -.1em 0 black;
+  }
+  .button{
+      border: .1em solid black;
+      background-color: #222;
+      padding: .5em .9em;
+      text-align: center;
+      text-decoration: none;
+      color: white;
+      transition-duration: .4s;
+  }
+  .button:hover{
+      background-color: #447;
+  }
 
-<p>This component demonstrates fetching data from the server.</p>
-
-<p *ngIf="!forecasts"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
-
-<div style="border: 1px solid red">
-  <card [data]="testData"></card>
+  .resultsContainer{
+      display:flex;
+      flex-direction:row;
+      background: #202040;
+      border: .5em inset black;
+      flex-wrap: wrap;
+      overflow-y: scroll;
+      height: 83%;
+  }
+  .resultCount-true{
+      display:flex;
+      margin-left: .3em;
+      align-items: center;
+      color: rgba(200,200,200,.5);
+  }
+  .resultCount-false{
+      color: rgba(0,0,0,0);
+  }
+  .errorReadout{
+      color: red;
+  }
+  .errorReadout.error-true{
+      height: 0%;
+  }
+</style>
+<div class="mainBox">
+  <color-id-selector (onValueChanged)="onColorIdUpdated($event)"></color-id-selector>
+  <div class="queryLineContainer">
+    <div class="queryInput">
+      <div class="queryLabel">Search Query:</div>
+      <input class="queryInputBox" type="text" [(ngModel)]="query">
+      <button class="button" (click)="fetchSearch()" (mouseover)="onSearchHover()">
+        Search
+      </button>
+      <div class="resultCount-{{hasResults}}">
+        ({{searchResultCount}} results)
+      </div>
+    </div>
+    <div class="docsButtonContainer">
+      <button class="button">
+        docs
+      </button>
+    </div>
+  </div>
+  <div class="errorReadout error-{{hasError}}">
+    <pre>
+      {{errorText}}
+    </pre>
+  </div>
+  <div class="resultsContainer">
+    <ng-container *ngFor="let cardData of searchResultList">
+      <div class="padBox">
+        <card [data]="cardData"></card>
+      </div>
+    </ng-container>
+  </div>
 </div>

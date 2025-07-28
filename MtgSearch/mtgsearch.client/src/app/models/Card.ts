@@ -1,19 +1,19 @@
 export class Card {
-  public Name: undefined | string;
-  public Power: undefined | string;
-  public Toughness: undefined | string;
-  public Loyalty: undefined | string;
-  public ManaCost: undefined | string;
-  public SuperTypes: string[] = [];
-  public Types: string[] = [];
-  public SubTypes: string[] = [];
-  public TextLines: CardTextLine[] = [];
+  public name: undefined | string;
+  public power: undefined | string;
+  public toughness: undefined | string;
+  public loyalty: undefined | string;
+  public manaCost: undefined | string;
+  public superTypes: string[] = [];
+  public types: string[] = [];
+  public subTypes: string[] = [];
+  public textLines: CardTextLine[] = [];
 }
 export class CardTextLine {
-  public Segments: CardTextLineSegment[] = [];
+  public segments: CardTextLineSegment[] = [];
 }
 export class CardTextLineSegment {
-  public IsSymbol: boolean = false;
-  public IsHighlighted: boolean = false;
-  public Text: undefined | string;
+  public isSymbol: boolean = false;
+  public isHighlighted: boolean = false;
+  public text: undefined | string;
 }

@@ -16,35 +16,35 @@ export class CardComponent {
   public textLines: BindingCardTextLine[] = [];
   @Input() public set data(value: Card)
   {
-    this.name = value.Name ?? "(Server sent empty name)";
-    if (value.ManaCost) {
-      this.manaSymbolTexts = value.ManaCost.split('{').filter(x => x.length > 0).map(x => '{' + x);
+    this.name = value.name ?? "(Server sent empty name)";
+    if (value.manaCost) {
+      this.manaSymbolTexts = value.manaCost.split('{').filter(x => x.length > 0).map(x => '{' + x);
     }
-    let typeLine = value.SuperTypes.join(' ');
+    let typeLine = value.superTypes.join(' ');
     if (typeLine.length > 0) {
       typeLine += ' ';
     }
-    typeLine += value.Types.join(' ');
-    let subTypes = value.SubTypes.join(' ');
+    typeLine += value.types.join(' ');
+    let subTypes = value.subTypes.join(' ');
     if (subTypes.length > 0) {
       typeLine += ' — ';//it's an emdash I swear
       typeLine += subTypes;
     }
     this.typeLine = typeLine;
-    if (value.Power) {
-      this.powerToughness = value.Power + '/' + value.Toughness;
+    if (value.power) {
+      this.powerToughness = value.power + '/' + value.toughness;
     }
-    else if(value.Loyalty) {
-      this.loyalty = value.Loyalty;
+    else if(value.loyalty) {
+      this.loyalty = value.loyalty;
     }
-    if (value.TextLines.length > 0) {
-      for (let serverLine of value.TextLines) {
+    if (value.textLines.length > 0) {
+      for (let serverLine of value.textLines) {
         let line = { segments: [] } as BindingCardTextLine;
-        for (let serverSeg of serverLine.Segments) {
+        for (let serverSeg of serverLine.segments) {
           let segment = new BindingCardTextLineSegment();
-          segment.isHighlighted = serverSeg.IsHighlighted;
-          segment.isSymbol = serverSeg.IsSymbol;
-          segment.text = serverSeg.Text;
+          segment.isHighlighted = serverSeg.isHighlighted;
+          segment.isSymbol = serverSeg.isSymbol;
+          segment.text = serverSeg.text;
           line.segments.push(segment);
         }
         this.textLines.push(line);

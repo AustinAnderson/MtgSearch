@@ -1,5 +1,5 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Component } from '@angular/core';
 import { Card } from './models/Card';
 
 interface WeatherForecast {
@@ -14,56 +14,68 @@ interface WeatherForecast {
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit {
-  public forecasts: WeatherForecast[] = [];
-  public testData: Card;
+export class AppComponent {
+  public searchResultList: Card[] = [];
+  public searchResultCount: number | undefined;
+  public get hasResults(): boolean {
+    return this.searchResultCount != undefined;
+  }
+  public errorText: string | undefined;
+  public query: string = "";
+  private colorId: string = "";
+  public onColorIdUpdated(value: string) {
+    this.colorId = value;
+  }
 
+  public get hasError(): boolean {
+    return this.errorText == undefined;
+  }
+  public clearError() {
+    this.errorText = undefined;
+  }
+  public onSearchHover() {
+    this.clearError();
+    this.countSearch();
+  }
   constructor(private http: HttpClient) {
-    this.testData = new Card();
-    this.testData.Name = "Sisay, Weatherlight Captain";
-    this.testData.ManaCost = "{2}{W}";
-    this.testData.SuperTypes = ['Legendary'];
-    this.testData.Types = ['Creature'];
-    this.testData.SubTypes = ['Human', 'Soldier'];
-    this.testData.Power = '2';
-    this.testData.Toughness = '2';
-    //as if user searched for reg(text,'you control.*search')
-    this.testData.TextLines = [
-      {
-        Segments: [
-          { IsHighlighted: false, IsSymbol: false, Text: 'Sisay, Weatherlight Captain gets +1/+1 for each color among other legendary permanents ' },
-          { IsHighlighted: true, IsSymbol: false, Text: 'you control.' },
-        ]
-      },
-      {
-        Segments: [
-          { IsHighlighted: false, IsSymbol: true, Text: '{W}' },
-          { IsHighlighted: false, IsSymbol: true, Text: '{U}' },
-          { IsHighlighted: false, IsSymbol: true, Text: '{B}' },
-          { IsHighlighted: false, IsSymbol: true, Text: '{R}' },
-          { IsHighlighted: false, IsSymbol: true, Text: '{G}' },
-          { IsHighlighted: true, IsSymbol: false, Text: ': Search' },
-          { IsHighlighted: false, IsSymbol: false, Text: " your library for a legendary permanent card with converted mana cost less than Sisay's power, put that card onto the battlefield, then shuffle your library." },
-        ]
+  }
+
+  async countSearch() {
+    await this.executeSearchAndHandleErrors(async () => {
+      let req = {
+        ColorIdentity: this.colorId,
+        Query: this.query
+      };
+      this.searchResultCount = await this.http.post<number>('/Search/CheckSearchCount', req).toPromise();
+    });
+  }
+  async fetchSearch() {
+    await this.executeSearchAndHandleErrors(async () => {
+      let req = {
+        ColorIdentity: this.colorId,
+        Query: this.query
+      };
+      this.searchResultList = await this.http.post<Card[]>('/Search/RunSearch', req).toPromise() ?? [];
+    });
+  }
+  private async executeSearchAndHandleErrors<T>(httpRequest: () => Promise<T>) {
+    try {
+      await httpRequest();
+    }
+    catch (notSuccess)
+    {
+      this.searchResultList = [];
+      this.searchResultCount = undefined;
+      let httpError = notSuccess as HttpErrorResponse;
+      if (httpError && httpError.status == 400) {
+        this.errorText = "" + notSuccess;
       }
-    ];
-
-  }
-
-  ngOnInit() {
-    this.getForecasts();
-  }
-
-  getForecasts() {
-    this.http.get<WeatherForecast[]>('/weatherforecast').subscribe(
-      (result) => {
-        this.forecasts = result;
-      },
-      (error) => {
-        console.error(error);
+      else {
+        this.errorText = "unknown error occurred, check the console logs with ctrl + shift + J";
+        console.log(notSuccess);
       }
-    );
+    }
   }
 
-  title = 'mtgsearch.client';
+  title = 'MTG Search';
 }
