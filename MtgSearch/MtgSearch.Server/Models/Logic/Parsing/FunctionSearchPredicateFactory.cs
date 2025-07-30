@@ -22,6 +22,19 @@ namespace MtgSearch.Server.Models.Logic.Parsing
             Signitures = signitures;
             Factory = factory;
         }
+        public static readonly Function ManaSymbolsLike = new("manaCostLike",
+            ["manaCostLike(regex: string)"],
+            ["matches the mana cost symbols based on simple 'w' 'u' 'b' 'r' 'g' text",
+            "for instance, '5w*' would match Avacyn, Angle of Hope's cost=5{W}{W}{W} and The Eternity Elevator's cost=5"],
+            ["manaCostLike(\"5w*\")"],
+            (args, ctx) => {
+                if(args.Length != 1)
+                {
+                    throw new QueryParseException("manaCostLike requires exactly 1 argument");
+                }
+                return new ManaSymbolLikeSearch(ParseRegexOrThrow(args[0], ctx, 0));
+            }
+        );
         public static readonly Function TextRegex = new("text",
             ["text(regex: string)"],
             ["search the text box with the regex, ignoring case"],
