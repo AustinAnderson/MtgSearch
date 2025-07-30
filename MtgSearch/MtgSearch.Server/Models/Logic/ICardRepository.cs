@@ -7,5 +7,6 @@ namespace MtgSearch.Server.Models.Logic
     {
         Task<List<MtgJsonAtomicCard>> Search(ColorIdentity colors, ISearchPredicate predicate);
         Task<bool> Update();
+        Task Initialize();
     }
 }

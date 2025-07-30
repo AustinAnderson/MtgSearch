@@ -13,7 +13,7 @@ namespace MtgSearch.Server.Models.Logic.Predicates
         }
         public bool Apply(MtgJsonAtomicCard card)
         {
-            var simplified = card.manaCost?.Replace("{", "").Replace("}", "") ?? "";
+            var simplified = card.ManaCost?.Replace("{", "").Replace("}", "") ?? "";
             var match = search.Match(simplified,0);
             return match.Success && match.Length == simplified.Length;
         }

@@ -63,16 +63,16 @@ namespace MtgSearch.Server.Models.Logic.Predicates
             {
                 compareAgainst = Type switch
                 {
-                    _ when Type == NumericCardAttributeType.ConvertedManaCost => (int)card.manaValue,
-                    _ when Type == NumericCardAttributeType.Power => card.power == "*" || card.power == null ? 0 : int.Parse(card.power),
-                    _ when Type == NumericCardAttributeType.Toughness => card.toughness == "*" || card.toughness == null ? 0 : int.Parse(card.toughness),
-                    _ when Type == NumericCardAttributeType.Loyalty => card.toughness == null ? 0 : int.Parse(card.loyalty),
+                    _ when Type == NumericCardAttributeType.ConvertedManaCost => (int)card.ManaValue,
+                    _ when Type == NumericCardAttributeType.Power => card.Power == "*" || card.Power == null ? 0 : int.Parse(card.Power),
+                    _ when Type == NumericCardAttributeType.Toughness => card.Toughness == "*" || card.Toughness == null ? 0 : int.Parse(card.Toughness),
+                    _ when Type == NumericCardAttributeType.Loyalty => card.Toughness == null ? 0 : int.Parse(card.Loyalty),
                     _ => throw new NotImplementedException($"Dev forgot to handle {nameof(NumericCardAttributeType)}.{Type}")
                 };
             }
             catch (FormatException ex)
             {
-                throw new Exception($"Couldn't parse {Type} for card `{card.name}`", ex);
+                throw new Exception($"Couldn't parse {Type} for card `{card.Name}`", ex);
             }
             return Operator switch
             {

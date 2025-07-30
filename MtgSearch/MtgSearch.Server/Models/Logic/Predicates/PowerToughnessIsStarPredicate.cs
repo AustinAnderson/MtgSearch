@@ -29,11 +29,11 @@ namespace MtgSearch.Server.Models.Logic.Predicates
         {
             if (PowerOrToughness == PowerOrToughness.Power)
             {
-                return card.power == "*";
+                return card.Power == "*";
             }
             else if(PowerOrToughness == PowerOrToughness.Toughness)
             {
-                return card.toughness == "*";
+                return card.Toughness == "*";
             }
             else
             {

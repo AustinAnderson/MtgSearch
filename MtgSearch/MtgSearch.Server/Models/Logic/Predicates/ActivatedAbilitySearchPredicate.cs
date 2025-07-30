@@ -13,9 +13,9 @@ namespace MtgSearch.Server.Models.Logic.Predicates
 
         public bool Apply(MtgJsonAtomicCard card)
         {
-            if (!card.activatedAbilities.Any()) return false;
+            if (!card.ActivatedAbilities.Any()) return false;
             bool isMatch = false;
-            foreach (var ability in card.activatedAbilities)
+            foreach (var ability in card.ActivatedAbilities)
             {
                 bool abilityMatch = AbilityText != null && AbilityText.IsMatch(ability.ability);
                 bool costMatch = CostText != null && ability.costs.Any(CostText.IsMatch);

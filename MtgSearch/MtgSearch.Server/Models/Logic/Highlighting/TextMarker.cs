@@ -20,8 +20,8 @@ namespace MtgSearch.Server.Models.Logic.Highlighting
         /// </summary>
         public List<CardTextLine> MarkText(MtgJsonAtomicCard card, List<Highlighter> highlighters)
         {
-            if (card.text == null) return [];
-            var text = card.text;
+            if (string.IsNullOrEmpty(card.Text)) return [];
+            var text = card.Text;
             //TODO: implement other targets
             var copOut = highlighters.Where(x => x.Target == Highlighter.HlTarget.FullText).Select(x => x.Regex);
             //mark start and end of each hl section matching the regexs,
