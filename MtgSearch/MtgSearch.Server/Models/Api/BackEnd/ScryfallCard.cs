@@ -25,15 +25,43 @@ namespace MtgSearch.Server.Models.Api.BackEnd
         [JsonProperty("image_uris")] 
         public ScryfallCardImageUrls? ImageUrls { get; set; }
 
+        [JsonProperty("set")]
+        public string? SetCode { get; set; }
+
         /// <summary>
-        /// yyyy-MM-dd, assuming PT timezone since wotc is in cali?
+        /// yyyy-MM-dd, Assume UTC? not specified in their docs
         /// </summary>
         [JsonProperty("released_at")] 
-        public string releasedAt { get; set; }
+        public string ReleasedAt { get; set; }
         /// <summary>
         /// 'legal' or 'not_legal' or 'restricted' or 'banned'
         /// </summary>
         public Legalities Legalities { get; set; }
+        [JsonIgnore]
+        public bool IsFunny
+        {
+            get {
+                bool isFunny = TypeLine.ToLower().Contains("attraction") ||
+                    (ScryfallCardFaces != null 
+                    && 
+                     ScryfallCardFaces.Any(x => x.TypeLine.ToLower().Contains("attraction")));
+                if (!isFunny)
+                {
+                    isFunny &= ManaCost != null && ManaCost.Contains("{TK}");
+                    isFunny &= Text != null && Text.Contains("{TK}");
+                    isFunny &= ScryfallCardFaces != null && ScryfallCardFaces.Length > 0
+                               && ScryfallCardFaces.Any(x =>
+                                   x.ManaCost != null && x.ManaCost.Contains("{TK}")
+                                   ||x.Text != null && x.Text.Contains("{TK}")
+                               );
+                }
+                return isFunny;
+            }
+        }
+        [JsonIgnore]
+        public bool IsLegal => Legalities.Commander.ToLower() == "legal";
+        public bool IsPreReleaseAsOf(DateTime utcDate) =>
+                DateTime.SpecifyKind(DateTime.Parse(ReleasedAt), DateTimeKind.Utc) > utcDate;
     }
     public class Legalities
     {

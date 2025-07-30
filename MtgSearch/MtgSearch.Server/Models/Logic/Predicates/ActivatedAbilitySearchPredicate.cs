@@ -11,7 +11,7 @@ namespace MtgSearch.Server.Models.Logic.Predicates
         public Regex? AbilityText { get; set; }
         public Regex? AbilityAntiText { get; set; }
 
-        public bool Apply(MtgJsonAtomicCard card)
+        public bool Apply(ServerCardModel card)
         {
             if (!card.ActivatedAbilities.Any()) return false;
             bool isMatch = false;

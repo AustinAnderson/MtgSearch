@@ -4,6 +4,6 @@ namespace MtgSearch.Server.Models.Logic.Predicates
 {
     public class TypeSearchPredicate : AbstractTypeSearchPredicate
     {
-        protected override string[] SelectTypeArray(MtgJsonAtomicCard card) => card.Types.ToArray();
+        protected override string[] SelectTypeArray(ServerCardModel card) => card.Types.ToArray();
     }
 }

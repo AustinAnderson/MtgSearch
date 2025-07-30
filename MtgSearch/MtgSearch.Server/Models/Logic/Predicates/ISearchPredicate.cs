@@ -8,7 +8,7 @@ namespace MtgSearch.Server.Models.Logic.Predicates
         /// <summary>
         /// returns whether or not this search predicate matches the given card
         /// </summary>
-        bool Apply(MtgJsonAtomicCard card);
+        bool Apply(ServerCardModel card);
         List<Highlighter> FetchHighlighters();
     }
 }

@@ -56,7 +56,7 @@ namespace MtgSearch.Server.Models.Logic.Predicates
         public NumericCardAttributeType Type { get; set; } = NumericCardAttributeType.ConvertedManaCost;
         public Operator Operator { get; set; }
         public int Value { get; set; }
-        public bool Apply(MtgJsonAtomicCard card)
+        public bool Apply(ServerCardModel card)
         {
             int compareAgainst = 0;
             try

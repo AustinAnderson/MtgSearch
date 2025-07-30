@@ -25,7 +25,7 @@ namespace MtgSearch.Server.Models.Logic.Predicates
     {
         public PowerOrToughness PowerOrToughness { get; set; }
 
-        public bool Apply(MtgJsonAtomicCard card)
+        public bool Apply(ServerCardModel card)
         {
             if (PowerOrToughness == PowerOrToughness.Power)
             {

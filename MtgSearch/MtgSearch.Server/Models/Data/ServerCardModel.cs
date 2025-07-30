@@ -7,32 +7,17 @@ using System.Text.RegularExpressions;
 namespace MtgSearch.Server.Models.Data
 {
 
-    public class MtgJsonAtomicCard
+    public class ServerCardModel
     {
-        public static IEnumerable<MtgJsonAtomicCard> FromScryfall(ScryfallCard jsonCard)
+        public static IEnumerable<ServerCardModel> FromScryfall(ScryfallCard jsonCard, DateTime utcNow)
         {
-            bool isFunny = jsonCard.TypeLine.ToLower().Contains("attraction") ||
-                (jsonCard.ScryfallCardFaces != null 
-                && 
-                 jsonCard.ScryfallCardFaces.Any(x => x.TypeLine.ToLower().Contains("attraction")));
-            if (!isFunny)
-            {
-                isFunny &= jsonCard.ManaCost != null && jsonCard.ManaCost.Contains("{TK}");
-                isFunny &= jsonCard.Text != null && jsonCard.Text.Contains("{TK}");
-                isFunny &= jsonCard.ScryfallCardFaces != null && jsonCard.ScryfallCardFaces.Length > 0
-                           && jsonCard.ScryfallCardFaces.Any(x =>
-                               x.ManaCost != null && x.ManaCost.Contains("{TK}")
-                               ||x.Text != null && x.Text.Contains("{TK}")
-                           );
-            }
-
-            var card = new MtgJsonAtomicCard(jsonCard.Name)
+            var card = new ServerCardModel(jsonCard.Name)
             {
                 ColorIdentity = new(string.Join("", jsonCard.ColorId)),
-                IsLegal = jsonCard.Legalities.Commander.ToLower() == "legal",
-                IsFunny = isFunny,
-                //Assume UTC? not specified in their docs other than yyyy-MM-dd
-                IsPreRelease = DateTime.SpecifyKind(DateTime.Parse(jsonCard.releasedAt), DateTimeKind.Utc) > DateTime.UtcNow
+                IsLegal = jsonCard.IsLegal,
+                IsFunny = jsonCard.IsFunny,
+                IsPreRelease = jsonCard.IsPreReleaseAsOf(utcNow),
+                SetCode = jsonCard.SetCode
             };
             if(jsonCard.ScryfallCardFaces!=null && jsonCard.ScryfallCardFaces.Length > 0)
             {
@@ -61,7 +46,7 @@ namespace MtgSearch.Server.Models.Data
                 yield return card;
             }
         }
-        private static void FillData(MtgJsonAtomicCard card, ScryfallCard cardData, ScryfallCardFace? faceData)
+        private static void FillData(ServerCardModel card, ScryfallCard cardData, ScryfallCardFace? faceData)
         {
             FillText(card, faceData?.Text ?? cardData?.Text);
             FillTypes(card, faceData?.TypeLine ?? cardData?.TypeLine);
@@ -70,8 +55,13 @@ namespace MtgSearch.Server.Models.Data
             card.Toughness = faceData?.Toughness ?? cardData?.Toughness;
             card.ManaValue = faceData?.Cmc ?? cardData?.Cmc ?? 0;
             card.ManaCost = faceData?.ManaCost ?? cardData?.ManaCost;
+            var imgObj = faceData?.ImageUrls?? cardData?.ImageUrls;
+            if (imgObj != null) 
+            {
+                card.CardImageUrl = imgObj.Png ?? imgObj.Large ?? imgObj.Normal ?? imgObj.Small;
+            }
         }
-        private static void FillText(MtgJsonAtomicCard card, string? text)
+        private static void FillText(ServerCardModel card, string? text)
         {
             if (text == null) return;
             card.Text = text;
@@ -79,7 +69,7 @@ namespace MtgSearch.Server.Models.Data
                    .Where(x => x.Trim(':').Contains(':')).Select(x => new ActivatedAbility(x, card.Name)).ToArray();
         }
         const string SubTypesSplitOn = "—";
-        private static void FillTypes(MtgJsonAtomicCard card, string? typeLine)
+        private static void FillTypes(ServerCardModel card, string? typeLine)
         {
             if (typeLine == null) return;
             var typeSplits = typeLine.Split(SubTypesSplitOn);
@@ -104,7 +94,7 @@ namespace MtgSearch.Server.Models.Data
 
 
 
-        public MtgJsonAtomicCard(string name) 
+        public ServerCardModel(string name) 
         { 
             Name = name; 
         }
@@ -129,13 +119,15 @@ namespace MtgSearch.Server.Models.Data
         public string? Power { get; private set; }
         public string? Toughness { get; private set; }
         public string? Text { get; private set; }
+        public string? CardImageUrl { get; private set; }
+        public string? SetCode { get; private set; }
         public ActivatedAbility[] ActivatedAbilities { get; private set; } = [];
         public bool IsPreRelease { get; private set; }
-        public static IEqualityComparer<MtgJsonAtomicCard> EqualityComparer { get; } = new NameEqualityComparer();
-        private class NameEqualityComparer : IEqualityComparer<MtgJsonAtomicCard>
+        public static IEqualityComparer<ServerCardModel> EqualityComparer { get; } = new NameEqualityComparer();
+        private class NameEqualityComparer : IEqualityComparer<ServerCardModel>
         {
-            public bool Equals(MtgJsonAtomicCard? x, MtgJsonAtomicCard? y) => x?.Name == y?.Name;
-            public int GetHashCode([DisallowNull] MtgJsonAtomicCard obj) => obj.Name.GetHashCode();
+            public bool Equals(ServerCardModel? x, ServerCardModel? y) => x?.Name == y?.Name;
+            public int GetHashCode([DisallowNull] ServerCardModel obj) => obj.Name.GetHashCode();
         }
     }
 }

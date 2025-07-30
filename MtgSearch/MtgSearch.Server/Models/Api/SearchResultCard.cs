@@ -5,7 +5,7 @@ namespace MtgSearch.Server.Models.Api
     public class SearchResultCard
     {
         public SearchResultCard() { }
-        public SearchResultCard(MtgJsonAtomicCard card) 
+        public SearchResultCard(ServerCardModel card) 
         {
             Name = card.Name;
             Power = card.Power;
@@ -16,6 +16,7 @@ namespace MtgSearch.Server.Models.Api
             Types = [.. card.Types];
             SubTypes = card.Subtypes;
             IsPreRelease = card.IsPreRelease;
+            ImageUrl = card.CardImageUrl;
         }
         public string Name { get; set; }
         public string? Power { get; set; }
@@ -26,6 +27,8 @@ namespace MtgSearch.Server.Models.Api
         public string[] Types { get; set; }
         public string[] SubTypes { get; set; }
         public bool IsPreRelease { get; set; }
+        public string? ImageUrl { get; set; }
+        public string SetCode { get; set; }
         public List<CardTextLine> TextLines { get; set; }
     }
 }

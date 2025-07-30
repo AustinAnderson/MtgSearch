@@ -8,8 +8,8 @@ namespace MtgSearch.Server.Models.Logic.Predicates
         public string? Includes { get; set; }
         public string[]? Any { get; set; }
         public string[]? All { get; set; }
-        abstract protected string[] SelectTypeArray(MtgJsonAtomicCard card);
-        public bool Apply(MtgJsonAtomicCard card)
+        abstract protected string[] SelectTypeArray(ServerCardModel card);
+        public bool Apply(ServerCardModel card)
         {
             var types=SelectTypeArray(card).Select(x=>x.ToLower());
             if(Includes != null)

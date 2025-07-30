@@ -6,14 +6,14 @@ namespace MtgSearch.Server.Models.Logic
 {
     public class FileCardRepository : ICardRepository
     {
-        private List<MtgJsonAtomicCard> cards = [];
+        private List<ServerCardModel> cards = [];
 
         public async Task Initialize()
         {
             await Update();
         }
 
-        public Task<List<MtgJsonAtomicCard>> Search(ColorIdentity colors, ISearchPredicate predicate)
+        public Task<List<ServerCardModel>> Search(ColorIdentity colors, ISearchPredicate predicate)
         {
             return Task.FromResult(cards.Where(x => x.ColorIdentity.IncludedIn(colors) && predicate.Apply(x)).ToList());
         }
@@ -22,7 +22,7 @@ namespace MtgSearch.Server.Models.Logic
         public async Task<bool> Update()
         {
             var text = await File.ReadAllTextAsync(@"C:\Users\Austi\Downloads\AtomicCards.json\AtomicCards.json");
-            var data = JsonConvert.DeserializeObject<MtgJsonAtomicCard[]>(text);
+            var data = JsonConvert.DeserializeObject<ServerCardModel[]>(text);
             data= data.Where(kvp => !kvp.Name.StartsWith("A-")).ToArray();
             return true;
         }

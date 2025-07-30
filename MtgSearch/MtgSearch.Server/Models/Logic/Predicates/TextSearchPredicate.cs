@@ -8,7 +8,7 @@ namespace MtgSearch.Server.Models.Logic.Predicates
     {
         public TextSearchPredicate(Regex reg) => Regex = reg;
         public Regex Regex { get; }
-        public bool Apply(MtgJsonAtomicCard card)
+        public bool Apply(ServerCardModel card)
         {
             if(card.Text == null) return false;
             return Regex.IsMatch(card.Text);
