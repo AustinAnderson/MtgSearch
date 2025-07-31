@@ -43,7 +43,7 @@ namespace MtgSearch.Server.Controllers
         private class SearchResult
         {
             public BadRequestObjectResult? Error { get; set; }
-            public List<MtgJsonAtomicCard> Matches { get; set; }
+            public List<ServerCardModel> Matches { get; set; }
             public List<Highlighter> Highlighters { get; set; }
         }
         private async Task<SearchResult> TryDoSearch(SearchRequest request)

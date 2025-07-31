@@ -5,16 +5,20 @@ namespace MtgSearch.Server.Models.Api
     public class SearchResultCard
     {
         public SearchResultCard() { }
-        public SearchResultCard(MtgJsonAtomicCard card) 
+        public SearchResultCard(ServerCardModel card) 
         {
-            Name = card.name;
-            Power = card.power;
-            Toughness = card.toughness;
-            Loyalty = card.loyalty;
-            ManaCost = card.manaCost;
-            SuperTypes = card.supertypes;
-            Types = card.types;
-            SubTypes = card.subtypes;
+            Name = card.Name;
+            Power = card.Power;
+            Toughness = card.Toughness;
+            Loyalty = card.Loyalty;
+            ManaCost = card.ManaCost;
+            SuperTypes = [.. card.Supertypes];
+            Types = [.. card.Types];
+            SubTypes = card.Subtypes;
+            IsPreRelease = card.IsPreRelease;
+            ImageUrl = card.CardImageUrl;
+            AltImageUrl = card.AltFaceImageUrl;
+            ColorId = card.ColorIdentity.Colors;
         }
         public string Name { get; set; }
         public string? Power { get; set; }
@@ -24,6 +28,11 @@ namespace MtgSearch.Server.Models.Api
         public string[] SuperTypes { get; set; }
         public string[] Types { get; set; }
         public string[] SubTypes { get; set; }
+        public string[] ColorId { get; set; }
+        public bool IsPreRelease { get; set; }
+        public string? ImageUrl { get; set; }
+        public string? AltImageUrl { get; set; }
+        public string SetCode { get; set; }
         public List<CardTextLine> TextLines { get; set; }
     }
 }

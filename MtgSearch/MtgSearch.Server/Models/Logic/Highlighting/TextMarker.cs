@@ -6,7 +6,7 @@ namespace MtgSearch.Server.Models.Logic.Highlighting
 {
     public interface ITextMarker
     {
-        List<CardTextLine> MarkText(MtgJsonAtomicCard card, List<Highlighter> highlighters);
+        List<CardTextLine> MarkText(ServerCardModel card, List<Highlighter> highlighters);
     }
     public class TextMarker : ITextMarker
     {
@@ -18,10 +18,10 @@ namespace MtgSearch.Server.Models.Logic.Highlighting
         /// <summary>
         /// tokenizes the string by highlights start stops and symbols
         /// </summary>
-        public List<CardTextLine> MarkText(MtgJsonAtomicCard card, List<Highlighter> highlighters)
+        public List<CardTextLine> MarkText(ServerCardModel card, List<Highlighter> highlighters)
         {
-            if (card.text == null) return [];
-            var text = card.text;
+            if (string.IsNullOrEmpty(card.Text)) return [];
+            var text = card.Text;
             //TODO: implement other targets
             var copOut = highlighters.Where(x => x.Target == Highlighter.HlTarget.FullText).Select(x => x.Regex);
             //mark start and end of each hl section matching the regexs,

@@ -1,4 +1,108 @@
 <style>
+  .nameBox.colorMulti { background-image: linear-gradient(to right, #B5A166,#D6C189,#B5A166); border-color: black;}
+  .imgBox.colorMulti { border-color: black;}
+  .typeBox.colorMulti { background-image: linear-gradient(to right, #B5A166,#D6C189,#B5A166); border-color: black;}
+  .textBox.colorMulti { background: #F0ECD3; border-color: #D6C189; }
+  .ptTextBox.colorMulti { background-image: linear-gradient(to right, #B5A166,#D6C189,#B5A166); border-color: #D6C189; }
+
+  .nameBox.colorC { background-image: linear-gradient(to right, #C8CDD1,#DADFE3,#C8CDD1); border-color: black;}
+  .imgBox.colorC { border-color: black;}
+  .typeBox.colorC{ background-image: linear-gradient(to right, #C8CDD1,#DADFE3,#C8CDD1); border-color: black;}
+  .textBox.colorC{ background: #E3E7EA; border-color: #DADFE3; }
+  .ptTextBox.colorC{ background-image: linear-gradient(to right, #C8CDD1,#DADFE3,#C8CDD1); border-color: #DADFE3; }
+
+  .nameBox.colorW { background-image: linear-gradient(to right, #E8E0C6 ,#EEECE1,#E8E0C6 ); border-color: #EDF0F0;}
+  .imgBox.colorW { border-color: #555;}
+  .typeBox.colorW{ background-image: linear-gradient(to right, #E8E0C6 ,#EEECE1,#E8E0C6 ); border-color: #EDF0F0;}
+  .textBox.colorW{ background: #F1FFFC; border-color: #EDF0F0; }
+  .ptTextBox.colorW{ background-image: linear-gradient(to right, #E8E0C6 ,#EEECE1,#E8E0C6 ); border-color: #EDF0F0; }
+
+  .nameBox.colorU { background-image: linear-gradient(to right, #4D96CD ,#ADCAE1, #4D96CD ); border-color: #066A98;}
+  .imgBox.colorU { border-color: #0E3951;}
+  .typeBox.colorU { background-image: linear-gradient(to right, #4D96CD ,#ADCAE1, #4D96CD ); border-color: #066A98;}
+  .textBox.colorU { background: #E1EAF1; border-color: #066A98; }
+  .ptTextBox.colorU { background-image: linear-gradient(to right, #6FB8EF, #ADCAE1, #6FB8EF ); border-color: #066A98; }
+
+  .nameBox.colorB { background-image: linear-gradient(to right, #9E9996, #BEB9B5, #9E9996); border-color: #363530;}
+  .imgBox.colorB { border-color: #1D1E19;}
+  .typeBox.colorB { background-image: linear-gradient(to right, #9E9996, #BEB9B5, #9E9996); border-color: #363530;}
+  .textBox.colorB { background: #D9D7D8; border-color: #363530; }
+  .textBox.colorBackup { background: #EAE8E9; border-color: #363530; }
+  .ptTextBox.colorB { background-image: linear-gradient(to right, #AFAAA7, #BEB9B5, #AFAAA7); border-color: #363530; }
+
+  .nameBox.colorR { background-image: linear-gradient(to right, #CB6B58,#ECCEC2,#CB6B58); border-color: #D25139;}
+  .imgBox.colorR { border-color: #643A35;}
+  .typeBox.colorR{ background-image: linear-gradient(to right, #CB6B58,#ECCEC2,#CB6B58); border-color: #D25139;}
+  .textBox.colorR{ background: #F3E7EA; border-color: #D25139; }
+  .ptTextBox.colorR{ background-image: linear-gradient(to right, #EDC0B1,#ECCEC2,#EDC0B1); border-color: #D25139; }
+
+  .nameBox.colorG { background-image: linear-gradient(to right, #95B190 ,#BDC8C0,#95B190 ); border-color: #2D6D4A;}
+  .imgBox.colorG { border-color: #29583C;}
+  .typeBox.colorG { background-image: linear-gradient(to right, #95B190 ,#BDC8C0,#95B190 ); border-color: #2D6D4A;}
+  .textBox.colorG { background: #DAE4DC; border-color: #2D6D4A; }
+  .ptTextBox.colorG { background-image: linear-gradient(to right, #95B190 ,#BDC8C0,#95B190 ); border-color: #2D6D4A; }
+
+  /*color symbols alphabatized to enable "color"+colors.sort().join()*/
+  .nameBox.colorUW { background-image: linear-gradient(to right, #E8E0C6, #B4C7C8, #4D96CD); border-color: black;}
+  .imgBox.colorUW { border-color: black;}
+  .typeBox.colorUW { background-image: linear-gradient(to right, #E8E0C6, #B4C7C8, #4D96CD); border-color: black;}
+  .textBox.colorUW { background: linear-gradient(to right, #F1FFFC,#E1EAF1); border-color: #D6C189; }
+  .ptTextBox.colorUW { background-image: linear-gradient(to right, #B5A166,#D6C189,#B5A166); border-color: #D6C189; }
+
+  .nameBox.colorRW { background-image: linear-gradient(to right, #CB6B58, #DEB9A1, #E8E0C6); border-color: black;}
+  .imgBox.colorRW { border-color: black;}
+  .typeBox.colorRW { background-image: linear-gradient(to right, #CB6B58, #DEB9A1, #E8E0C6); border-color: black;}
+  .textBox.colorRW { background: linear-gradient(to right, #F3E7EA, #F1FFFC); border-color: #D6C189; }
+  .ptTextBox.colorRW { background-image: linear-gradient(to right, #B5A166,#D6C189,#B5A166); border-color: #D6C189; }
+
+  .nameBox.colorBW { background-image: linear-gradient(to right, #E8E0C6, #BEB7A5, #7C7774); border-color: black;}
+  .imgBox.colorBW { border-color: black;}
+  .typeBox.colorBW { background-image: linear-gradient(to right, #E8E0C6, #BEB7A5, #7C7774); border-color: black;}
+  .textBox.colorBW { background: linear-gradient(to right, #F1FFFC,#D9D7D8); border-color: #D6C189; }
+  .ptTextBox.colorBW { background-image: linear-gradient(to right, #B5A166,#D6C189,#B5A166); border-color: #D6C189; }
+
+  .nameBox.colorGW { background-image: linear-gradient(to right, #E8E0C6, #95B190); border-color: black;}
+  .imgBox.colorGW { border-color: black;}
+  .typeBox.colorGW { background-image: linear-gradient(to right, #E8E0C6, #95B190); border-color: black;}
+  .textBox.colorGW { background: linear-gradient(to right, #F1FFFC,#DAE4DC); border-color: #D6C189; }
+  .ptTextBox.colorGW { background-image: linear-gradient(to right, #B5A166,#D6C189,#B5A166); border-color: #D6C189; }
+
+  .nameBox.colorBU { background-image: linear-gradient(to right, #4D96CD, #6C8192, #7C7774); border-color: black;}
+  .imgBox.colorBU { border-color: black;}
+  .typeBox.colorBU { background-image: linear-gradient(to right, #4D96CD, #6C8192, #7C7774); border-color: black;}
+  .textBox.colorBU { background: linear-gradient(to right, #E1EAF1,#D9D7D8); border-color: #D6C189; }
+  .ptTextBox.colorBU { background-image: linear-gradient(to right, #B5A166,#D6C189,#B5A166); border-color: #D6C189; }
+
+  .nameBox.colorBG { background-image: linear-gradient(to right, #7C7774, #95B190); border-color: black;}
+  .imgBox.colorBG { border-color: black;}
+  .typeBox.colorBG { background-image: linear-gradient(to right, #7C7774, #95B190); border-color: black;}
+  .textBox.colorBG { background: linear-gradient(to right, #D9D7D8,#DAE4DC); border-color: #D6C189; }
+  .ptTextBox.colorBG { background-image: linear-gradient(to right, #B5A166,#D6C189,#B5A166); border-color: #D6C189; }
+
+  .nameBox.colorGR { background-image: linear-gradient(to right, #95B190,#A3A082,#BE7D66,#CB6B58); border-color: black;}
+  .imgBox.colorGR { border-color: black;}
+  .typeBox.colorGR { background-image: linear-gradient(to right, #95B190,#A3A082,#BE7D66,#CB6B58); border-color: black;}
+  .textBox.colorGR { background: linear-gradient(to right, #DAE4DC, #F3E7EA); border-color: #D6C189; }
+  .ptTextBox.colorGR { background-image: linear-gradient(to right, #B5A166,#D6C189,#B5A166); border-color: #D6C189; }
+
+  .nameBox.colorRU { background-image: linear-gradient(to right, #4D96CD, #CB6B58); border-color: black;}
+  .imgBox.colorRU { border-color: black;}
+  .typeBox.colorRU { background-image: linear-gradient(to right, #4D96CD, #CB6B58); border-color: black;}
+  .textBox.colorRU { background: linear-gradient(to right, #E1EAF1, #F3E7EA); border-color: #D6C189; }
+  .ptTextBox.colorRU { background-image: linear-gradient(to right, #B5A166,#D6C189,#B5A166); border-color: #D6C189; }
+
+  .nameBox.colorBR { background-image: linear-gradient(to right, #7C7774, #CB6B58); border-color: black;}
+  .imgBox.colorBR { border-color: black;}
+  .typeBox.colorBR { background-image: linear-gradient(to right, #7C7774, #CB6B58); border-color: black;}
+  .textBox.colorBR { background: linear-gradient(to right, #D9D7D8, #F3E7EA); border-color: #D6C189; }
+  .ptTextBox.colorBR { background-image: linear-gradient(to right, #B5A166,#D6C189,#B5A166); border-color: #D6C189; }
+
+  .nameBox.colorGU { background-image: linear-gradient(to right, #4D96CD, #95B190); border-color: black;}
+  .imgBox.colorGU { border-color: black;}
+  .typeBox.colorGU { background-image: linear-gradient(to right, #4D96CD, #95B190); border-color: black;}
+  .textBox.colorGU { background: linear-gradient(to right, #E1EAF1, #DAE4DC); border-color: #D6C189; }
+  .ptTextBox.colorGU { background-image: linear-gradient(to right, #B5A166,#D6C189,#B5A166); border-color: #D6C189; }
+
   .highlighted{
     background: #FFC107;
   }
@@ -16,12 +120,12 @@
   }
   .nameBox{
     font-weight: bold;
-    border: 2px solid black;
+    border-width: .15em;
+    border-style: solid;
     border-radius: 8px;
     display:flex;
     flex-direction: row;
     justify-content: space-between;
-    background-image: linear-gradient(to right, #B5A166,#D6C189,#B5A166);
   }
   .name{
     padding: .2em;
@@ -32,10 +136,28 @@
     transform: scale(115%);
   }
   .imgBox{
-    border: .3em solid black;
-    background: gray;
+    border-width: .3em;
+    border-style: solid;
+    background: #666;
     height: 1em;
-
+    margin-left: .2em;
+    margin-right: .2em;
+    display:flex;
+    justify-content: center;
+    align-content: center;
+  }
+  .imgMainBox{
+      width:65%;
+      border-right: .05em dashed #444;
+      color: #444;
+  }
+  .imgAltBox{
+      width:35%;
+      color:#444;
+      visibility: hidden;
+  }
+  .imgAltBox.alt-true{
+      visibility: visible;
   }
   .typeBox{
     border-radius: .3em;
@@ -44,19 +166,17 @@
     font-weight: bold;
     justify-content: left;
     padding: .2em;
-    background-image: linear-gradient(to right, #B5A166,#D6C189,#B5A166);
-    border: 2px solid black;
+    border-width: .1em;
+    border-style: solid;
   }
   .textBoxBorder{
     border-left: .2em solid black;
     border-right: .3em solid black;
   }
   .textBox{
-    background: #F0ECD3;
     text-align: left;
-    border-top: .3em groove #D6C189;
-    border-left: .3em groove #D6C189;
-    border-right: .3em groove #D6C189;
+    border-style: groove groove none groove;
+    border-width: .3em;
     padding-left: .2em;
     padding-right: .2em;
     padding-bottom: .2em;
@@ -79,9 +199,7 @@
     padding-right: .4em;
     border-radius: .5em;
     border-style: groove;
-    border-color: #D6C189;
     border-width: .2em;
-    background-image: linear-gradient(to right, #B5A166,#D6C189,#B5A166);
     transform:translateY(-1em);
     box-shadow: -.2em .1em 5px;
   }
@@ -106,7 +224,7 @@
   }
 </style>
 <div class="card">
-  <div class="nameBox">
+  <div class="nameBox {{cardColor}}">
     <div class="name">
       <!--TODO: altface name as abbr title-->
       {{name}}
@@ -118,17 +236,23 @@
       </ng-container>
     </div>
   </div>
-  <div class="imgBox">
+  <div class="imgBox {{cardColor}}">
+    <div class="imgMainBox">
+      hover for image
+    </div>
+    <div class="imgAltBox">
+      alt face
+    </div>
     <!--maybe do a box in the middle where the art normally is
       where you hover to float a tool tip with the image of the actual card,
     can use https://scryfall.com/docs/api/cards/named to fetch the image on hover
     -->
   </div>
-  <div class="typeBox">
+  <div class="typeBox {{cardColor}}">
     {{typeLine}}
   </div>
   <div class="textBoxBorder">
-    <div class="textBox">
+    <div class="textBox {{cardColor}}">
       <!--texts-->
       <p *ngFor="let line of textLines" class="textLine">
         <ng-container *ngFor="let segment of line.segments">
@@ -147,7 +271,7 @@
   </div>
   <div *ngIf="powerToughness" class="ptContainer">
     <!--pt or loyalty container-->
-      <div class="ptTextBox">
+      <div class="ptTextBox {{cardColor}}">
         <!--pt text, css shenanigains float on top-->
         {{powerToughness}}
       </div>

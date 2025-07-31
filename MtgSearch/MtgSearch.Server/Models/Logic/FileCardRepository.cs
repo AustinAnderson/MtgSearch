@@ -6,19 +6,24 @@ namespace MtgSearch.Server.Models.Logic
 {
     public class FileCardRepository : ICardRepository
     {
-        private List<MtgJsonAtomicCard> cards = [];
-        public Task<List<MtgJsonAtomicCard>> Search(ColorIdentity colors, ISearchPredicate predicate)
+        private List<ServerCardModel> cards = [];
+
+        public async Task Initialize(CancellationToken cancellation)
+        {
+            await Update(cancellation);
+        }
+
+        public Task<List<ServerCardModel>> Search(ColorIdentity colors, ISearchPredicate predicate)
         {
             return Task.FromResult(cards.Where(x => x.ColorIdentity.IncludedIn(colors) && predicate.Apply(x)).ToList());
         }
 
         //eventually repalce with scryfall bulk data api only update if cache older
-        public async Task<bool> Update()
+        public async Task<bool> Update(CancellationToken cancellation)
         {
             var text = await File.ReadAllTextAsync(@"C:\Users\Austi\Downloads\AtomicCards.json\AtomicCards.json");
-            var data = JsonConvert.DeserializeObject<MtgJsonCardData>(text);
-            data.data = new(data.data.Where(kvp => !kvp.Key.StartsWith("A-")));
-            cards = data.data.Values.SelectMany(x=>x).Where(x=>x.IsLegal && !x.isFunny).ToList();
+            var data = JsonConvert.DeserializeObject<ServerCardModel[]>(text);
+            data= data.Where(kvp => !kvp.Name.StartsWith("A-")).ToArray();
             return true;
         }
     }

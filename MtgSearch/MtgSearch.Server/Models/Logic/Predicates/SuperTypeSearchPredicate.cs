@@ -4,6 +4,6 @@ namespace MtgSearch.Server.Models.Logic.Predicates
 {
     public class SuperTypeSearchPredicate: AbstractTypeSearchPredicate
     {
-        protected override string[] SelectTypeArray(MtgJsonAtomicCard card) => card.supertypes;
+        protected override string[] SelectTypeArray(ServerCardModel card) => card.Supertypes.ToArray();
     }
 }

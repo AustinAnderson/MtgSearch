@@ -6,7 +6,7 @@ namespace MtgSearch.Server.Models.Logic.Predicates
     public class PredicateAndCombination : ISearchPredicate
     {
         public List<ISearchPredicate> Predicates { get; set; }
-        public bool Apply(MtgJsonAtomicCard card)
+        public bool Apply(ServerCardModel card)
         {
             bool isMatch = true;
             foreach (var pred in Predicates)

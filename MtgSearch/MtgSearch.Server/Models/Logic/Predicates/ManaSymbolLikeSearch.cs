@@ -11,9 +11,9 @@ namespace MtgSearch.Server.Models.Logic.Predicates
         {
             search = symbolSearch;
         }
-        public bool Apply(MtgJsonAtomicCard card)
+        public bool Apply(ServerCardModel card)
         {
-            var simplified = card.manaCost?.Replace("{", "").Replace("}", "") ?? "";
+            var simplified = card.ManaCost?.Replace("{", "").Replace("}", "") ?? "";
             var match = search.Match(simplified,0);
             return match.Success && match.Length == simplified.Length;
         }
