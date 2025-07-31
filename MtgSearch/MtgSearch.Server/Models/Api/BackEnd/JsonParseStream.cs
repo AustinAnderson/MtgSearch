@@ -11,7 +11,7 @@ namespace MtgSearch.Server.Models.Api.BackEnd
             this.inputStream = inputStream;
         }
 
-        public IEnumerable<T> Read()
+        public IEnumerable<T> Read(CancellationToken cancellation)
         {
             using var sr = new StreamReader(inputStream);
             using var reader = new JsonTextReader(sr);
@@ -23,6 +23,7 @@ namespace MtgSearch.Server.Models.Api.BackEnd
             }
             while (reader.Read())
             {
+                if (cancellation.IsCancellationRequested) break;
                 if (reader.TokenType == JsonToken.EndArray) break;
                 var item = ser.Deserialize<T>(reader);
                 if(item == null)

@@ -1,4 +1,5 @@
 export class Card {
+  public colorId: string[] = [];
   public name: undefined | string;
   public power: undefined | string;
   public toughness: undefined | string;
@@ -6,6 +7,10 @@ export class Card {
   public manaCost: undefined | string;
   public superTypes: string[] = [];
   public types: string[] = [];
+  public isPreRelease: boolean = false;
+  public imageUrl: undefined | string;
+  public altImageUrl: undefined | string;
+  public setCode: undefined | string;
   public subTypes: string[] = [];
   public textLines: CardTextLine[] = [];
 }

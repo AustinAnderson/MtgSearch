@@ -47,9 +47,9 @@ namespace MtgSearch.Server.Models.Api.BackEnd
                      ScryfallCardFaces.Any(x => x.TypeLine.ToLower().Contains("attraction")));
                 if (!isFunny)
                 {
-                    isFunny &= ManaCost != null && ManaCost.Contains("{TK}");
-                    isFunny &= Text != null && Text.Contains("{TK}");
-                    isFunny &= ScryfallCardFaces != null && ScryfallCardFaces.Length > 0
+                    isFunny |= ManaCost != null && ManaCost.Contains("{TK}");
+                    isFunny |= Text != null && Text.Contains("{TK}");
+                    isFunny |= ScryfallCardFaces != null && ScryfallCardFaces.Length > 0
                                && ScryfallCardFaces.Any(x =>
                                    x.ManaCost != null && x.ManaCost.Contains("{TK}")
                                    ||x.Text != null && x.Text.Contains("{TK}")

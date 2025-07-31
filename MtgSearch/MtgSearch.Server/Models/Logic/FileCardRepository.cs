@@ -8,9 +8,9 @@ namespace MtgSearch.Server.Models.Logic
     {
         private List<ServerCardModel> cards = [];
 
-        public async Task Initialize()
+        public async Task Initialize(CancellationToken cancellation)
         {
-            await Update();
+            await Update(cancellation);
         }
 
         public Task<List<ServerCardModel>> Search(ColorIdentity colors, ISearchPredicate predicate)
@@ -19,7 +19,7 @@ namespace MtgSearch.Server.Models.Logic
         }
 
         //eventually repalce with scryfall bulk data api only update if cache older
-        public async Task<bool> Update()
+        public async Task<bool> Update(CancellationToken cancellation)
         {
             var text = await File.ReadAllTextAsync(@"C:\Users\Austi\Downloads\AtomicCards.json\AtomicCards.json");
             var data = JsonConvert.DeserializeObject<ServerCardModel[]>(text);

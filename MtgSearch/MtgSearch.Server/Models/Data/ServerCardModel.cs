@@ -34,7 +34,8 @@ namespace MtgSearch.Server.Models.Data
                         IsFunny = card.IsFunny,
                         IsLegal = card.IsLegal,
                         IsPreRelease = card.IsPreRelease,
-                        AltFaceName = jsonCard.ScryfallCardFaces[0].Name
+                        AltFaceName = jsonCard.ScryfallCardFaces[0].Name,
+                        AltFaceImageUrl = GetImageUrl(jsonCard.ScryfallCardFaces[0].ImageUrls)
                     };
                     FillData(card, jsonCard, jsonCard.ScryfallCardFaces[1]);
                     yield return card;
@@ -55,11 +56,12 @@ namespace MtgSearch.Server.Models.Data
             card.Toughness = faceData?.Toughness ?? cardData?.Toughness;
             card.ManaValue = faceData?.Cmc ?? cardData?.Cmc ?? 0;
             card.ManaCost = faceData?.ManaCost ?? cardData?.ManaCost;
-            var imgObj = faceData?.ImageUrls?? cardData?.ImageUrls;
-            if (imgObj != null) 
-            {
-                card.CardImageUrl = imgObj.Png ?? imgObj.Large ?? imgObj.Normal ?? imgObj.Small;
-            }
+            card.CardImageUrl = GetImageUrl(faceData?.ImageUrls?? cardData?.ImageUrls);
+        }
+        private static string? GetImageUrl(ScryfallCardImageUrls? urlsObj)
+        {
+            if (urlsObj == null) return null;
+            return urlsObj.Png ?? urlsObj.Large ?? urlsObj.Normal ?? urlsObj.Small;
         }
         private static void FillText(ServerCardModel card, string? text)
         {
@@ -86,7 +88,7 @@ namespace MtgSearch.Server.Models.Data
                     card.Types.Add(type);
                 }
             }
-            if (typeSplits.Length > 0)
+            if (typeSplits.Length > 1)
             {
                 card.Subtypes = typeSplits[1].Split(' ');
             }
@@ -120,6 +122,7 @@ namespace MtgSearch.Server.Models.Data
         public string? Toughness { get; private set; }
         public string? Text { get; private set; }
         public string? CardImageUrl { get; private set; }
+        public string? AltFaceImageUrl { get; private set; }
         public string? SetCode { get; private set; }
         public ActivatedAbility[] ActivatedAbilities { get; private set; } = [];
         public bool IsPreRelease { get; private set; }

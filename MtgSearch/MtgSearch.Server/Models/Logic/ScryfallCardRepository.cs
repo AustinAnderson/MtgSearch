@@ -9,14 +9,15 @@ namespace MtgSearch.Server.Models.Logic
     {
         private readonly static string CacheFilePath = Environment.ExpandEnvironmentVariables("%APPDATA%/MtgSearch/Data/");
         private const string TargetBulkDataType = "oracle_cards";
-        private const string BulkDataEndpoint = "/bulk-data";
+        private const string BulkDataEndpoint = "https://api.scryfall.com/bulk-data";
         private readonly HttpClient scryfallClient;
         private List<ServerCardModel> cardList = [];
 
-        public ScryfallCardRepository(HttpClient scryfallClient) {
+        public ScryfallCardRepository() {
             //TODO: could setup http client registered with container with polly and what-not, yagni
-            this.scryfallClient = scryfallClient;
-            this.scryfallClient.BaseAddress = new Uri("https://api.scryfall.com");
+            scryfallClient = new HttpClient();
+            scryfallClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            scryfallClient.DefaultRequestHeaders.Add("User-Agent", "MtgSearch/1.0");
         }
 
         public Task<List<ServerCardModel>> Search(ColorIdentity colors, ISearchPredicate predicate)
@@ -28,7 +29,7 @@ namespace MtgSearch.Server.Models.Logic
             return Task.FromResult(cardList.Where(c=>c.ColorIdentity.IncludedIn(colors) && predicate.Apply(c)).ToList());
         }
 
-        public async Task Initialize()
+        public async Task Initialize(CancellationToken cancellation)
         {
             await Task.Delay(0);
             var now = DateTime.UtcNow;
@@ -45,13 +46,13 @@ namespace MtgSearch.Server.Models.Logic
             using var fileStream = File.OpenRead(current);
             var jsonParseStream = new JsonParseStream<ScryfallCard>(fileStream);
             //TODO: make .Read() return IAsyncEnumerable if we ever call Initialize via api instead of background startup
-            cardList = jsonParseStream.Read()
+            cardList = jsonParseStream.Read(cancellation)
                 .Where(x => (x.IsLegal || x.IsPreReleaseAsOf(now)) && !x.IsFunny)
                 .SelectMany(jCard => ServerCardModel.FromScryfall(jCard, now))
                 .ToList();
         }
 
-        public async Task<bool> Update()
+        public async Task<bool> Update(CancellationToken cancellation)
         {
             if(!Directory.Exists(CacheFilePath)) Directory.CreateDirectory(CacheFilePath);
             var current = Directory.EnumerateFiles(CacheFilePath, "*.json").FirstOrDefault();
@@ -60,7 +61,7 @@ namespace MtgSearch.Server.Models.Logic
             {
                 lastUpdate = DateTime.Parse(Path.GetFileNameWithoutExtension(current).Replace(";",":"));
             }
-            var bulkListings = await GetResultOrThrow<BulkDataApiResponse>(scryfallClient.GetAsync(BulkDataEndpoint));
+            var bulkListings = await GetResultOrThrow<BulkDataApiResponse>(scryfallClient.GetAsync(BulkDataEndpoint,cancellation));
             var oracleCardsInfo = bulkListings.Data.FirstOrDefault(x => x.Type.ToLower() == TargetBulkDataType.ToLower());
             if (oracleCardsInfo == null) 
             {
@@ -82,12 +83,10 @@ namespace MtgSearch.Server.Models.Logic
             }
             string fileName = DateTime.UtcNow.ToString("O").Replace(":",";")+".json";
 
-            //download uri in bulk data response is fully qualified
-            scryfallClient.BaseAddress = null;
             //scryfall docs say they would like a delay between calls to manage load
             await Task.Delay(100);
             await using var fileStream = File.OpenWrite(Path.Combine(CacheFilePath,fileName));
-            await (await GetStreamJsonOrThrow(scryfallClient.GetAsync(oracleCardsInfo.DownloadUri))).CopyToAsync(fileStream);
+            await (await GetStreamJsonOrThrow(scryfallClient.GetAsync(oracleCardsInfo.DownloadUri))).CopyToAsync(fileStream,cancellation);
             return true;
         }
         private async Task<T> GetResultOrThrow<T>(Task<HttpResponseMessage> response) where T:class

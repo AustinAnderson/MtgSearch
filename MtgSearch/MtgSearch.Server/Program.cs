@@ -11,7 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<ITextMarker, TextMarker>();
-builder.Services.AddSingleton<ICardRepository, FileCardRepository>();
+builder.Services.AddSingleton<ICardRepository, ScryfallCardRepository>();
 //initializes the repo on server start up rather than first request
 builder.Services.AddHostedService<StartupBackgroundService>();
 

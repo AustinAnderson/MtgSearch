@@ -7,6 +7,7 @@ import { BindingCardTextLine, BindingCardTextLineSegment } from "./card.bindingm
   templateUrl: './card.component.html'
 })
 export class CardComponent {
+  public cardColor: string = "colorC";
   public name: string = "loading error";
   public altFaceName: string | undefined;
   public manaSymbolTexts: string[] = [];
@@ -16,6 +17,15 @@ export class CardComponent {
   public textLines: BindingCardTextLine[] = [];
   @Input() public set data(value: Card)
   {
+    if (value.colorId.length > 2) {
+      this.cardColor = "colorMulti";
+    }
+    else if (value.colorId.length == 1) {
+      this.cardColor = "color" + value.colorId[0].toUpperCase();
+    }
+    else if (value.colorId.length == 2) {
+      this.cardColor = "color" + value.colorId.sort((x, y) => x.localeCompare(y)).map(x=>x.toUpperCase()).join('');
+    }
     this.name = value.name ?? "(Server sent empty name)";
     if (value.manaCost) {
       this.manaSymbolTexts = value.manaCost.split('{').filter(x => x.length > 0).map(x => '{' + x);

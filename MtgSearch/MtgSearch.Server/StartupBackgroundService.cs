@@ -13,7 +13,8 @@ namespace MtgSearch.Server
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            await cardRepo.Update();
+            await cardRepo.Update(stoppingToken);
+            await cardRepo.Initialize(stoppingToken);
         }
     }
 }
