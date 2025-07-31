@@ -15,8 +15,10 @@ export class CardComponent {
   public powerToughness: string|undefined;
   public loyalty: string | undefined;
   public textLines: BindingCardTextLine[] = [];
+  public preRelease: boolean = false;
   @Input() public set data(value: Card)
   {
+    this.preRelease = value.isPreRelease;
     if (value.colorId.length > 2) {
       this.cardColor = "colorMulti";
     }

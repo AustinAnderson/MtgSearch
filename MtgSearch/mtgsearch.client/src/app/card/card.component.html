@@ -164,10 +164,18 @@
     display:flex;
     flex-direction: row;
     font-weight: bold;
-    justify-content: left;
+    justify-content: space-between;
     padding: .2em;
     border-width: .1em;
     border-style: solid;
+  }
+  .preReleaseBox{
+      transform: scale(150%);
+      padding-right: .2em;
+      visibility: hidden;
+  }
+  .preRelease-true{
+      visibility: visible;
   }
   .textBoxBorder{
     border-left: .2em solid black;
@@ -249,7 +257,12 @@
     -->
   </div>
   <div class="typeBox {{cardColor}}">
-    {{typeLine}}
+    <div>
+      {{typeLine}}
+    </div>
+    <div class="preReleaseBox preRelease-{{preRelease}}">
+      <card-symbol [symbolText]="'{PRE}'"></card-symbol>
+    </div>
   </div>
   <div class="textBoxBorder">
     <div class="textBox {{cardColor}}">

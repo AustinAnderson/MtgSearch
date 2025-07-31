@@ -2,7 +2,7 @@ import { Component, Input } from "@angular/core";
 @Component({
   selector: 'card-symbol',
   templateUrl: './card-symbol.component.html',
-  styleUrl: './scryfallSymbols.css'
+  styleUrls: ['./scryfallSymbols.css', './fake-prerelease-symbol.css']
 })
 export class CardSymbolComponent
 {
@@ -65,6 +65,7 @@ export class CardSymbolComponent
     '{W/U}': 'one white or one blue mana',
     '{G/U}': 'one green or one blue mana',
     '{U/R}': 'one blue or one red mana',
-    '{R/G}': 'one red or one green mana'
+    '{R/G}': 'one red or one green mana',
+    '{PRE}': 'this card hasn\'t released yet'
   }
 }
