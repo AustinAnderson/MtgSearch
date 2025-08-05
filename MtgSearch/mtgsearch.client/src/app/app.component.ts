@@ -2,13 +2,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Card } from './models/Card';
 
-interface WeatherForecast {
-  date: string;
-  temperatureC: number;
-  temperatureF: number;
-  summary: string;
-}
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -68,7 +61,12 @@ export class AppComponent {
       this.searchResultCount = undefined;
       let httpError = notSuccess as HttpErrorResponse;
       if (httpError && httpError.status == 400) {
-        this.errorText = "" + notSuccess;
+        this.errorText = "Invalid query: " + httpError.error;
+      }
+      else if (httpError && httpError.status == 503) {
+        //TODO: need some indicator more than 503 that it's a start up error,
+        //could be 503 that's not from startup
+        this.errorText = "The server is still starting up, currently "+ httpError.error;
       }
       else {
         this.errorText = "unknown error occurred, check the console logs with ctrl + shift + J";

@@ -33,7 +33,7 @@ namespace MtgSearch.Server.Models.Data
         //TODO: pre-sorted on startup, could do a diff walk algo for speed up if network is not the bottle-neck
         public bool IncludedIn(ColorIdentity other)
         {
-            if (other.colors.Length == 0) return true;
+            if (colors.Length == 0) return true;
             foreach (var color in colors)
             {
                 if (!other.colors.Contains(color)) return false;

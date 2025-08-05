@@ -10,6 +10,7 @@ export class Card {
   public isPreRelease: boolean = false;
   public imageUrl: undefined | string;
   public altImageUrl: undefined | string;
+  public altFaceName: undefined | string;
   public setCode: undefined | string;
   public subTypes: string[] = [];
   public textLines: CardTextLine[] = [];

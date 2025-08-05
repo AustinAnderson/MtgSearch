@@ -13,6 +13,9 @@ namespace MtgSearch.Server.Models.Logic
         private readonly HttpClient scryfallClient;
         private List<ServerCardModel> cardList = [];
 
+        public RepoState RepoState { get; private set; }
+        public int TimeUntilReadyInSeconds { get; private set; } = 0;
+
         public ScryfallCardRepository() {
             //TODO: could setup http client registered with container with polly and what-not, yagni
             scryfallClient = new HttpClient();
@@ -32,6 +35,8 @@ namespace MtgSearch.Server.Models.Logic
         public async Task Initialize(CancellationToken cancellation)
         {
             await Task.Delay(0);
+            RepoState = RepoState.Loading;
+            TimeUntilReadyInSeconds = 30;
             var now = DateTime.UtcNow;
             if(!Directory.Exists(CacheFilePath))
             {
@@ -50,12 +55,17 @@ namespace MtgSearch.Server.Models.Logic
                 .Where(x => (x.IsLegal || x.IsPreReleaseAsOf(now)) && !x.IsFunny)
                 .SelectMany(jCard => ServerCardModel.FromScryfall(jCard, now))
                 .ToList();
+            RepoState = RepoState.Ready;
+            TimeUntilReadyInSeconds = 0;
         }
 
         public async Task<bool> Update(CancellationToken cancellation)
         {
+            RepoState = RepoState.CheckingForUpdate;
+            TimeUntilReadyInSeconds = 40;
             if(!Directory.Exists(CacheFilePath)) Directory.CreateDirectory(CacheFilePath);
-            var current = Directory.EnumerateFiles(CacheFilePath, "*.json").FirstOrDefault();
+            var cardListJsons = Directory.EnumerateFiles(CacheFilePath, "*.json").OrderByDescending(x => x).ToList();
+            var current = cardListJsons.FirstOrDefault();
             DateTime? lastUpdate = null;
             if(current != null)
             {
@@ -81,12 +91,18 @@ namespace MtgSearch.Server.Models.Logic
             {
                 return false;
             }
+            RepoState = RepoState.Updating;
+            TimeUntilReadyInSeconds = 120;
             string fileName = DateTime.UtcNow.ToString("O").Replace(":",";")+".json";
 
             //scryfall docs say they would like a delay between calls to manage load
             await Task.Delay(100);
             await using var fileStream = File.OpenWrite(Path.Combine(CacheFilePath,fileName));
             await (await GetStreamJsonOrThrow(scryfallClient.GetAsync(oracleCardsInfo.DownloadUri))).CopyToAsync(fileStream,cancellation);
+            foreach(var path in cardListJsons)
+            {
+                File.Delete(path);
+            }
             return true;
         }
         private async Task<T> GetResultOrThrow<T>(Task<HttpResponseMessage> response) where T:class

@@ -23,7 +23,11 @@ namespace MtgSearch.Server.Models.Data
             {
                 FillData(card, jsonCard, jsonCard.ScryfallCardFaces[0]);
                 card.Name = jsonCard.ScryfallCardFaces[0].Name ?? card.Name;
-                if(jsonCard.ScryfallCardFaces.Length > 1) card.AltFaceName = jsonCard.ScryfallCardFaces[1].Name;
+                if (jsonCard.ScryfallCardFaces.Length > 1)
+                {
+                    card.AltFaceName = jsonCard.ScryfallCardFaces[1].Name;
+                    card.AltFaceImageUrl = GetImageUrl(jsonCard.ScryfallCardFaces[1].ImageUrls);
+                }
                 yield return card;
                 if (jsonCard.ScryfallCardFaces.Length > 1)
                 {

@@ -16,8 +16,16 @@ export class CardComponent {
   public loyalty: string | undefined;
   public textLines: BindingCardTextLine[] = [];
   public preRelease: boolean = false;
+  public imageUrl: string | undefined;
+  public altImageUrl: string | undefined;
+  public hasAlt: boolean = false;
+
   @Input() public set data(value: Card)
   {
+    this.imageUrl = value.imageUrl;
+    this.altFaceName = value.altFaceName;
+    this.altImageUrl = value.altImageUrl;
+    this.hasAlt = !!this.altFaceName
     this.preRelease = value.isPreRelease;
     if (value.colorId.length > 2) {
       this.cardColor = "colorMulti";

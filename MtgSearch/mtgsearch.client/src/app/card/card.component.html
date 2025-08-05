@@ -8,7 +8,7 @@
   .nameBox.colorC { background-image: linear-gradient(to right, #C8CDD1,#DADFE3,#C8CDD1); border-color: black;}
   .imgBox.colorC { border-color: black;}
   .typeBox.colorC{ background-image: linear-gradient(to right, #C8CDD1,#DADFE3,#C8CDD1); border-color: black;}
-  .textBox.colorC{ background: #E3E7EA; border-color: #DADFE3; }
+  .textBox.colorC{ background: linear-gradient(to top right,#E3E7EA, #F6FAFD, #D2D6D9, #F6FAFD, #E3E7EA,#FFF, #E3E7EA); border-color: #DADFE3; }
   .ptTextBox.colorC{ background-image: linear-gradient(to right, #C8CDD1,#DADFE3,#C8CDD1); border-color: #DADFE3; }
 
   .nameBox.colorW { background-image: linear-gradient(to right, #E8E0C6 ,#EEECE1,#E8E0C6 ); border-color: #EDF0F0;}
@@ -23,11 +23,10 @@
   .textBox.colorU { background: #E1EAF1; border-color: #066A98; }
   .ptTextBox.colorU { background-image: linear-gradient(to right, #6FB8EF, #ADCAE1, #6FB8EF ); border-color: #066A98; }
 
-  .nameBox.colorB { background-image: linear-gradient(to right, #9E9996, #BEB9B5, #9E9996); border-color: #363530;}
+  .nameBox.colorB { background-image: linear-gradient(to right, #7C7774, #BEB9B5, #7C7774); border-color: #363530;}
   .imgBox.colorB { border-color: #1D1E19;}
-  .typeBox.colorB { background-image: linear-gradient(to right, #9E9996, #BEB9B5, #9E9996); border-color: #363530;}
-  .textBox.colorB { background: #D9D7D8; border-color: #363530; }
-  .textBox.colorBackup { background: #EAE8E9; border-color: #363530; }
+  .typeBox.colorB { background-image: linear-gradient(to right, #7C7774, #BEB9B5, #7C7774); border-color: #363530;}
+  .textBox.colorB { background: #A6A4A3; border-color: #363530; }
   .ptTextBox.colorB { background-image: linear-gradient(to right, #AFAAA7, #BEB9B5, #AFAAA7); border-color: #363530; }
 
   .nameBox.colorR { background-image: linear-gradient(to right, #CB6B58,#ECCEC2,#CB6B58); border-color: #D25139;}
@@ -151,10 +150,38 @@
       border-right: .05em dashed #444;
       color: #444;
   }
+  .image{
+      position:relative;
+      display: block;
+      visibility: hidden;
+      opacity: 0;
+      height: auto;
+      width: 15em;
+      z-index: 1000;
+  }
+  .image > img{
+      height: 100%;
+      width: 100%;
+  }
+  .imgMainBox:hover .image{
+      visibility: visible;
+      opacity: 1;
+      transition-duration: .5s;
+      transition-delay: .25s;
+      display:block;
+  }
   .imgAltBox{
       width:35%;
       color:#444;
       visibility: hidden;
+  }
+  .imgAltBox:hover .image{
+      left: -165%;
+      visibility: visible;
+      opacity: 1;
+      transition-duration: .5s;
+      transition-delay: .25s;
+      display:block;
   }
   .imgAltBox.alt-true{
       visibility: visible;
@@ -247,9 +274,15 @@
   <div class="imgBox {{cardColor}}">
     <div class="imgMainBox">
       hover for image
+      <div class="image">
+        <img src="{{imageUrl}}"/>
+      </div>
     </div>
-    <div class="imgAltBox">
-      alt face
+    <div class="imgAltBox alt-{{hasAlt}}">
+      <abbr [title]="altFaceName">alt face</abbr>
+      <div class="image">
+        <img src="{{altImageUrl}}"/>
+      </div>
     </div>
     <!--maybe do a box in the middle where the art normally is
       where you hover to float a tool tip with the image of the actual card,

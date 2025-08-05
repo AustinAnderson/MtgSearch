@@ -18,6 +18,7 @@ namespace MtgSearch.Server.Models.Api
             IsPreRelease = card.IsPreRelease;
             ImageUrl = card.CardImageUrl;
             AltImageUrl = card.AltFaceImageUrl;
+            AltFaceName = card.AltFaceName;
             ColorId = card.ColorIdentity.Colors;
         }
         public string Name { get; set; }
@@ -31,6 +32,7 @@ namespace MtgSearch.Server.Models.Api
         public string[] ColorId { get; set; }
         public bool IsPreRelease { get; set; }
         public string? ImageUrl { get; set; }
+        public string? AltFaceName { get; set; }
         public string? AltImageUrl { get; set; }
         public string SetCode { get; set; }
         public List<CardTextLine> TextLines { get; set; }

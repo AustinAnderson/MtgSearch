@@ -8,6 +8,9 @@ namespace MtgSearch.Server.Models.Logic
     {
         private List<ServerCardModel> cards = [];
 
+        public RepoState RepoState { get; private set; }
+        public int TimeUntilReadyInSeconds { get; private set; } = 0;
+
         public async Task Initialize(CancellationToken cancellation)
         {
             await Update(cancellation);
@@ -21,9 +24,13 @@ namespace MtgSearch.Server.Models.Logic
         //eventually repalce with scryfall bulk data api only update if cache older
         public async Task<bool> Update(CancellationToken cancellation)
         {
+            RepoState = RepoState.Loading;
+            TimeUntilReadyInSeconds = 20;
             var text = await File.ReadAllTextAsync(@"C:\Users\Austi\Downloads\AtomicCards.json\AtomicCards.json");
             var data = JsonConvert.DeserializeObject<ServerCardModel[]>(text);
             data= data.Where(kvp => !kvp.Name.StartsWith("A-")).ToArray();
+            RepoState = RepoState.Ready;
+            TimeUntilReadyInSeconds = 0;
             return true;
         }
     }
