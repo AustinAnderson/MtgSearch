@@ -102,8 +102,8 @@
     </button>
     <div class="content">
       <ul class="linkList">
-        <ng-container *ngFor="let line of linkNames; let i = index">
-          <li class="textRow" (click)="clickLink($event)"><span>{{line}}</span></li>
+        <ng-container *ngFor="let line of links; let i = index">
+          <li class="textRow" [ngClass]="{'active': line.active }" (click)="clickLink(line.link)"><span>{{line.link}}</span></li>
         </ng-container>
       </ul>
     </div>
