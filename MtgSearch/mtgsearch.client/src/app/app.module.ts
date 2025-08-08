@@ -8,13 +8,21 @@ import { AppComponent } from './app.component';
 import { CardComponent } from './card/card.component';
 import { CardSymbolComponent } from './symbol/card-symbol.component';
 import { ColorIdSelectorComponent } from './colorIdSelector/color-id-selector.component';
+import { FunctionDefinitionComponent } from './documentation/functions/function-definition.component';
+import { LinkAccordionComponent } from './documentation/accordion/link-accordion.component';
+import { DocumentationComponent } from './documentation/documentation.component';
+import { ExpressionDefinitionComponent } from './documentation/expressions/expression-definition.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CardComponent,
     CardSymbolComponent,
-    ColorIdSelectorComponent 
+    ColorIdSelectorComponent,
+    DocumentationComponent,
+    LinkAccordionComponent,
+    FunctionDefinitionComponent,
+    ExpressionDefinitionComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,

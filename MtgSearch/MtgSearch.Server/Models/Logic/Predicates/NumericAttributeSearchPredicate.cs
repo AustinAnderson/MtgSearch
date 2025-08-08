@@ -66,7 +66,7 @@ namespace MtgSearch.Server.Models.Logic.Predicates
                     _ when Type == NumericCardAttributeType.ConvertedManaCost => (int)card.ManaValue,
                     _ when Type == NumericCardAttributeType.Power => card.Power == "*" || card.Power == null ? 0 : int.Parse(card.Power),
                     _ when Type == NumericCardAttributeType.Toughness => card.Toughness == "*" || card.Toughness == null ? 0 : int.Parse(card.Toughness),
-                    _ when Type == NumericCardAttributeType.Loyalty => card.Toughness == null ? 0 : int.Parse(card.Loyalty),
+                    _ when Type == NumericCardAttributeType.Loyalty => card.Loyalty == null ? 0 : int.Parse(card.Loyalty),
                     _ => throw new NotImplementedException($"Dev forgot to handle {nameof(NumericCardAttributeType)}.{Type}")
                 };
             }

@@ -8,6 +8,8 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\mtgsearch.client\</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="src\app\documentation\expressions\" />
+    <Folder Include="src\app\documentation\functions\" />
     <Folder Include="src\app\models\" />
   </ItemGroup>
 </Project>

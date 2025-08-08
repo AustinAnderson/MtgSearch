@@ -11,16 +11,18 @@ namespace MtgSearch.Server.Models.Logic
         private const string TargetBulkDataType = "oracle_cards";
         private const string BulkDataEndpoint = "https://api.scryfall.com/bulk-data";
         private readonly HttpClient scryfallClient;
+        private readonly ILogger<ScryfallCardRepository> logger;
         private List<ServerCardModel> cardList = [];
 
         public RepoState RepoState { get; private set; }
         public int TimeUntilReadyInSeconds { get; private set; } = 0;
 
-        public ScryfallCardRepository() {
+        public ScryfallCardRepository(ILogger<ScryfallCardRepository> logger) {
             //TODO: could setup http client registered with container with polly and what-not, yagni
             scryfallClient = new HttpClient();
             scryfallClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
             scryfallClient.DefaultRequestHeaders.Add("User-Agent", "MtgSearch/1.0");
+            this.logger = logger;
         }
 
         public Task<List<ServerCardModel>> Search(ColorIdentity colors, ISearchPredicate predicate)
@@ -71,39 +73,51 @@ namespace MtgSearch.Server.Models.Logic
             {
                 lastUpdate = DateTime.Parse(Path.GetFileNameWithoutExtension(current).Replace(";",":"));
             }
-            var bulkListings = await GetResultOrThrow<BulkDataApiResponse>(scryfallClient.GetAsync(BulkDataEndpoint,cancellation));
-            var oracleCardsInfo = bulkListings.Data.FirstOrDefault(x => x.Type.ToLower() == TargetBulkDataType.ToLower());
-            if (oracleCardsInfo == null) 
+            try
             {
-                string context = "unable to serialize bulkData response ";
-                try
+                var bulkListings = await GetResultOrThrow<BulkDataApiResponse>(scryfallClient.GetAsync(BulkDataEndpoint, cancellation));
+                var oracleCardsInfo = bulkListings.Data.FirstOrDefault(x => x.Type.ToLower() == TargetBulkDataType.ToLower());
+                if (oracleCardsInfo == null)
                 {
-                    context = JsonConvert.SerializeObject(bulkListings);
+                    string context = "unable to serialize bulkData response ";
+                    try
+                    {
+                        context = JsonConvert.SerializeObject(bulkListings);
+                    }
+                    catch (Exception ex)
+                    {
+                        context += $"{ex.GetType().Name}: {ex.Message}";
+                    }
+                    //TODO: log.Info(bulkData response) instead of in exception?
+                    throw new CardDataFetchException($"couldn't find {TargetBulkDataType} in bulk data response {context}");
                 }
-                catch(Exception ex)
+                if (lastUpdate > oracleCardsInfo.UpdatedAt)
                 {
-                    context += $"{ex.GetType().Name}: {ex.Message}";
+                    return false;
                 }
-                //TODO: log.Info(bulkData response) instead of in exception?
-                throw new CardDataFetchException($"couldn't find {TargetBulkDataType} in bulk data response {context}");
+                RepoState = RepoState.Updating;
+                TimeUntilReadyInSeconds = 120;
+                string fileName = DateTime.UtcNow.ToString("O").Replace(":", ";") + ".json";
+
+                //scryfall docs say they would like a delay between calls to manage load
+                await Task.Delay(100);
+                await using var fileStream = File.OpenWrite(Path.Combine(CacheFilePath, fileName));
+                await (await GetStreamJsonOrThrow(scryfallClient.GetAsync(oracleCardsInfo.DownloadUri))).CopyToAsync(fileStream, cancellation);
+                foreach (var path in cardListJsons)
+                {
+                    File.Delete(path);
+                }
+                return true;
             }
-            if(lastUpdate > oracleCardsInfo.UpdatedAt)
+            catch(CardDataFetchException ex)
             {
+                logger.LogWarning(ex, "unable to fetch data from scryfall");
+                if (current == null)
+                {
+                    throw;
+                }
                 return false;
             }
-            RepoState = RepoState.Updating;
-            TimeUntilReadyInSeconds = 120;
-            string fileName = DateTime.UtcNow.ToString("O").Replace(":",";")+".json";
-
-            //scryfall docs say they would like a delay between calls to manage load
-            await Task.Delay(100);
-            await using var fileStream = File.OpenWrite(Path.Combine(CacheFilePath,fileName));
-            await (await GetStreamJsonOrThrow(scryfallClient.GetAsync(oracleCardsInfo.DownloadUri))).CopyToAsync(fileStream,cancellation);
-            foreach(var path in cardListJsons)
-            {
-                File.Delete(path);
-            }
-            return true;
         }
         private async Task<T> GetResultOrThrow<T>(Task<HttpResponseMessage> response) where T:class
         {

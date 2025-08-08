@@ -1,0 +1,111 @@
+<style>
+  mainDiv {
+    font-family: Consolas;
+    margin: 20px;
+  }
+
+  .collapsibleContainer {
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .collapsible {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #447;
+    color: white;
+    padding: 10px 15px;
+    margin-top: .1em;
+    margin-bottom: .1em;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    font-size: 16px;
+    border-radius: 5px;
+  }
+
+  .collapsible:hover {
+    background-color: #336;
+    transition: background-color .3s ease;
+  }
+
+  .collapsible .chevron {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid white;
+    border-bottom: 2px solid white;
+    transform: rotate(-45deg);
+    transition: transform 0.3s ease;
+  }
+
+  .collapsible.active .chevron {
+    transform: rotate(45deg);
+  }
+
+  .content {
+    max-height: 0;
+    overflow: hidden;
+    background-color: #36365F;
+    border-radius: 0 0 5px 5px;
+  }
+
+  .content.active {
+    max-height: inherit;
+    transition: overflow 0.3s ease;
+    overflow: auto;
+  }
+  .linkList{
+    padding-left: 2em;
+    list-style: none;
+  }
+
+  .textRow {
+    cursor: pointer;
+    font-family: Consolas;
+    color: rgba(255,255,255,.7);
+    text-align: left;
+    margin: 0;
+  }
+  .textRow.active{
+    color: rgba(255,255,255);
+  }
+  .textRow:hover{
+    text-decoration: underline;
+  }
+  .textRow > span{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  /*voodoo copied from scryfall makes the arrow*/
+  .textRow>span::after{
+    display:none;
+    content: "";
+    width: 0;
+    height: 0;
+    border-top: .6em solid transparent;
+    border-bottom: .6em solid transparent;
+    border-right: .6em solid var(--docDisplayPaneBgColor);
+  }
+  .textRow.active > span::after{
+    display:block;
+  }
+</style>
+<div class="mainDiv">
+  <div class="collapsibleContainer">
+    <button class="collapsible" (click)="toggleAccordion($event)">
+      <span>{{expanderText}}</span>
+      <i class="chevron"></i>
+    </button>
+    <div class="content">
+      <ul class="linkList">
+        <ng-container *ngFor="let line of linkNames; let i = index">
+          <li class="textRow" (click)="clickLink($event)"><span>{{line}}</span></li>
+        </ng-container>
+      </ul>
+    </div>
+  </div>
+</div>

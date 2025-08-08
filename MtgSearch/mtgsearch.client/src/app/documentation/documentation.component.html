@@ -1,0 +1,62 @@
+<style>
+  .documentationDiv{
+    display:flex;
+    flex-direction: row;
+    background: var(--docDisplayPaneBgColor);
+    width:60em;
+    height:80em;
+  }
+  .linksPane{
+    width: 35%;
+    display:flex;
+    flex-direction: column;
+    background-color: #447;
+  }
+  .error{
+    color: #D00;
+  }
+  .detailsDisplay{
+    width: 100%;
+    margin-left: 1.5em;
+    margin-right: 1.5em;
+  }
+</style>
+<div class="documentationDiv">
+  <div class="linksPane">
+    <link-accordion [changeInAccordionListener]="selectionChangedOnAccordion"
+                    [dispColor]="dispColor"
+                    [expanderText]="expressionsHeader"
+                    [linkNames]="expressionNames"
+                    (selectionChanged)="selectedExpressionChanged($event)">
+    </link-accordion>
+    <link-accordion [changeInAccordionListener]="selectionChangedOnAccordion"
+                    [dispColor]="dispColor"
+                    [expanderText]="functionsHeader"
+                    [linkNames]="funcNames"
+                    (selectionChanged)="functionSelectionChanged($event)">
+    </link-accordion>
+  </div>
+  <div class="detailsDisplay">
+    <div *ngIf="selectedFunction" class="functionSpec">
+      <function-definition
+        [name]="selectedFunction.name"
+        [description]="selectedFunction.description"
+        [examples]="selectedFunction.examples"
+        [signitures]="selectedFunction.signitures"
+      ></function-definition>
+    </div>
+    <div *ngIf="selectedExpression" class="expressionSpec">
+      <expression-definition
+        [name]="selectedExpression.name"
+        [template]="selectedExpression.template"
+        [notes]="selectedExpression.explainationText"
+        [examples]="selectedExpression.examples"
+      ></expression-definition>
+    </div>
+    <div *ngIf="displayError" class="error">
+      <h1>
+        {{errorDisplay}}
+      </h1>
+    </div>
+  </div>
+</div>
