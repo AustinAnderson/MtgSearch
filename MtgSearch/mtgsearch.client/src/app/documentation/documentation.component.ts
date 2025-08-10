@@ -77,6 +77,12 @@ export class DocumentationComponent {
   public generalHeader = "General Notes";
   public selectedNote: Note | undefined;
   public notes: Note[] = [
+    new Note("color identity", [
+      "The color identity selector is meant to represent the color identity of the chosen commander",
+      "it filters out cards that are not valid for whichever color identity is selected",
+      "colorless cards will also be included if one or more colors is picked",
+      "you can search for potential commanders by selecting all 5 colors and querying away"
+    ]),
     new Note("query format", [
       "The search input, or 'query' is made up of one or more filters joined by operators",
       "Operators can be 'and' 'or' 'not' and parenthesis ('&', '|', and '!' are also accepted, as well as '&&' and '||')",

@@ -22,6 +22,20 @@ namespace MtgSearch.Server.Models.Logic.Parsing
             Signitures = signitures;
             Factory = factory;
         }
+        public static readonly Function NameLike = new("nameLike",
+            ["nameLike(name: string)"],
+            ["fuzzy matches for cards with the given name",
+            "the server will do it's best to accomodate misspellings and missing letters"],
+            ["nameLike(\"gisla\")"],
+            (args, ctx) =>
+            {
+                if(args.Length != 1)
+                {
+                    throw new QueryParseException("nameLike requires exactly 1 argument");
+                }
+                return new NameLikePredicate(args[0]);
+            }
+        );
         public static readonly Function ManaSymbolsLike = new("manaCostLike",
             ["manaCostLike(filter: regex)"],
             ["matches the mana cost symbols based on simple 'w' 'u' 'b' 'r' 'g' text",
@@ -47,6 +61,14 @@ namespace MtgSearch.Server.Models.Logic.Parsing
                 }
                 return new TextSearchPredicate(ParseRegexOrThrow(args[0], ctx, 0));
             }
+        );
+        public static readonly Function HasAltFace = new("hasAltFace",
+            ["hasAltFace()"],
+            ["matches if the card has an alt face",
+            "this includes modals such as double sided cards",
+            "but also adventures and cards that rotate for the other textbox"],
+            ["hasAltFace()"],
+            (args, ctx) => new HasAltFacePredicate()
         );
         public static readonly Function Activated = new("activated",
             ["activated(costFilter: regex, costAntiFilter: regex, abilityFilter: regex, abilityAntiFilter: regex)",
@@ -179,7 +201,12 @@ namespace MtgSearch.Server.Models.Logic.Parsing
             ["subTypes.all(\"Phyrexian\",\"Dog\")"],
             (args, ctx) => new SubTypeSearchPredicate { All = args }
         );
-
+        public static readonly Function CanBeCommander = new("canBeCommander",
+            ["canBeCommander()"],
+            ["matches if a card is eligible to be your commander"],
+            ["canBeCommander()"],
+            (args, ctx) => new CanBeCommanderPredicate()
+        );
 
         private static Regex ParseRegexOrThrow(string argument, string errorContext, int argNum)
         {
