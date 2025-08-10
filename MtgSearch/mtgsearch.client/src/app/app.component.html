@@ -52,6 +52,16 @@
       background-color: #447;
   }
 
+  .documentation{
+      border-top: .5em solid black;
+      background: #202040;
+      display: flex;
+      justify-content: center;
+
+  }
+  .documentationElement{
+      width: 75%;
+  }
   .resultsContainer{
       display:flex;
       flex-direction:row;
@@ -83,7 +93,7 @@
     <div class="queryInput">
       <div class="queryLabel">Search Query:</div>
       <input class="queryInputBox" type="text" [(ngModel)]="query">
-      <button class="button" (click)="fetchSearch()" (mouseover)="onSearchHover()">
+      <button class="button" (mouseover)="onSearchHover()" (click)="onSearchClicked()">
         Search
       </button>
       <div class="resultCount-{{hasResults}}">
@@ -91,7 +101,7 @@
       </div>
     </div>
     <div class="docsButtonContainer">
-      <button class="button">
+      <button class="button" (mouseover)="onDocsHover()" (click)="toggleDocs()">
         docs
       </button>
     </div>
@@ -101,8 +111,10 @@
       {{errorText}}
     </pre>
   </div>
-  <div class="resultsContainer">
-    <documentation></documentation>
+  <div *ngIf="showDocs" class="documentation">
+    <documentation class="documentationElement" [spec]="languageSpec"></documentation>
+  </div>
+  <div *ngIf="!showDocs" class="resultsContainer">
     <ng-container *ngFor="let cardData of searchResultList">
       <div class="padBox">
         <card [data]="cardData"></card>

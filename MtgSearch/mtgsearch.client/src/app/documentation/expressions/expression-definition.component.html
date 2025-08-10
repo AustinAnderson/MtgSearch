@@ -1,104 +1,24 @@
-<style>
-  mainDiv{
-    width: 100%;
-    font-family: Consolas;
-    margin: 20px;
-  }
-
-  .header{
-    display: flex;
-    align-items: center;
-    font-family: Arial;
-    background-color: #AAD;
-    color: black;
-    padding: .3em .3em;
-    margin-top: .1em;
-    margin-bottom: .1em;
-    border: none;
-    outline: none;
-    font-size: 1.1em;
-    border-radius: .3em;
-  }
-
-  .content {
-    background-color: #f1f1f1;
-    padding: 0 15px;
-    border-radius: 0 0 5px 5px;
-  }
-  .title{
-      font-family: Consolas;
-      font-size: 3em;
-      margin-bottom: 1em;
-  }
-  .textRow{
-    font-family: Consolas;
-    text-align: left;
-    margin: 0;
-    padding-left: 1em;
-    padding-right: 1em;
-  }
-  .row-false{
-    background: linear-gradient(
-      to right,
-      rgba(230,230,230, 0),
-      rgba(230,230,230,.99),
-      rgba(230,230,230),
-      rgba(230,230,230),
-      rgba(230,230,230),
-      rgba(230,230,230),
-      rgba(230,230,230),
-      rgba(230,230,230),
-      rgba(230,230,230),
-      rgba(230,230,230),
-      rgba(230,230,230),
-      rgba(230,230,230),
-      rgba(230,230,230),
-      rgba(230,230,230,.99),
-      rgba(230,230,230, 0)
-    );
-  }
-  .row-true{
-    background: linear-gradient(
-      to right,
-      rgba(190,190,190, 0),
-      rgba(190,190,190,.99),
-      rgba(190,190,190),
-      rgba(190,190,190),
-      rgba(190,190,190),
-      rgba(190,190,190),
-      rgba(190,190,190),
-      rgba(190,190,190),
-      rgba(190,190,190),
-      rgba(190,190,190),
-      rgba(190,190,190),
-      rgba(190,190,190),
-      rgba(190,190,190),
-      rgba(190,190,190,.99),
-      rgba(190,190,190, 0)
-    );
-  }
-</style>
-<div class="mainDiv">
-  <div class="title">
+<div class="details_mainDiv">
+  <div class="details_title">
     {{name}}
   </div>
-    <div class="header">
+    <div class="details_header">
       <span>Details</span>
     </div>
-    <div class="content">
-       <p class="textRow row-true">{{template}}</p>
-       <p class="textRow row-false">&nbsp;</p>
-       <p class="textRow row-true">&nbsp;</p>
+    <div class="details_content">
+       <p class="details_textRow details_row-true">{{template}}</p>
+       <p class="details_textRow details_row-false">&nbsp;</p>
+       <p class="details_textRow details_row-true">&nbsp;</p>
       <ng-container *ngFor="let line of notes; let i = index">
-        <p class="textRow row-{{i%2==1}}">{{line}}</p>
+        <p class="details_textRow details_row-{{i%2==1}}">{{line}}</p>
       </ng-container>
     </div>
-    <div class="header">
+    <div class="details_header">
       <span>Examples</span>
     </div>
-    <div class="content">
+    <div class="details_content">
       <ng-container *ngFor="let line of examples; let i = index">
-        <p class="textRow row-{{i%2==0}}">{{line}}</p>
+        <p class="details_textRow details_row-{{i%2==0}}">{{line}}</p>
       </ng-container>
     </div>
 </div>

@@ -1,0 +1,77 @@
+details_mainDiv{
+  width: 100%;
+  font-family: Consolas;
+  margin: 20px;
+}
+
+.details_header{
+  display: flex;
+  align-items: center;
+  font-family: Arial;
+  background-color: #AAD;
+  color: black;
+  padding: .3em .3em;
+  margin-top: .1em;
+  border: none;
+  outline: none;
+  font-size: 1.1em;
+  border-radius: .3em;
+}
+
+.details_content {
+  background-color: #f1f1f1;
+  padding: 0 15px;
+  border-radius: 0 0 5px 5px;
+}
+.details_title{
+    font-family: Consolas;
+    font-size: 3em;
+    margin-bottom: 1em;
+}
+.details_textRow{
+  font-family: Consolas;
+  text-align: left;
+  margin: 0;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+.details_row-false{
+  background: linear-gradient(
+    to right,
+    rgba(230,230,230, 0),
+    rgba(230,230,230,.99),
+    rgba(230,230,230),
+    rgba(230,230,230),
+    rgba(230,230,230),
+    rgba(230,230,230),
+    rgba(230,230,230),
+    rgba(230,230,230),
+    rgba(230,230,230),
+    rgba(230,230,230),
+    rgba(230,230,230),
+    rgba(230,230,230),
+    rgba(230,230,230),
+    rgba(230,230,230,.99),
+    rgba(230,230,230, 0)
+  );
+}
+.details_row-true{
+  background: linear-gradient(
+    to right,
+    rgba(210,210,210, 0),
+    rgba(210,210,210,.99),
+    rgba(210,210,210),
+    rgba(210,210,210),
+    rgba(210,210,210),
+    rgba(210,210,210),
+    rgba(210,210,210),
+    rgba(210,210,210),
+    rgba(210,210,210),
+    rgba(210,210,210),
+    rgba(210,210,210),
+    rgba(210,210,210),
+    rgba(210,210,210),
+    rgba(210,210,210,.99),
+    rgba(210,210,210, 0)
+  );
+}

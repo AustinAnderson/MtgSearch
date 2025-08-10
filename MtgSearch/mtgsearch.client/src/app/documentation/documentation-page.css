@@ -1,0 +1,21 @@
+.documentationDiv{
+  display:flex;
+  flex-direction: row;
+  background: var(--docDisplayPaneBgColor);
+  width:100%;
+  height:80em;
+}
+.linksPane{
+  width: 35%;
+  display:flex;
+  flex-direction: column;
+  background-color: #447;
+}
+.error{
+  color: #D00;
+}
+.detailsDisplay{
+  width: 100%;
+  margin-left: 1.5em;
+  margin-right: 1.5em;
+}

@@ -23,7 +23,7 @@ namespace MtgSearch.Server.Models.Logic.Parsing
             Factory = factory;
         }
         public static readonly Function ManaSymbolsLike = new("manaCostLike",
-            ["manaCostLike(regex: string)"],
+            ["manaCostLike(filter: regex)"],
             ["matches the mana cost symbols based on simple 'w' 'u' 'b' 'r' 'g' text",
             "for instance, '5w*' would match Avacyn, Angle of Hope's cost=5{W}{W}{W} and The Eternity Elevator's cost=5"],
             ["manaCostLike(\"5w*\")"],
@@ -36,7 +36,7 @@ namespace MtgSearch.Server.Models.Logic.Parsing
             }
         );
         public static readonly Function TextRegex = new("text",
-            ["text(regex: string)"],
+            ["text(filter: regex)"],
             ["search the text box with the regex, ignoring case"],
             ["text(\"gain life.*draw\")"],
             (args, ctx) =>
@@ -49,8 +49,8 @@ namespace MtgSearch.Server.Models.Logic.Parsing
             }
         );
         public static readonly Function Activated = new("activated",
-            ["activated(costReg:string, costAntiReg: string, abilityReg: string, abilityAntiReg: string)",
-             "activated(costReg:string, abilityReg: string)"
+            ["activated(costFilter: regex, costAntiFilter: regex, abilityFilter: regex, abilityAntiFilter: regex)",
+             "activated(costFilter: regex, abilityFilter: regex)"
             ],
             ["matches if any of it's abilities match where the costReg matches a cost and the abilityReg matches the ability",
              "costAntiReg and abilityAntiReg will return false if they match on that same ability line",

@@ -10,7 +10,7 @@ namespace MtgSearch.Server.Controllers
     public class DocumentationController:ControllerBase
     {
         public DocumentationController() { }
-        [HttpGet]
+        [HttpGet("Lang")]
         public ActionResult GetLanguageSpec()
         {
             var functions = new List<FunctionDefinition>();
@@ -40,13 +40,18 @@ namespace MtgSearch.Server.Controllers
                 FunctionDefinitions = functions,
                 Expressions = new ExpressionSpec
                 {
+                    Name = "Numeric Comparisons",
                     Template = "{key} {operator} {number}",
-                    ExplainationText = expressions
+                    ExplainationText = expressions,
+                    Examples = ["mv > 3", "pow == 2", "def > 4"]
+
                 },
                 IsExpressions = new ExpressionSpec
                 {
+                    Name = "Assertions",
                     Template = "{key} is *",
-                    ExplainationText = isExpressions
+                    ExplainationText = isExpressions,
+                    Examples = ["pow is *", "def is *"]
                 }
             });
         }
