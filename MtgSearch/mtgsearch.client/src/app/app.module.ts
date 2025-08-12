@@ -12,6 +12,7 @@ import { FunctionDefinitionComponent } from './documentation/functions/function-
 import { LinkAccordionComponent } from './documentation/accordion/link-accordion.component';
 import { DocumentationComponent } from './documentation/documentation.component';
 import { ExpressionDefinitionComponent } from './documentation/expressions/expression-definition.component';
+import { PlaneswalkerPlaqueComponent } from './symbol/planeswalker-plaque.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { ExpressionDefinitionComponent } from './documentation/expressions/expre
     DocumentationComponent,
     LinkAccordionComponent,
     FunctionDefinitionComponent,
-    ExpressionDefinitionComponent
+    ExpressionDefinitionComponent,
+    PlaneswalkerPlaqueComponent 
   ],
   imports: [
     BrowserModule, HttpClientModule,

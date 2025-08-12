@@ -20,6 +20,7 @@ export class CardTextLine {
 }
 export class CardTextLineSegment {
   public isSymbol: boolean = false;
+  public isPlaneswalkerPlaque: boolean = false;
   public isHighlighted: boolean = false;
   public text: undefined | string;
 }

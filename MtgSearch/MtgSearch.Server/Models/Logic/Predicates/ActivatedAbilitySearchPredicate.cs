@@ -13,10 +13,17 @@ namespace MtgSearch.Server.Models.Logic.Predicates
 
         public bool Apply(ServerCardModel card)
         {
+            if(card.Name.ToLower() == "liliana of the veil")
+            {
+                int i = 0;
+            }
             if (!card.ActivatedAbilities.Any()) return false;
             bool isMatch = false;
             foreach (var ability in card.ActivatedAbilities)
             {
+                if (AbilityAntiText != null && AbilityAntiText.IsMatch(ability.ability)) return false;
+                if (CostAntiText != null && ability.costs.Any(CostAntiText.IsMatch)) return false;
+
                 bool abilityMatch = AbilityText != null && AbilityText.IsMatch(ability.ability);
                 bool costMatch = CostText != null && ability.costs.Any(CostText.IsMatch);
                 isMatch = abilityMatch || costMatch;

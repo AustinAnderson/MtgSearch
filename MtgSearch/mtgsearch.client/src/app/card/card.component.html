@@ -117,6 +117,14 @@
     height: 19.5em;
 
   }
+  .plaque{
+      height: 1.5em;
+      display: inline-flex;
+      vertical-align: bottom;
+  }
+  .plaque-embedded{
+      height: 1em;
+   }
   .nameBox{
     font-weight: bold;
     border-width: .15em;
@@ -187,6 +195,7 @@
       visibility: visible;
   }
   .typeBox{
+
     border-radius: .3em;
     display:flex;
     flex-direction: row;
@@ -301,16 +310,19 @@
     <div class="textBox {{cardColor}}">
       <!--texts-->
       <p *ngFor="let line of textLines" class="textLine">
-        <ng-container *ngFor="let segment of line.segments">
-          <card-symbol *ngIf="segment.isSymbol; else nonSymbol" [symbolText]="segment.text"></card-symbol>
-          <ng-template #nonSymbol>
-            <span *ngIf="segment.isHighlighted" class="highlighted">
+        <ng-container *ngFor="let segment of line.segments; let i = index">
+          <card-symbol *ngIf="segment.isSymbol && !segment.isPlaneswalkerPlaque" [symbolText]="segment.text"></card-symbol>
+          <planeswalker-plaque class="plaque"
+                               [ngClass]="{'plaque-embedded': i!=0}"
+                               *ngIf="segment.isSymbol && segment.isPlaneswalkerPlaque"
+                               [text]="segment.text">
+          </planeswalker-plaque>
+          <span *ngIf="segment.isHighlighted && !segment.isSymbol" class="highlighted">
               {{segment.text}}
-            </span>
-            <span *ngIf="!segment.isHighlighted">
+          </span>
+          <span *ngIf="!segment.isHighlighted && !segment.isSymbol">
               {{segment.text}}
-            </span>
-          </ng-template>
+          </span>
         </ng-container>
       </p>
     </div>

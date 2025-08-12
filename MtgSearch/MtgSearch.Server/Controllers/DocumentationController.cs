@@ -27,14 +27,19 @@ namespace MtgSearch.Server.Controllers
             List<string> expressions = [
                 "where key can be",
             ];
-            expressions.AddRange(CollapseDict(NumericCardAttributeType.ByString));
+            expressions.AddRange(CollapseDict(CardAttributeType.ByString));
             expressions.Add("and operator can be");
             expressions.AddRange(CollapseDict(Operator.ByString));
             expressions.Add("and number is a 1-4 digit integer");
+
             List<string> isExpressions = [
                 "where key can be"
             ];
-            isExpressions.AddRange(CollapseDict(PowerOrToughness.ByString));
+            isExpressions.AddRange(CollapseDict(CardAttributeType.ByString));
+            isExpressions.Add("and assertion can be");
+            isExpressions.Add(CollapseKeys(HasOrIs.ByString));
+            isExpressions.Add("and symbol is one of ");
+            isExpressions.Add(CollapseKeys(XorStar.ByString));
             return Ok(new LanguageSpec
             {
                 FunctionDefinitions = functions,
@@ -49,11 +54,19 @@ namespace MtgSearch.Server.Controllers
                 IsExpressions = new ExpressionSpec
                 {
                     Name = "Assertions",
-                    Template = "{key} is *",
+                    Template = "{key} {assertion} {symbol}",
                     ExplainationText = isExpressions,
-                    Examples = ["pow is *", "def is *"]
+                    Examples = ["pow is *", "def is *", "def has *", "mv has X"]
                 }
             });
+        }
+        private string CollapseKeys<T>(IReadOnlyDictionary<string, T> dict)
+        {
+            var allKeys = dict.Keys.Select(x => $"`{x}`").ToArray();
+            if (allKeys.Length > 1) {
+                allKeys[allKeys.Length - 1] = " or " + allKeys[allKeys.Length - 1];
+            }
+            return string.Join(",",allKeys);
         }
         private List<string> CollapseDict<T>(IReadOnlyDictionary<string, T> dict)
         {

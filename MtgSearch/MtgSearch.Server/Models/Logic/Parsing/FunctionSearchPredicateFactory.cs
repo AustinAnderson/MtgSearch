@@ -89,15 +89,15 @@ namespace MtgSearch.Server.Models.Logic.Parsing
                 var res = new ActivatedAbilitySearchPredicate();
                 if (args.Length == 2)
                 {
-                    res.CostText = ParseRegexOrThrow(args[0], ctx, 0);
-                    res.AbilityText = ParseRegexOrThrow(args[1], ctx, 1);
+                    res.CostText = string.IsNullOrEmpty(args[0])?null: ParseRegexOrThrow(args[0], ctx, 0);
+                    res.AbilityText = string.IsNullOrEmpty(args[1])?null: ParseRegexOrThrow(args[1], ctx, 1);
                 }
                 else
                 {
-                    res.CostText = ParseRegexOrThrow(args[0], ctx, 0);
-                    res.CostAntiText = ParseRegexOrThrow(args[1], ctx, 1);
-                    res.AbilityText = ParseRegexOrThrow(args[2], ctx, 2);
-                    res.AbilityAntiText = ParseRegexOrThrow(args[3], ctx, 3);
+                    res.CostText = string.IsNullOrEmpty(args[0])?null: ParseRegexOrThrow(args[0], ctx, 0);
+                    res.CostAntiText =string.IsNullOrEmpty(args[1])?null:  ParseRegexOrThrow(args[1], ctx, 1);
+                    res.AbilityText =string.IsNullOrEmpty(args[2])?null:  ParseRegexOrThrow(args[2], ctx, 2);
+                    res.AbilityAntiText = string.IsNullOrEmpty(args[3])?null: ParseRegexOrThrow(args[3], ctx, 3);
                 }
                 return res;
             }

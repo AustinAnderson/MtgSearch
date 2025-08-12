@@ -14,7 +14,11 @@ namespace MtgSearch.Server.Models.Logic.Highlighting
         private const char HlStart = '\u3898';//arbitrary codes point outside of what can show up on the card
         private const char HlEnd = '\u3899';//used to mark spots
         private static readonly Regex ManaSymbol = new Regex(@"({(?:[TQ0-9WUBRGCSPXE])(?:/?(?:[TQ0-9WUBRGCSPXE]?))?})", RegexOptions.Compiled);
-        private static readonly Regex HlOrSymbol = new Regex(@"([" + HlStart + HlEnd + "])|" + ManaSymbol, RegexOptions.Compiled);
+                                                                 //one of those - is an emdash
+        private static readonly Regex PlanesWalkerAbility = new Regex("^([0X]+|[-−+][0-9X]+):");
+        private static readonly Regex PlanesWalkerAbilityEmbedded = new Regex(@"(\[(?:[0X]+|[-−+][0-9X]+)\])");
+
+        private static readonly Regex HlOrSymbol = new Regex(@"([" + HlStart + HlEnd + "])|" + ManaSymbol+"|"+PlanesWalkerAbilityEmbedded, RegexOptions.Compiled);
         /// <summary>
         /// tokenizes the string by highlights start stops and symbols
         /// </summary>
@@ -38,11 +42,26 @@ namespace MtgSearch.Server.Models.Logic.Highlighting
             //split the string on newline
             //loop through list of lists of strings setting highlight flag based on start marker,
             //removing the markers and ignoring nested while building the new list per line
-            foreach (var line in text.Split((char[])['\r', '\n'], StringSplitOptions.RemoveEmptyEntries))
+            foreach (var line in text.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries))
             {
+                var toSplit = line;
                 var segments = new List<CardTextLineSegment>();
+                if (card.Types.Contains("Planeswalker"))
+                {
+                    var abilityMatches=PlanesWalkerAbility.Matches(line);
+                    if(abilityMatches.Count == 1)
+                    {
+                        segments.Add(new CardTextLineSegment
+                        {
+                            Text = "["+abilityMatches[0].ToString().TrimEnd(':')+"]",
+                            IsSymbol = true,
+                            IsPlaneswalkerPlaque = true
+                        });
+                        toSplit = PlanesWalkerAbility.Replace(line, ":");
+                    }
+                }
                 //foreach line, split on symbol keeping it because of the capture group in the regex
-                var splits = HlOrSymbol.Split(line);
+                var splits = HlOrSymbol.Split(toSplit);
                 foreach (var token in splits)
                 {
                     if (token == HlStart.ToString())
@@ -56,6 +75,10 @@ namespace MtgSearch.Server.Models.Logic.Highlighting
                     else if (ManaSymbol.IsMatch(token))
                     {
                         segments.Add(new CardTextLineSegment { Text = token, IsSymbol = true });
+                    }
+                    else if (PlanesWalkerAbilityEmbedded.IsMatch(token))
+                    {
+                        segments.Add(new CardTextLineSegment { Text = token, IsSymbol = true, IsPlaneswalkerPlaque = true });
                     }
                     else
                     {

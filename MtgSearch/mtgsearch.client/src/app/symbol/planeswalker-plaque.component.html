@@ -1,0 +1,37 @@
+<style>
+  .plaque{
+    height: 100%;
+  }
+</style>
+<div>
+  <svg *ngIf="plaqueDir=='Down'" class="plaque" viewBox="0 0 150 100" preserveAspectRatio="xMidyMid meet">
+    <polygon points="75,95 135,65 128,40 135,10 15,10 23,40 15,65"
+             fill="black"
+             stroke="white"
+             stroke-width="5" />
+    <text fill="white" text-anchor="middle"
+          x="75" y="65"
+          letter-spacing="5"
+          font-size="60">{{value}}</text>
+  </svg>
+  <svg *ngIf="plaqueDir=='Up'" class="plaque" viewBox="0 0 150 100" preserveAspectRatio="xMidyMid meet">
+    <polygon points="75,5 135,35 128,60 135,90 15,90 23,60 15,35"
+             fill="black"
+             stroke="white"
+             stroke-width="5" />
+    <text fill="white" text-anchor="middle"
+          x="75" y="75"
+          letter-spacing="5"
+          font-size="60">{{value}}</text>
+  </svg>
+  <svg *ngIf="plaqueDir=='Neutral'" class="plaque" viewBox="0 0 150 100" preserveAspectRatio="xMidyMid meet">
+    <polygon points="75,5 135,25 128,50 135,80 75,95 15,80 23,50 15,25"
+             fill="black"
+             stroke="white"
+             stroke-width="5" />
+    <text fill="white" text-anchor="middle"
+          x="75" y="70"
+          letter-spacing="5"
+          font-size="60">{{value}}</text>
+  </svg>
+</div>

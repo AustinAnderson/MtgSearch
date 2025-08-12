@@ -63,6 +63,7 @@ export class CardComponent {
         for (let serverSeg of serverLine.segments) {
           let segment = new BindingCardTextLineSegment();
           segment.isHighlighted = serverSeg.isHighlighted;
+          segment.isPlaneswalkerPlaque = serverSeg.isPlaneswalkerPlaque;
           segment.isSymbol = serverSeg.isSymbol;
           segment.text = serverSeg.text;
           line.segments.push(segment);
