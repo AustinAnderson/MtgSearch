@@ -15,6 +15,7 @@ namespace MtgSearch.Server.Models.Logic.Parsing
             CanBeCommanderPredicate.FunctionInfo,
             HasAltFacePredicate.FunctionInfo,
             IsMultiColoredPredicate.FunctionInfo,
+            IsPreReleasePredicate.FunctionInfo,
             NameLikePredicate.FunctionInfo,
             ManaSymbolLikeSearch.FunctionInfo,
             new HasSuperTypeFunctionInfo(),

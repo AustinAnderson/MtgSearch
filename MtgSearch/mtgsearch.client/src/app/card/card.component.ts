@@ -6,7 +6,7 @@ import { BindingCardTextLine, BindingCardTextLineSegment } from "./card.bindingm
   selector: 'card',
   templateUrl: './card.component.html'
 })
-export class CardComponent{
+export class CardComponent implements AfterViewInit{
   public cardColor: string = "colorC";
   public name: string = "loading error";
   public altFaceName: string | undefined;
@@ -19,6 +19,24 @@ export class CardComponent{
   public imageUrl: string | undefined;
   public altImageUrl: string | undefined;
   public hasAlt: boolean = false;
+
+
+  @ViewChild('typeBox') typeBox!: ElementRef;
+  public typeLineWrapped: boolean = false;
+  ngAfterViewInit() {
+    const el = this.typeBox.nativeElement;
+    requestAnimationFrame(() => {
+      let style = getComputedStyle(el);
+      const lineHeightStr = style.lineHeight;
+      let textSize = parseFloat(lineHeightStr);
+      const fontSize = parseFloat(style.fontSize);
+      if (lineHeightStr == 'normal') {
+        textSize = fontSize * 1.2;
+      }
+      const lines = Math.round(el.scrollHeight / textSize);
+      this.typeLineWrapped = lines > 1;
+    });
+  }
 
   @Input() public set data(value: Card)
   {

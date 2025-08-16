@@ -200,7 +200,6 @@
       visibility: visible;
   }
   .typeBox{
-
     border-radius: .3em;
     display:flex;
     flex-direction: row;
@@ -211,9 +210,11 @@
     border-style: solid;
   }
   .preReleaseBox{
-      transform: scale(150%);
-      padding-right: .2em;
       visibility: hidden;
+  }
+  .preReleaseBox > card-symbol{
+      font-size: 1.5em;
+      display: flex;
   }
   .preRelease-true{
       visibility: visible;
@@ -232,7 +233,7 @@
     height: var(--text-box-height);
     overflow-y: scroll;
   }
-  .textBox.squish{
+  .textBox.squish-true{
       height: calc(var(--text-box-height) - var(--font-size))
   }
   .debugBorder{
@@ -315,7 +316,7 @@
     </div>
   </div>
   <div class="textBoxBorder">
-    <div class="textBox {{cardColor}}">
+    <div class="textBox {{cardColor}} squish-{{typeLineWrapped}}">
       <!--texts-->
       <p *ngFor="let line of textLines" class="textLine">
         <ng-container *ngFor="let segment of line.segments; let i = index">

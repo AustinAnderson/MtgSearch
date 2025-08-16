@@ -14,8 +14,10 @@ namespace MtgSearch.Server.Models.Logic.Predicates.Functions
              "activated(\"{T}\", \"draw\")"];
         public string[] Comments => [
             "matches if any of it's abilities match where the costReg matches a cost and the abilityReg matches the ability",
-            "costAntiReg and abilityAntiReg will return false if they match on that same ability line",
-            "example: {T}, sac a creature: draw a card; could be matched by activated(\"sac\",\"draw\") but not activated(\"sac\",\"{T}\",\"draw\",\"\")"
+            "costAntiReg and abilityAntiReg will cause a matched ability line to be ignored if the anti filter matches that line",
+            "but the card can still be matched if a different ability matches the filter without matching the anti filter",
+            "example: {T}, sac a creature: draw a card; could be matched by activated(\"sac\",\"draw\") but not activated(\"sac\",\"{T}\",\"draw\",\"\")",
+            "you can use an empty string (\"\") to leave out a filter",
          ];
         public string[] Examples => [
             "activated(costFilter: regex, costAntiFilter: regex, abilityFilter: regex, abilityAntiFilter: regex)",
@@ -52,26 +54,25 @@ namespace MtgSearch.Server.Models.Logic.Predicates.Functions
 
         public bool Apply(ServerCardModel card)
         {
-            if(card.Name.ToLower() == "liliana of the veil")
-            {
-                int i = 0;
-            }
             if (!card.ActivatedAbilities.Any()) return false;
-            bool isMatch = false;
             foreach (var ability in card.ActivatedAbilities)
             {
-                if (AbilityAntiText != null && AbilityAntiText.IsMatch(ability.ability)) return false;
-                if (CostAntiText != null && ability.costs.Any(CostAntiText.IsMatch)) return false;
+                if (AbilityAntiText != null && AbilityAntiText.IsMatch(ability.ability)) continue;
+                if (CostAntiText != null && ability.costs.Any(CostAntiText.IsMatch)) continue;
 
                 bool abilityMatch = AbilityText != null && AbilityText.IsMatch(ability.ability);
                 bool costMatch = CostText != null && ability.costs.Any(CostText.IsMatch);
-                isMatch = abilityMatch || costMatch;
+                bool isMatch = abilityMatch || costMatch;
                 if (CostText != null && AbilityText != null)
                 {
                     isMatch = abilityMatch && costMatch;
                 }
+                if (isMatch)
+                {
+                    return true;
+                }
             }
-            return isMatch;
+            return false;
         }
 
         public List<Highlighter> FetchHighlighters()
