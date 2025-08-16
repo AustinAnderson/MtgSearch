@@ -35,10 +35,11 @@ namespace MtgSearch.Server.Models.Logic.Predicates
                         bool match = true;
                         while(found<fuzSplit.Length && i < currentNameSplit.Length)
                         {
-                            if (Fastenshtein.Levenshtein.Distance(fuzSplit[found], currentNameSplit[i]) > TargetDist)
+                            if (Fastenshtein.Levenshtein.Distance(fuzSplit[found], currentNameSplit[i]) >= TargetDist)
                             {
                                 match = false; break;
                             }
+                            i++;
                         }
                         if (match)
                         {

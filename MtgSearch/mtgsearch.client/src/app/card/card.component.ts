@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { AfterViewInit, Component, ElementRef, Input, ViewChild } from "@angular/core";
 import { Card } from "../models/Card";
 import { BindingCardTextLine, BindingCardTextLineSegment } from "./card.bindingmodel";
 
@@ -6,7 +6,7 @@ import { BindingCardTextLine, BindingCardTextLineSegment } from "./card.bindingm
   selector: 'card',
   templateUrl: './card.component.html'
 })
-export class CardComponent {
+export class CardComponent{
   public cardColor: string = "colorC";
   public name: string = "loading error";
   public altFaceName: string | undefined;

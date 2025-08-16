@@ -102,6 +102,11 @@
   .textBox.colorGU { background: linear-gradient(to right, #E1EAF1, #DAE4DC); border-color: #D6C189; }
   .ptTextBox.colorGU { background-image: linear-gradient(to right, #B5A166,#D6C189,#B5A166); border-color: #D6C189; }
 
+  :host{
+      --font-size: 1.15em;
+      --text-box-height: 12.5em;
+  }
+
   .highlighted{
     background: #FFC107;
   }
@@ -113,7 +118,7 @@
     border-radius: 1em;
     width: 18em;
     font-family: 'Times New Roman';
-    font-size: 1.15em;
+    font-size: var(--font-size);
     height: 19.5em;
   }
   .plaque{  
@@ -224,8 +229,11 @@
     padding-left: .2em;
     padding-right: .2em;
     padding-bottom: .2em;
-    height: 12.5em;
+    height: var(--text-box-height);
     overflow-y: scroll;
+  }
+  .textBox.squish{
+      height: calc(var(--text-box-height) - var(--font-size))
   }
   .debugBorder{
     border: 1px solid red;
@@ -298,7 +306,7 @@
     can use https://scryfall.com/docs/api/cards/named to fetch the image on hover
     -->
   </div>
-  <div class="typeBox {{cardColor}}">
+  <div #typeBox class="typeBox {{cardColor}}">
     <div>
       {{typeLine}}
     </div>
