@@ -1,5 +1,6 @@
 ﻿using MtgSearch.Server.Models.Data;
 using MtgSearch.Server.Models.Logic.Predicates;
+using MtgSearch.Server.Models.Logic.Predicates.Functions;
 using System;
 using System.Collections.Generic;
 using System.Linq;

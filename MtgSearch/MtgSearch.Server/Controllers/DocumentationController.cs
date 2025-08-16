@@ -14,11 +14,11 @@ namespace MtgSearch.Server.Controllers
         public ActionResult GetLanguageSpec()
         {
             var functions = new List<FunctionDefinition>();
-            foreach(var func in Function.ByName.Values)
+            foreach(var func in FunctionList.ByName.Values)
             {
                 functions.Add(new FunctionDefinition
                 {
-                    Name = func.Name,
+                    Name = func.ParseAs,
                     Description = func.Comments,
                     Signitures = func.Signitures,
                     Examples = func.Examples

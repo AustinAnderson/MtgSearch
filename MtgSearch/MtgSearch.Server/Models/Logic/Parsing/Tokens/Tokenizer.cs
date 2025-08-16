@@ -32,7 +32,7 @@ namespace MtgSearch.Server.Models.Logic.Parsing.Tokens
                 var token = match.Groups[1].Value;
                 int matchNdx = i;
                 //if our "variable" is a reserved function name, try parsing it and substituting in
-                if (Function.ByName.ContainsKey(token))
+                if (FunctionList.ByName.ContainsKey(token))
                 {
                     var pred = FunctionParser.Parse(ref i, query, token);
                     token = variables.AddNext(pred).ToString();
@@ -71,7 +71,7 @@ namespace MtgSearch.Server.Models.Logic.Parsing.Tokens
             try
             {
                 int distThreshold = 2;
-                foreach (var functionName in Function.ByName.Keys)
+                foreach (var functionName in FunctionList.ByName.Keys)
                 {
                     if (Fastenshtein.Levenshtein.Distance(token, functionName) <= distThreshold)
                     {

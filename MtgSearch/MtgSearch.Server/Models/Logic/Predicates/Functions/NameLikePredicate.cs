@@ -1,11 +1,30 @@
 ﻿using MtgSearch.Server.Models.Data;
 using MtgSearch.Server.Models.Logic.Highlighting;
+using MtgSearch.Server.Models.Logic.Parsing;
 using System.Text.RegularExpressions;
 
 namespace MtgSearch.Server.Models.Logic.Predicates.Functions
 {
-    public class NameLikePredicate : ISearchPredicate
+    public class NameLikePredicate : ISearchPredicate, IFunctionInfo
     {
+        public static IFunctionInfo FunctionInfo { get; } = new NameLikePredicate("");
+        public string ParseAs => "nameLike";
+        public string[] Signitures => ["nameLike(name: string)"];
+        public string[] Comments => [
+            "fuzzy matches for cards with the given name",
+            "the server will do it's best to accomodate misspellings and missing letters"
+        ];
+        public string[] Examples => ["nameLike(\"gisla\")"];
+        public ISearchPredicate Factory(string[] args, string context)
+        {
+            if (args.Length != 1)
+            {
+                throw new QueryParseException($"{ParseAs} requires exactly 1 argument at ...{context}");
+            }
+            return new NameLikePredicate(args[0]);
+        }
+
+
         private readonly string fuzName;
 
         public NameLikePredicate(string fuzName)

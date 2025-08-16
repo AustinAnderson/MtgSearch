@@ -13,7 +13,7 @@ namespace MtgSearch.Server.Models.Logic.Parsing
         {
             var startPos = readPos;
             var functionName = lookaheadMatch;
-            if (!Function.ByName.ContainsKey(functionName))
+            if (!FunctionList.ByName.ContainsKey(functionName))
             {
                 throw new QueryParseException($"unknown function `{functionName}`, at `...{TryToGetContext(readPos,fullInput)}`");
             }
@@ -51,7 +51,7 @@ namespace MtgSearch.Server.Models.Logic.Parsing
                 }
             }
 
-            return Function.ByName[functionName].Factory(args.ToArray(), TryToGetContext(startPos, fullInput));
+            return FunctionList.ByName[functionName].Factory(args.ToArray(), TryToGetContext(startPos, fullInput));
         }
 
 
