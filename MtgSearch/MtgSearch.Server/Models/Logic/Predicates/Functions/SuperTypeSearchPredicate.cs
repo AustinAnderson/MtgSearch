@@ -1,6 +1,6 @@
 ﻿using MtgSearch.Server.Models.Data;
 
-namespace MtgSearch.Server.Models.Logic.Predicates
+namespace MtgSearch.Server.Models.Logic.Predicates.Functions
 {
     public class SuperTypeSearchPredicate: AbstractTypeSearchPredicate
     {

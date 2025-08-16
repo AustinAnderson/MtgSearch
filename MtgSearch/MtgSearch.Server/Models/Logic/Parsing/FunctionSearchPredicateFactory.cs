@@ -1,4 +1,5 @@
 ﻿using MtgSearch.Server.Models.Logic.Predicates;
+using MtgSearch.Server.Models.Logic.Predicates.Functions;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 

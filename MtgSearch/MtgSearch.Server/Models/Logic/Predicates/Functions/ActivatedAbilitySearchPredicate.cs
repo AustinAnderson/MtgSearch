@@ -2,7 +2,7 @@
 using MtgSearch.Server.Models.Logic.Highlighting;
 using System.Text.RegularExpressions;
 
-namespace MtgSearch.Server.Models.Logic.Predicates
+namespace MtgSearch.Server.Models.Logic.Predicates.Functions
 {
     public class ActivatedAbilitySearchPredicate : ISearchPredicate
     {

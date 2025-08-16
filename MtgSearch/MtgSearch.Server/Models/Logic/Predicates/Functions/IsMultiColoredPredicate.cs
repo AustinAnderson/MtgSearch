@@ -1,7 +1,7 @@
 ﻿using MtgSearch.Server.Models.Data;
 using MtgSearch.Server.Models.Logic.Highlighting;
 
-namespace MtgSearch.Server.Models.Logic.Predicates
+namespace MtgSearch.Server.Models.Logic.Predicates.Functions
 {
     public class IsMultiColoredPredicate : ISearchPredicate
     {
