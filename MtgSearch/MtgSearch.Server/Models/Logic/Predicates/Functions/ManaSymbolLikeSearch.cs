@@ -11,8 +11,10 @@ namespace MtgSearch.Server.Models.Logic.Predicates.Functions
         public string ParseAs => "manaCostLike";
         public string[] Signitures => ["manaCostLike(filter: regex)"];
         public string[] Comments => [
-            "matches the mana cost symbols based on simple 'w' 'u' 'b' 'r' 'g' text",
-            "for instance, '5w*' would match Avacyn, Angle of Hope's cost=5{W}{W}{W} and The Eternity Elevator's cost=5"
+            "matches the mana cost symbols based on 'w' 'u' 'b' 'r' 'g' text without the symbol braces",
+            "for instance, '5w*' would match Avacyn, Angle of Hope's cost=5{W}{W}{W} and The Eternity Elevator's cost=5",
+            "only results whose whole mana cost matches the filter will be returned, to do partial matches, use .*<filter>.*",
+            "internally, removes } and { from the cost before running the regex"
         ];
         public string[] Examples => ["manaCostLike(\"5w*\")"];
         public ISearchPredicate Factory(string[] args, string context)
