@@ -20,6 +20,7 @@ namespace MtgSearch.Server.Models.Logic
         public ScryfallCardRepository(ILogger<ScryfallCardRepository> logger) {
             //TODO: could setup http client registered with container with polly and what-not, yagni
             scryfallClient = new HttpClient();
+            scryfallClient.Timeout = TimeSpan.FromMinutes(5);
             scryfallClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
             scryfallClient.DefaultRequestHeaders.Add("User-Agent", "MtgSearch/1.0");
             this.logger = logger;

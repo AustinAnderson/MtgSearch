@@ -207,6 +207,12 @@ namespace MtgSearch.Server.Models.Logic.Parsing
             ["canBeCommander()"],
             (args, ctx) => new CanBeCommanderPredicate()
         );
+        public static readonly Function IsMultiColored= new("isMultiColored",
+            ["isMultiColored()"],
+            ["matches if a card has two or more colors"],
+            ["isMultiColored()"],
+            (args, ctx) => new IsMultiColoredPredicate()
+        );
 
         private static Regex ParseRegexOrThrow(string argument, string errorContext, int argNum)
         {

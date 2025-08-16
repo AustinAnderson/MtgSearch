@@ -32,11 +32,15 @@ export class AppComponent implements OnInit {
   }
   public onSearchHover() {
     this.clearError();
-    this.countSearch();
+    if (this.query) {
+      this.countSearch();
+    }
   }
   public async onSearchClicked() {
     this.showDocs = false;
-    await this.fetchSearch();
+    if (this.query) {
+      await this.fetchSearch();
+    }
   }
 
   private fetchingDocs: Promise<void> | undefined;

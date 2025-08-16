@@ -19,7 +19,7 @@ namespace MtgSearch.Server.Models.Logic.Parsing
             }
             //should be at the space before the function start, calling should ignore and tokenize so
             readPos+=lookaheadMatch.Length+1; //to consume function name and (
-            if (fullInput[readPos - 1] != '(')
+            if (readPos >=fullInput.Length || fullInput[readPos - 1] != '(')
             {
                 throw new QueryParseException($"function call must start with open paren after the name, for function `{functionName}` at `...{TryToGetContext(readPos,fullInput)}`");
             }
@@ -83,8 +83,7 @@ namespace MtgSearch.Server.Models.Logic.Parsing
             {
                 var start = position - 20;
                 if(start < 0) start = 0;
-                var subLength = 21;
-                if (position == fullText.Length - 1) subLength = 20;
+                var subLength = Math.Min(fullText.Length-1, 21);
                 return fullText.Substring(start, subLength);
             }
             catch(Exception ex) 

@@ -12,15 +12,49 @@ namespace MtgSearch.Server.Models.Logic.Predicates
         {
             this.fuzName = fuzName;
         }
-        private static readonly Regex splitter = new Regex("[ ;:,]");
+        private static readonly Regex splitter = new Regex("[ ;:,']");
+        private const int TargetDist = 2;
         public bool Apply(ServerCardModel card)
         {
-            var split = splitter.Split(card.Name.ToLower());
-            foreach(var piece in split)
+            var currentNameSplit = splitter.Split(card.Name.ToLower());
+            if (fuzName.Contains(' '))
             {
-                if (string.IsNullOrEmpty(piece)) continue;
-                var dist = Fastenshtein.Levenshtein.Distance(piece, fuzName);
-                if (dist < 2) return true;
+                //if input has multiple terms, loop over current card's name's terms until we match the first input term,
+                //then loop both to make sure all terms of the input are fuzzy matched
+                var fuzSplit = fuzName.Split(' ');
+                int found = 0;
+                for(int i=0;i<currentNameSplit.Length;i++)
+                {
+                    var piece = currentNameSplit[i];
+                    if (string.IsNullOrEmpty(piece)) continue;
+                    var dist = Fastenshtein.Levenshtein.Distance(piece, fuzSplit[found]);
+                    if (dist < TargetDist)
+                    {
+                        found++;
+                        i++;
+                        bool match = true;
+                        while(found<fuzSplit.Length && i < currentNameSplit.Length)
+                        {
+                            if (Fastenshtein.Levenshtein.Distance(fuzSplit[found], currentNameSplit[i]) > TargetDist)
+                            {
+                                match = false; break;
+                            }
+                        }
+                        if (match)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (var piece in currentNameSplit)
+                {
+                    if (string.IsNullOrEmpty(piece)) continue;
+                    var dist = Fastenshtein.Levenshtein.Distance(piece, fuzName);
+                    if (dist < TargetDist) return true;
+                }
             }
             return false;
         }
