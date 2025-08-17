@@ -36,44 +36,6 @@ export class DocumentationComponent {
 
   public selectionChangedOnAccordion: Subject<string> = new Subject();
 
-  public constructor() {
-    this.spec = {
-      functionDefinitions: [{
-        name: "text",
-        description: ["line1", "line2"],
-        examples: ["text(\"asdf\")", "text(\"kjlkj\")"],
-        signitures: ["text(\"asdf\")", "text(\"kjlkj\")"],
-      },
-      {
-        name: "activated",
-        description: ["line1", "line2"],
-        examples: ["activated(\"asdf\")", "text(\"kjlkj\")"],
-        signitures: ["activated(\"asdf\")", "text(\"kjlkj\")"],
-      }],
-      expressions: {
-        name: "numeric comparisons", explainationText: [
-          "where key can be",
-          "`mv` or `cmc`: ConvertedManaCost",
-          "`pow`: Power",
-          "`def` or `toughness`: Toughness",
-          "`loyalty`: Loyalty",
-          "and operator can be",
-          "`>`: GreaterThan",
-          "`<`: LessThan",
-          "`>=`: GreatherThanOrEquals",
-          "`<=`: LessThanOrEquals",
-          "`==` or `=`: Equal",
-          "and number is a 1-4 digit integer"
-        ], template: "{key} {operator} {number}",
-        examples: [
-          "mv < 3",
-          "pow >= 2",
-          "def = 5"
-        ]
-      },
-      isExpressions: { name: "assertions", explainationText: [], template: "{key} is *", examples: ["pow is *"]}
-    }
-  }
   public generalHeader = "General Notes";
   public selectedNote: Note | undefined;
   public notes: Note[] = [

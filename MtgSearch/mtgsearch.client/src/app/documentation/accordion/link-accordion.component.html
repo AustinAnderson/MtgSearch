@@ -53,8 +53,8 @@
   }
 
   .content.active {
-    max-height: inherit;
     transition: overflow 0.3s ease;
+    max-height: 100%;
     overflow: auto;
   }
   .linkList{
@@ -69,6 +69,24 @@
     text-align: left;
     margin: 0;
   }
+  @media(max-width:700px) {
+    .linkList {
+      padding-left: 0;
+    }
+    .textRow{
+        padding-top: .1em;
+        padding-bottom: .1em;
+        border-bottom: .15em dashed rgb(0,0,0,.4);
+    }
+    .collapsible{
+        padding-right: .1em;
+        padding-left:0;
+    }
+    .collapsible .chevron {
+        display:none;
+    }
+  }
+
   .textRow.active{
     color: rgba(255,255,255);
   }
@@ -90,8 +108,11 @@
     border-bottom: .6em solid transparent;
     border-right: .6em solid var(--docDisplayPaneBgColor);
   }
-  .textRow.active > span::after{
-    display:block;
+
+  @media(min-width: calc(700px + 1px)) {
+    .textRow.active > span::after {
+      display: block;
+    }
   }
 </style>
 <div class="mainDiv">

@@ -57,10 +57,21 @@
       background: #202040;
       display: flex;
       justify-content: center;
+      height: 100%;
+      overflow: auto;
 
   }
   .documentationElement{
       width: 75%;
+      min-height: 200%;/*css is a god damn nightmare, fit-content doesn't work*/
+      display: flex;
+      align-items: stretch;
+  }
+  @media(max-width:700px){
+    .documentationElement {
+        min-width: 100%;
+        width: fit-content;
+    }
   }
   .resultsContainer{
       display:flex;
@@ -69,7 +80,7 @@
       overflow-x: hidden;
       border: .5em inset black;
       flex-wrap: wrap;
-      overflow-y: scroll;
+      overflow: auto;
       height: 100%;
   }
   .resultCount-true{

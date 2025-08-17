@@ -7,6 +7,9 @@
     <SpaRoot>..\mtgsearch.client</SpaRoot>
     <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
     <SpaProxyServerUrl>https://localhost:4200</SpaProxyServerUrl>
+    <SignAssembly>False</SignAssembly>
+    <Company>Austin Anderson</Company>
+    <Authors>Austin Anderson</Authors>
   </PropertyGroup>
 
   <ItemGroup>

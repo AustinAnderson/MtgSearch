@@ -20,6 +20,16 @@
     </link-accordion>
   </div>
   <div class="detailsDisplay">
+    <div class="details_mainDiv" *ngIf="!selectedNote && !selectedFunction && !selectedExpression">
+      <div class="details_title">
+        Documentation
+      </div>
+      <div class="details_content">
+        <p class="details_textRow details_row-true">Welcome to the documentation!</p>
+        <p class="details_textRow details_row-false">To start, try expanding one of the sections on the left and pick a topic.</p>
+        <p class="details_textRow details_row-true">The details will show up here.</p>
+      </div>
+    </div>
     <div *ngIf="selectedNote">
       <div class="details_mainDiv">
         <div class="details_title">
