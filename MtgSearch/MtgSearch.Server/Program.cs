@@ -3,7 +3,11 @@ using MtgSearch.Server;
 using MtgSearch.Server.Models.Logic;
 using MtgSearch.Server.Models.Logic.Highlighting;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+{
+    WebRootPath = "wwwroot/browser",
+    Args = args
+});
 
 // Add services to the container.
 

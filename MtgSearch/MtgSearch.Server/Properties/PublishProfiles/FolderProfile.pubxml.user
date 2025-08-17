@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- https://go.microsoft.com/fwlink/?LinkID=208121. -->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\Users\Austi\Desktop\CSharpProjects\MtgSearch\MtgSearch\MtgSearch.Server\bin\Release\net8.0\publish\</_PublishTargetUrl>
+    <History>True|2025-08-17T03:01:03.1631304Z||;True|2025-08-16T19:29:05.6752273-05:00||;True|2025-08-16T18:01:48.6690359-05:00||;True|2025-08-16T18:00:39.9538612-05:00||;True|2025-08-16T17:53:58.1126295-05:00||;True|2025-08-16T17:40:42.0340386-05:00||;False|2025-08-16T17:40:21.4343599-05:00||;True|2025-08-16T17:32:04.4514909-05:00||;True|2025-08-16T13:58:09.5081423-05:00||;False|2025-08-16T13:55:50.5531375-05:00||;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>
