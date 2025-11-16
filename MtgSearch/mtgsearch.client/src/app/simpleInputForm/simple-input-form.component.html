@@ -1,0 +1,101 @@
+<style>
+  .sif_mainContainer{
+    display: flex;
+    flex-direction: column;
+    color: white;
+  }
+  .sif_textFilters{
+      overflow-y: auto;
+      height: 5em;
+      border-left: .2em inset;
+      border-bottom: .1em inset;
+  }
+  .sif_textFilterRow{
+      display:flex;
+      flex-direction: row;
+      background: rgba(255,255,255,.2);
+      margin-top: .05em;
+      margin-bottom: .05em;
+  }
+  .sif_textFilterRow > span{
+      padding-top: .2em;
+      padding-left: .2em;
+      padding-right: .2em;
+  }
+  .sif_textFilterRow > div{
+      padding-top: .2em;
+  }
+  .sif_filter_text{
+    overflow-x: auto;
+  }
+  .sif_filter_true{
+      color: #242;
+  }
+  .sif_filter_false{
+      color: #622;
+  }
+  .sif_textFiltersInput{
+      width: 100%;
+  }
+  .sif_tc_textFilterLabel {
+      text-align: right;
+  }
+  .sif_tc_textFilterInput{
+      width: 75%;
+  }
+  .sif_tc_textFilterInput > input{
+      width: 100%;
+  }
+</style>
+<div class="sif_mainContainer">
+  <!--on change, recompute query, overwrite query box-->
+  <div class="sif_textCriteriaList">
+    <span>Text Criteria: </span>
+    <div class="sif_textFilters">
+      <ng-container *ngFor="let textFilter of textFilters; let i = index">
+        <div class="sif_textFilterRow">
+          <button (click)="removeTextFilter(i)">X</button>
+          <span>{{textFilter.positive?'has':'not'}}:</span>
+          <div class="sif_filter_text sif_filter_{{textFilter.positive}}">"{{textFilter.filter}}"</div>
+        </div>
+      </ng-container>
+    </div>
+    <!--
+    text criteria: [               ^
+      [x] has: fjeklkjwflkjwf      ||
+      [x] has: fkjelkfwjlkwjfoij   ||
+      [x] not: jklkjlkjwleflkjf    ||
+    ]                              v
+    -->
+  </div>
+  <div>
+    <table class="sif_textFiltersInput">
+      <tr>
+        <td class="sif_tc_textFilterLabel">
+          text has
+        </td>
+        <td class="sif_tc_textFilterInput">
+          <input id="addATextFilter" type="text" [(ngModel)]="currentPositiveTextFilter" />
+        </td>
+        <td>
+          <button (click)="addCurrentPositiveText()">+</button>
+        </td>
+      </tr>
+      <tr>
+        <td class="sif_tc_textFilterLabel">
+          text doesn't have
+        </td>
+        <td class="sif_tc_textFilterInput">
+          <input id="addATextNonFilter" type="text" [(ngModel)]="currentNegativeTextFilter" />
+        </td>
+        <td>
+          <button (click)="addCurrentNegativeText()">+</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div>
+    <div></div>
+    <div></div>
+  </div>
+</div>

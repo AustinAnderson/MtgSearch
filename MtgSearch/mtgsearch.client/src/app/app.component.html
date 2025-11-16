@@ -19,12 +19,26 @@
       height: 2em;
       width: 100%;
   }
+  .searchInputContainer{
+      width: 50%;
+  }
   .queryInputBox{
       background: #77A;
       font-family: Consolas;
       font-size: 1.1em;
       overflow-x: scroll;
-      width: 50%;
+      min-height: 2em !important;
+      width: 100%;
+  }
+  .simpleModeContainer{
+      border: groove;
+      border-top: none;
+      width: 98.5%;
+      background: #336;
+      position: relative;
+      top: -.5em;
+      display: inline-block;
+      z-index: 999!important;
   }
   .queryLabel{
     justify-content: center;
@@ -104,7 +118,12 @@
   <div class="queryLineContainer">
     <div class="queryInput">
       <div class="queryLabel">Search Query:</div>
-      <input class="queryInputBox" type="text" [(ngModel)]="query">
+      <div class="searchInputContainer">
+        <input class="queryInputBox" type="text" [(ngModel)]="query">
+        <div class="simpleModeContainer">
+          <simple-input-form></simple-input-form>
+        </div>
+      </div>
       <button class="button" (mouseover)="onSearchHover()" (click)="onSearchClicked()">
         Search
       </button>

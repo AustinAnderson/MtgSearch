@@ -13,6 +13,7 @@ import { LinkAccordionComponent } from './documentation/accordion/link-accordion
 import { DocumentationComponent } from './documentation/documentation.component';
 import { ExpressionDefinitionComponent } from './documentation/expressions/expression-definition.component';
 import { PlaneswalkerPlaqueComponent } from './symbol/planeswalker-plaque.component';
+import { SimpleInputForm } from './simpleInputForm/simple-input-form.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { PlaneswalkerPlaqueComponent } from './symbol/planeswalker-plaque.compon
     LinkAccordionComponent,
     FunctionDefinitionComponent,
     ExpressionDefinitionComponent,
-    PlaneswalkerPlaqueComponent 
+    PlaneswalkerPlaqueComponent,
+    SimpleInputForm
   ],
   imports: [
     BrowserModule, HttpClientModule,
