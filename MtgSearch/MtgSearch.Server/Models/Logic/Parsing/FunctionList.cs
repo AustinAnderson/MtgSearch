@@ -18,6 +18,8 @@ namespace MtgSearch.Server.Models.Logic.Parsing
             IsPreReleasePredicate.FunctionInfo,
             NameLikePredicate.FunctionInfo,
             ManaSymbolLikeSearch.FunctionInfo,
+            InSetPredicate.FunctionInfo,
+            HasKeyWordPredicate.FunctionInfo,
             new HasSuperTypeFunctionInfo(),
             new AllSuperTypesFunctionInfo(),
             new AnySuperTypesFunctionInfo(),
@@ -26,7 +28,7 @@ namespace MtgSearch.Server.Models.Logic.Parsing
             new AnyTypesFunctionInfo(),
             new HasSubTypeFunctionInfo(),
             new AllSubTypesFunctionInfo(),
-            new AnySubTypesFunctionInfo()
+            new AnySubTypesFunctionInfo(),
         }.ToDictionary(x => x.ParseAs);
     }
 }
