@@ -13,6 +13,10 @@ import { LinkAccordionComponent } from './documentation/accordion/link-accordion
 import { DocumentationComponent } from './documentation/documentation.component';
 import { ExpressionDefinitionComponent } from './documentation/expressions/expression-definition.component';
 import { PlaneswalkerPlaqueComponent } from './symbol/planeswalker-plaque.component';
+import { CommaSeparatedComponent } from './formBuild/comma-separated/comma-separated.component';
+import { UnSeparatedComponent } from './formBuild/un-separated/un-separated.component';
+import { UnSeparatedFormFragmentComponent } from './formBuild/un-separated-form-fragment/un-separated-form-fragment.component';
+import { CharSeparatedFormFragmentComponent } from './formBuild/char-separated-form-fragment/char-separated-form-fragment.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +28,11 @@ import { PlaneswalkerPlaqueComponent } from './symbol/planeswalker-plaque.compon
     LinkAccordionComponent,
     FunctionDefinitionComponent,
     ExpressionDefinitionComponent,
-    PlaneswalkerPlaqueComponent 
+    PlaneswalkerPlaqueComponent,
+    CommaSeparatedComponent,
+    UnSeparatedComponent,
+    UnSeparatedFormFragmentComponent,
+    CharSeparatedFormFragmentComponent 
   ],
   imports: [
     BrowserModule, HttpClientModule,

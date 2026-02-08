@@ -9,5 +9,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\app\documentation\functions\" />
+    <Folder Include="src\app\formBuild\subComponent\" />
   </ItemGroup>
 </Project>
