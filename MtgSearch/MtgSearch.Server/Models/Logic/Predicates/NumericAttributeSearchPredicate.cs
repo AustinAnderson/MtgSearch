@@ -80,24 +80,29 @@ namespace MtgSearch.Server.Models.Logic.Predicates
             };
         }
 
+        private static Regex ParsePtStar=new Regex("(?<val1>[0-9]+)(?:(?<op>[\\+\\-])(?<val2>[0-9]+))?", RegexOptions.Compiled);
         private static int HandleStarable(string? pt, int deflt, string type, string cardName)
         {
             if(pt == null) return deflt;
             var val = deflt;
             if (pt.Contains("*"))
             {
-                if (pt == "*")
-                {
-                    val = 0;
-                }
-                else if(pt.EndsWith("+*"))
-                {
-                    val = int.Parse(pt.TrimEnd('*').TrimEnd('+'));
-                }
-                else
+                var numeric=pt.Replace("*", "0");
+                if (!ParsePtStar.IsMatch(numeric))
                 {
                     throw new QueryParseException($"Couldn't parse {type} value `{pt}` for card `{cardName}`");
                 }
+                var match = ParsePtStar.Match(numeric);
+                var groups = match.Groups;
+                var val1 = int.Parse(groups["val1"].Value);
+                var val2 = 0;
+                var op = 1;
+                if (groups["op"].Value != "" && groups["val2"].Value != "")
+                {
+                    val2 = int.Parse(groups["val2"].Value);
+                    if (groups["op"].Value == "-") op = -1;
+                }
+                val = val1 + op * val2;
             }
             else
             {

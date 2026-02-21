@@ -1,0 +1,76 @@
+.container{
+  display: flex;
+  flex-direction: row;
+  font-family: Consolas;
+}
+.label{
+  font-size: 1.2em;
+}
+.dropDownHolder{
+  font-size: 1.1em;
+  margin-left: .125em;
+  margin-right: .125em;
+}
+.inputValueBox{
+    border-radius: 4px;
+    font-size: 1em;
+    width: 4ch;
+}
+.hideLeftInputs{
+    visibility: hidden;
+}
+.leftSideStuff{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: fit-content;
+  padding-bottom: .25em;
+  padding-top: .25em;
+  padding-left: .25em;
+  border: none;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+.leftSideShown{
+  border: 1px solid black;
+  border-right: none;
+}
+.alwaysShownSide{
+  align-items: center;
+  padding: .25em;
+  width: fit-content;
+  display: flex;
+  flex-direction: row;
+  border: 1px solid black;
+  border-radius: 8px;
+}
+.alwaysShownSideWithLeftSide{
+  border-left: none;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.removeIcon{
+    border: 2px solid #444;
+    border-radius: 4px;
+    padding-left: .3em;
+    padding-right: .2em;
+    padding-bottom: .1em;
+    height: 1.2em;
+    display: flex;
+    align-items: center;
+    margin-left: .125em;
+}
+.rotateIcon{
+    user-select: none;
+    transform: rotate(45deg);
+    font-family: Consolas;
+    font-size: 1.5em;
+}
+.removeIcon:hover{
+    background: #888;
+}
+.removeIcon:active{
+    background: #444;
+    border: 2px solid #888;
+    color: #888;
+}

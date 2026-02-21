@@ -1,0 +1,99 @@
+.container{
+    margin-top: 1em;
+    height: 40em;
+    width: 80em;
+    position: relative;
+    background: #000;
+    border: .25em solid black;
+    border-radius: 8px;
+}
+.containerCollapsed{
+  width: 0;
+  border: none;
+}
+.expandCollapseButton{
+    background: #999;
+    border-radius: 8px;
+    border: 2px solid black;
+    position: absolute;
+    font-family: Consolas;
+    font-size: 1.25em;
+    padding: .25em;
+    font-weight: bold;
+    margin-top: -.75em;
+    top: 0;
+    right: 0;
+}
+.expandCollapseButton:hover{
+    background: #888;
+}
+.expandCollapseButton:active{
+    background: #444;
+    color: #888;
+}
+.buttonCollapsed{
+    margin-right: -1.25em;
+}
+
+
+
+
+.formArea{
+    background: #999;
+    height: 100%;
+    width: 100%;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    visibility: visible;
+}
+.formHidden{
+    visibility: hidden;
+}
+.textFilterArea{
+    height: 70%;
+    width: calc(100% - 1em);
+    margin: .5em;
+    display: flex;
+    flex-direction: row;
+    gap: .25em;
+}
+.catalog{
+    border-radius: 8px;
+    border: 2px solid black;
+    width: 20%;
+}
+.textFilterTitle{
+    font-family: Consolas;
+    font-size: 1.25em;
+}
+.filtersList{
+    display: flex;
+    flex-direction: column;
+    height: 85%;
+    width: calc(100% - 1em);
+    padding: .5em;
+    gap: .2em;
+    overflow-y: auto;
+}
+.excludeFilters{
+    background: #CBC;
+    border-radius: 8px;
+    border: 2px solid black;
+    width: 40%;
+}
+.containsFilters{
+    background: #BCC;
+    border-radius: 8px;
+    border: 2px solid black;
+    width: 40%;
+}
+.attributeFormArea{
+    border-radius: 8px;
+    border: 2px solid black;
+    background: #AAA;
+    height: 30%;
+    width: calc(100% - 1em);
+    margin: .5em;
+}
+

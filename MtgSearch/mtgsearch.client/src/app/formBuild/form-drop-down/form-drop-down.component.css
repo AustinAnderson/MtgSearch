@@ -1,0 +1,43 @@
+.container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.displayedOption{
+  background: #CCC;
+  border-radius: 4px;
+  border: 2px solid black;
+  padding-left: .125em;
+  padding-right: .125em;
+}
+.dropClosed.displayedOption:hover{
+  background: #BBB;
+}
+.dropClosed.displayedOption:active{
+  background: #AAA;
+}
+
+.relAnchor{
+  position: relative;
+}
+.optionsContainer{
+  position: absolute;
+  background: #CCC;
+  border-radius: 4px;
+  border: 2px solid black;
+  visibility: hidden;
+  padding-left: .125em;
+  padding-right: .125em;
+}
+.visible{
+  visibility: visible;
+}
+.dropDownElement{
+  width: 100%;
+}
+.dropDownElement:hover{
+  background: #BBB;
+}
+.dropDownElement:active {
+  background: #AAA;
+}

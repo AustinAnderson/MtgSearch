@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Card } from './models/Card';
 import { LanguageSpec } from './models/LanguageSpec';
+import { VisualPredicateAccumulator } from './formBuild/VisualPredicateAccumulator.service';
 
 @Component({
   selector: 'app-root',
@@ -78,6 +79,9 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchDocs();
+    VisualPredicateAccumulator.Instance.queryChangeEvents.subscribe(
+      q => this.query = q
+    );
   }
   async fetchDocs() {
     this.spinning = true;

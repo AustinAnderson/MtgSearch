@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="displayedOption"
+       [class.dropClosed]="!optionsOpen"
+       style="width: {{maxChars}}ch"
+       (click)="displayClicked()">
+    @if(!selectedOption){
+      {{emptyMessage}}
+    }
+    @else{
+      {{selectedOption}}
+    }
+  </div>
+  <div class="relAnchor">
+    <div class="optionsContainer"
+         style="width: {{maxChars}}ch"
+         [class.visible]="optionsOpen">
+    @for(op of options; track ""+op){
+      @if(""+op!=""+selectedOption){
+        <div class="dropDownElement"
+           (click)="selectedOption=op">
+          {{op}}
+        </div>
+      }
+    }
+    </div>
+  </div>
+</div>
+

@@ -127,6 +127,7 @@
     <documentation class="documentationElement" [spec]="languageSpec"></documentation>
   </div>
   <div *ngIf="!showDocs" class="resultsContainer">
+    <visual-form-flyout></visual-form-flyout>
     <ng-container *ngFor="let cardData of searchResultList">
       <div class="padBox">
         <card [data]="cardData"></card>

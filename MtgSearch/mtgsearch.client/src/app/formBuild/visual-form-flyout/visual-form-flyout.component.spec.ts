@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CommaSeparatedComponent } from './comma-separated.component';
+import { VisualFormFlyoutComponent } from './visual-form-flyout.component';
 
-describe('CommaSeparatedComponent', () => {
-  let component: CommaSeparatedComponent;
-  let fixture: ComponentFixture<CommaSeparatedComponent>;
+describe('VisualFormFlyoutComponent', () => {
+  let component: VisualFormFlyoutComponent;
+  let fixture: ComponentFixture<VisualFormFlyoutComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CommaSeparatedComponent]
+      declarations: [VisualFormFlyoutComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CommaSeparatedComponent);
+    fixture = TestBed.createComponent(VisualFormFlyoutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="leftSideStuff" [class.leftSideShown]="showLeftSide">
+    <div class="inputValueHolder" [class.hideLeftInputs]="!showLeftSide">
+      <input class="inputValueBox" type="number" [(ngModel)]="leftSideValue"/>
+    </div>
+    <div class="dropDownHolder" [class.hideLeftInputs]="!showLeftSide">
+      <form-drop-down [options]="leftSideOptions" [(selectedOption)]="selectedLeftSideOp"></form-drop-down>
+    </div>
+  </div>
+  <div class="alwaysShownSide" [class.alwaysShownSideWithLeftSide]="showLeftSide">
+    <div class="label">
+      {{attributeType}}
+    </div>
+    <div class="dropDownHolder">
+      <form-drop-down [options]="operatorOptions" [(selectedOption)]="selectedOperator"></form-drop-down>
+    </div>
+
+  @if(showDropDownForValues){
+    <div class="dropDownHolder">
+      <form-drop-down [options]="isHasValueOptions" [(selectedOption)]="selectedIsHasValue"></form-drop-down>
+    </div>
+  }
+  @else{
+    <div class="inputValueHolder">
+      <input class="inputValueBox" type="number" [(ngModel)]="rightSideValue"/>
+    </div>
+  }
+    <div class="removeIcon" (click)="removeRequested.emit()">
+      <div class="rotateIcon">
+        +
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -30,12 +30,15 @@ export class VisualPredicateAccumulator {
   }
   public remove(uuid: string) {
     this.predicates.delete(uuid);
+    this.componentNotifiedEventsSender.next();
   }
   public notifyChange() {
     this.componentNotifiedEventsSender.next();
   }
-  private computeNewQuery() { 
-    let query = Array.prototype.slice.call(this.predicates.values)
+  private computeNewQuery() {
+    let values = this.predicates.values();
+    let preds = [...values];
+    let query = preds
       .map(x => x.fetchFragment())
       .join(' and ');
     return query;

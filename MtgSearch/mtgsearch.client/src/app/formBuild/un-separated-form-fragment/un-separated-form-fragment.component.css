@@ -1,0 +1,58 @@
+.holder{
+    display: flex;
+    flex-direction: row;
+    border-radius: 8px;
+    background: #AAA;
+    gap: .5em;
+    height: 2em;
+    align-content: center;
+    align-items: center;
+    padding: .25em;
+}
+.removeIcon{
+    border: 2px solid #444;
+    border-radius: 4px;
+    padding-left: .3em;
+    padding-right: .2em;
+    padding-bottom: .1em;
+    height: 1.2em;
+    display: flex;
+    align-items: center;
+}
+.rotateIcon{
+    user-select: none;
+    transform: rotate(45deg);
+    font-family: Consolas;
+    font-size: 1.5em;
+}
+.removeIcon:hover{
+    background: #888;
+}
+.removeIcon:active{
+    background: #444;
+    border: 2px solid #888;
+    color: #888;
+}
+.dragIcon{
+
+    border-radius: 4px;
+    height: 1.5em;
+    margin-right: -.5em;
+}
+.dragIcon:hover{
+    background: #888;
+}
+.textArea{
+    margin-right: .125em;
+    width: 100%;
+}
+.textInput{
+    width: 95%;
+    font-family: Consolas;
+    height: 1.5em;
+    border-radius: 4px;
+}
+.negationIcon{
+    display:flex;
+    flex-direction: column;
+}

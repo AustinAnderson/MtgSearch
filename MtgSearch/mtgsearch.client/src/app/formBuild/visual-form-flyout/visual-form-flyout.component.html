@@ -1,0 +1,66 @@
+<div class="container" [class.containerCollapsed]="!expanded">
+  <div class="expandCollapseButton"
+       [class.buttonCollapsed]="!expanded"
+       (click)="toggleCollapse()">
+    @if(expanded){
+      <<
+    }
+    @else{
+      >>
+    }
+  </div>
+  <div class="formArea" [class.formHidden]="!expanded">
+    <div class="textFilterArea">
+      <div class="catalog">
+        <button (click)="matchUnsep()">text</button>
+        <button (click)="matchCommaSep()">comma Separated</button>
+        <button (click)="matchColonSep()">colon Separated</button>
+      </div>
+      <div class="excludeFilters">
+        <div class="textFilterTitle">
+          Does Not Match
+        </div>
+        <div class="filtersList" cdkDropList
+             #excludeList="cdkDropList"
+             [cdkDropListData]="excluded.list"
+             [cdkDropListConnectedTo]="[matchList]"
+             (cdkDropListDropped)="dropped($event,excluded)"
+          >
+          @for(comp of excluded.list; track comp.trackingId){
+            <div cdkDrag>
+              <ng-container *ngComponentOutlet="comp.component; inputs: comp.inputs"></ng-container>
+            </div>
+          }
+        </div>
+      </div>
+      <div class="containsFilters">
+        <div class="textFilterTitle">
+          Matches
+        </div>
+        <div class="filtersList" cdkDropList
+             #matchList="cdkDropList"
+             [cdkDropListData]="matched.list"
+             [cdkDropListConnectedTo]="[excludeList]"
+             (cdkDropListDropped)="dropped($event,matched)"
+          >
+          @for(comp of matched.list; track comp.trackingId){
+            <div cdkDrag>
+              <ng-container *ngComponentOutlet="comp.component; inputs: comp.inputs"></ng-container>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+    <div class="attributeFormArea">
+      <button (click)="addPow()">pow</button>
+      <button (click)="addDef()">def</button>
+      <button (click)="addMv()">mv</button>
+      <button (click)="addLoyalty()">loyalty</button>
+      @for(attrFilter of attributeFilters; track "attrFilter"+attrFilter.trackingId){
+        <attribute-filter-form-fragment [attributeType]="attrFilter.type"
+                                        (removeRequested)="attrFilter.onRemoveRequested()">
+        </attribute-filter-form-fragment>
+      }
+    </div>
+  </div>
+</div>

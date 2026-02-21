@@ -13,10 +13,12 @@ import { LinkAccordionComponent } from './documentation/accordion/link-accordion
 import { DocumentationComponent } from './documentation/documentation.component';
 import { ExpressionDefinitionComponent } from './documentation/expressions/expression-definition.component';
 import { PlaneswalkerPlaqueComponent } from './symbol/planeswalker-plaque.component';
-import { CommaSeparatedComponent } from './formBuild/comma-separated/comma-separated.component';
-import { UnSeparatedComponent } from './formBuild/un-separated/un-separated.component';
 import { UnSeparatedFormFragmentComponent } from './formBuild/un-separated-form-fragment/un-separated-form-fragment.component';
 import { CharSeparatedFormFragmentComponent } from './formBuild/char-separated-form-fragment/char-separated-form-fragment.component';
+import { VisualFormFlyoutComponent } from './formBuild/visual-form-flyout/visual-form-flyout.component';
+import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
+import { AttributeFilterFormFragmentComponent } from './formBuild/attribute-filter-form-fragment/attribute-filter-form-fragment.component';
+import { FormDropDownComponent } from './formBuild/form-drop-down/form-drop-down.component';
 
 @NgModule({
   declarations: [
@@ -29,14 +31,16 @@ import { CharSeparatedFormFragmentComponent } from './formBuild/char-separated-f
     FunctionDefinitionComponent,
     ExpressionDefinitionComponent,
     PlaneswalkerPlaqueComponent,
-    CommaSeparatedComponent,
-    UnSeparatedComponent,
     UnSeparatedFormFragmentComponent,
-    CharSeparatedFormFragmentComponent 
+    CharSeparatedFormFragmentComponent,
+    VisualFormFlyoutComponent,
+    AttributeFilterFormFragmentComponent,
+    FormDropDownComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,
-    AppRoutingModule, FormsModule
+    AppRoutingModule, FormsModule,
+    CdkDropList, CdkDrag
   ],
   providers: [],
   bootstrap: [AppComponent]
