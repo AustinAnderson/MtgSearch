@@ -18,3 +18,14 @@ th, td {
 table {
     margin: 0 auto;
 }
+.formAnchor{
+    position: relative;
+    height: 0;
+    width: 0;
+}
+.formBox{
+    position: absolute;
+    height: fit-content;
+    width: fit-content;
+    z-index: 333 !important;
+}

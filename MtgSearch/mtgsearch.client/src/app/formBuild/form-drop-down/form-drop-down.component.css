@@ -28,6 +28,8 @@
   visibility: hidden;
   padding-left: .125em;
   padding-right: .125em;
+  /*todo: can't figure out why this doesn't float outside the scroll box clip*/
+  z-index: 999 !important;
 }
 .visible{
   visibility: visible;
