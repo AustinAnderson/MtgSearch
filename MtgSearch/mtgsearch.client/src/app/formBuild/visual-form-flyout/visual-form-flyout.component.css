@@ -1,6 +1,6 @@
 .container{
     margin-top: 1em;
-    height: 40em;
+    height: 41em;
     width: 80em;
     position: relative;
     background: #000;
@@ -61,7 +61,14 @@
 .catalog{
     border-radius: 8px;
     border: 2px solid black;
-    width: 20%;
+    width: fit-content;
+}
+.filterControls{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
+    padding-top: 1em;
 }
 .textFilterTitle{
     font-family: Consolas;
@@ -89,11 +96,61 @@
     width: 40%;
 }
 .attributeFormArea{
-    border-radius: 8px;
-    border: 2px solid black;
-    background: #AAA;
     height: 30%;
     width: calc(100% - 1em);
     margin: .5em;
+    display: flex;
+    flex-direction: row;
+    gap: .25em;
 }
-
+.attributeFilterListArea{
+    display: flex;
+    flex-direction: row;
+    width: 40%;
+}
+.attributeFilterList{
+    background: #AAA;
+    border-radius: 8px;
+    padding: .25em;
+    border: 2px solid black;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    scrollbar-color: #444 rgba(0,0,0,0);
+}
+.centeredAttrFilterList{
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    gap: .125em;
+}
+.hintsArea{
+    font-family: Consolas;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+.hints{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.hintColumn{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    width: 50%;
+    background: rgba(0,0,0,.03);
+    color: #222;
+    padding: .0625em;
+    border-radius: 8px;
+    margin-left: 1em;
+}
+.enlargedSymbol{
+    transform: scale(130%);
+}

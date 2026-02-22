@@ -12,9 +12,23 @@
   <div class="formArea" [class.formHidden]="!expanded">
     <div class="textFilterArea">
       <div class="catalog">
-        <button (click)="matchUnsep()">text</button>
-        <button (click)="matchCommaSep()">comma Separated</button>
-        <button (click)="matchColonSep()">colon Separated</button>
+        <div class="textFilterTitle">
+          Choose Some Filters
+        </div>
+        <div class="filterControls">
+          <attribute-buttons (nameClicked)="matchNameLike()"
+                             (mvClicked)="addMv()"
+                             (powClicked)="addPow()"
+                             (defClicked)="addDef()"
+                             (loyaltyClicked)="addLoyalty()"
+                             (pureTextClicked)="matchUnsep()"
+                             (commaSepClicked)="matchCommaSep()"
+                             (colonSepClicked)="matchColonSep()"
+                             (superTypeClicked) = "matchSuperTypes()"
+                             (typeClicked) = "matchTypes()"
+                             (subTypeClicked) = "matchSubTypes()" 
+          ></attribute-buttons>
+        </div>
       </div>
       <div class="excludeFilters">
         <div class="textFilterTitle">
@@ -52,15 +66,75 @@
       </div>
     </div>
     <div class="attributeFormArea">
-      <button (click)="addPow()">pow</button>
-      <button (click)="addDef()">def</button>
-      <button (click)="addMv()">mv</button>
-      <button (click)="addLoyalty()">loyalty</button>
-      @for(attrFilter of attributeFilters; track "attrFilter"+attrFilter.trackingId){
-        <attribute-filter-form-fragment [attributeType]="attrFilter.type"
-                                        (removeRequested)="attrFilter.onRemoveRequested()">
-        </attribute-filter-form-fragment>
-      }
+      <div class="attributeFilterListArea">
+        <div class="attributeFilterList">
+          @if(attributeFilters.length==0){
+            <div class="textFilterTitle">
+              Card Property Comparisons
+            </div>
+          }
+          <div class="centeredAttrFilterList">
+            @for(attrFilter of attributeFilters; track "attrFilter"+attrFilter.trackingId){
+              <attribute-filter-form-fragment [attributeType]="attrFilter.type"
+                                              (removeRequested)="attrFilter.onRemoveRequested()">
+              </attribute-filter-form-fragment>
+            }
+          </div>
+        </div>
+      </div>
+      <div class="hintsArea">
+        <div class="textFilterTitle">
+          Text Search Tips and Tricks
+        </div>
+        <div class="hints">
+          <div class="hintColumn">
+            <div>
+              Be sure to select your commander's color id at the top of the page.
+            </div>
+            <div>
+              &nbsp;
+            </div>
+            <div>
+              You can use ... in your text searches to match anything up to the next word in your search.
+              In the case of a comma or colon separated search, it instead matches anything up to your next word or that character
+            </div>
+          </div>
+          <div class="hintColumn">
+            <div>
+            Symbols:
+            </div>
+            <div>
+              type the key to search for a symbol
+            </div>
+            <div>
+              {{'{T}'}}: <card-symbol class="enlargedSymbol" symbolText="{T}"></card-symbol>,
+              {{'{Q}'}}: <card-symbol class="enlargedSymbol" symbolText="{Q}"></card-symbol>,
+              {{'{E}'}}: <card-symbol class="enlargedSymbol" symbolText="{E}"></card-symbol>
+            <div>
+              {{'{?}'}}: wild card; match any symbol
+            </div>
+            </div>
+            <div>
+              {{'{W}'}}: <card-symbol class="enlargedSymbol" symbolText="{W}"></card-symbol>,
+              {{'{U}'}}: <card-symbol class="enlargedSymbol" symbolText="{U}"></card-symbol>,
+              {{'{B}'}}: <card-symbol class="enlargedSymbol" symbolText="{B}"></card-symbol>
+            </div>
+            <div>
+              {{'{R}'}}: <card-symbol class="enlargedSymbol" symbolText="{R}"></card-symbol>,
+              {{'{G}'}}: <card-symbol class="enlargedSymbol" symbolText="{G}"></card-symbol>,
+              {{'{C}'}}: <card-symbol class="enlargedSymbol" symbolText="{C}"></card-symbol>
+            </div>
+            <div>
+              phyrexian and split mana types can be done with a slash in the middle
+            </div>
+            <div>
+              e.g. 
+              {{'{R/P}'}}: <card-symbol class="enlargedSymbol" symbolText="{R/P}"></card-symbol>,
+              {{'{C/R}'}}: <card-symbol class="enlargedSymbol" symbolText="{C/R}"></card-symbol>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -38,10 +38,11 @@ export class CharSeparatedFormFragmentComponent implements
   }
   public uuid: string;
   public fetchFragment(): string {
-    let regex = VisualPredicateAccumulator.escapeRegex(this.input.preSep+"...")
+    let regex = VisualPredicateAccumulator.escapeRegex(this.input.preSep + "...")
       .replaceAll('\\.\\.\\.', '[^' + this.input.separatorChar + ']*')
       + this.input.separatorChar
-      + VisualPredicateAccumulator.escapeRegex("..."+this.input.postSep).replaceAll('\\.\\.\\.', '.*');
+      + VisualPredicateAccumulator.escapeRegex("..." + this.input.postSep).replaceAll('\\.\\.\\.', '.*');
+    regex = regex.replaceAll("{\\?}", "{.}");
     let query = `text("${regex}")`;
     if (this.input.isNegative) {
       query = `(not ${query})`;

@@ -1,0 +1,70 @@
+<div class="card">
+  <div class="nameBox colorMulti">
+    <div class="name">
+      <button class="lightBackgroundButton" (click)="nameClicked.emit()">
+        Name Like
+      </button>
+    </div>
+    <div class="cost">
+      <button class="lightBackgroundButton" (click)="mvClicked.emit()">
+        Mana Cost
+      </button>
+    </div>
+  </div>
+  <div class="imgBox colorMulti">
+    <div class="imgMainBox">
+      <div class="image">
+      </div>
+    </div>
+    <div class="imgAltBox alt-false">
+    </div>
+  </div>
+  <div #typeBox class="typeBox colorMulti">
+    <div>
+      <button class="lightBackgroundButton" (click)="superTypeClicked.emit()">
+        Super Type
+      </button>
+      <button class="lightBackgroundButton" (click)="typeClicked.emit()">
+        Type
+      </button>
+      --
+      <button class="lightBackgroundButton" (click)="subTypeClicked.emit()">
+        Sub Type
+      </button>
+    </div>
+  </div>
+  <div class="textBoxBorder">
+    <div class="textBox colorMulti">
+      <div style="height: 1em;"></div>
+      <button class="lightBackgroundButton" (click)="pureTextClicked.emit()">
+        pure text
+      </button>
+      <button class="lightBackgroundButton" (click)="commaSepClicked.emit()">
+        comma separated text
+      </button>
+      <button class="lightBackgroundButton" (click)="colonSepClicked.emit()">
+        colon separated text
+      </button>
+    </div>
+  </div>
+  <div class="ptContainer">
+    <!--pt or loyalty container-->
+      <div class="ptTextBox colorMulti">
+        <!--pt text, css shenanigains float on top-->
+        <button class="lightBackgroundButton" (click)="powClicked.emit()">
+          P
+        </button>
+        /
+        <button class="lightBackgroundButton" (click)="defClicked.emit()">
+          T
+        </button>
+      </div>
+  </div>
+  <div class="loyaltyContainer">
+      <div class="loyaltyBox">
+        <button class="blackBackgroundButton" (click)="loyaltyClicked.emit()">
+          loyalty
+        </button>
+      </div>
+  </div>
+</div>

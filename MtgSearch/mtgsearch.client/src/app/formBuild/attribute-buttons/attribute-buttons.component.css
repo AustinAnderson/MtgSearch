@@ -1,0 +1,213 @@
+  .nameBox.colorMulti { background-image: linear-gradient(to right, #B5A166,#D6C189,#B5A166); border-color: black;}
+  .imgBox.colorMulti { border-color: black;}
+  .typeBox.colorMulti { background-image: linear-gradient(to right, #B5A166,#D6C189,#B5A166); border-color: black;}
+  .textBox.colorMulti { background: #F0ECD3; border-color: #D6C189; }
+  .ptTextBox.colorMulti { background-image: linear-gradient(to right, #B5A166,#D6C189,#B5A166); border-color: #D6C189; }
+
+  :host{
+      --font-size: .9em;
+      --text-box-height: 12.5em;
+  }
+
+  .highlighted{
+    background: #FFC107;
+  }
+  .card {
+    background: black;
+    border-top: 1em solid black;
+    border-left: .6em solid black;
+    border-right: .6em solid black;
+    border-radius: 1em;
+    width: 18em;
+    font-family: 'Times New Roman';
+    font-size: var(--font-size);
+    height: 25.5em;
+  }
+  .plaque{  
+      height: 1.5em;
+      display: inline-flex;
+      vertical-align: bottom;
+  }
+  .plaque-embedded{
+      height: 1em;
+      transform:none;
+   }
+  .nameBox{
+    font-weight: bold;
+    border-width: .15em;
+    border-style: solid;
+    border-radius: 8px;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .name{
+    display: flex;
+    justify-content: center;
+    padding: .2em;
+    width: 50%;
+  }
+  .cost{
+    padding: .2em;
+    padding-right: .4em;
+  }
+  .imgBox{
+    border-width: .3em;
+    border-style: solid;
+    background: #666;
+    height: 7em;
+    margin-left: .2em;
+    margin-right: .2em;
+    display:flex;
+    justify-content: center;
+    align-content: center;
+  }
+  .imgMainBox{
+      width:65%;
+      border-right: .05em dashed #444;
+      color: #444;
+  }
+  .image{
+      position:relative;
+      display: block;
+      visibility: hidden;
+      opacity: 0;
+      height: auto;
+      width: 15em;
+      z-index: 1000;
+  }
+  .image > img{
+      height: 100%;
+      width: 100%;
+  }
+  .imgMainBox:hover .image{
+      visibility: visible;
+      opacity: 1;
+      transition-duration: .5s;
+      transition-delay: .25s;
+      display:block;
+  }
+  .imgAltBox{
+      width:35%;
+      color:#444;
+      visibility: hidden;
+  }
+  .imgAltBox:hover .image{
+      left: -165%;
+      visibility: visible;
+      opacity: 1;
+      transition-duration: .5s;
+      transition-delay: .25s;
+      display:block;
+  }
+  .imgAltBox.alt-true{
+      visibility: visible;
+  }
+  .typeBox{
+    border-radius: .3em;
+    display:flex;
+    flex-direction: row;
+    font-weight: bold;
+    justify-content: space-between;
+    padding: .2em;
+    border-width: .1em;
+    border-style: solid;
+  }
+  .preReleaseBox{
+      visibility: hidden;
+  }
+  .preReleaseBox > card-symbol{
+      font-size: 1.5em;
+      display: flex;
+  }
+  .preRelease-true{
+      visibility: visible;
+  }
+  .textBoxBorder{
+    border-left: .2em solid black;
+    border-right: .3em solid black;
+  }
+  .textBox{
+    text-align: left;
+    border-style: groove groove none groove;
+    border-width: .3em;
+    padding-left: .2em;
+    padding-right: .2em;
+    padding-bottom: .2em;
+    height: var(--text-box-height);
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: .25em;
+    justify-content: left;
+    align-items: start;
+
+  }
+  .debugBorder{
+    border: 1px solid red;
+  }
+  .ptContainer{
+    padding-right: .2em;
+    display: flex;
+    justify-content: right;
+  }
+  .ptTextBox{
+    font-weight: bold;
+    padding-top: .2em;
+    padding-bottom: .2em;
+    padding-left: .4em;
+    padding-right: .4em;
+    border-radius: .5em;
+    border-style: groove;
+    border-width: .2em;
+    transform:translateY(-1em);
+    box-shadow: -.2em .1em 5px;
+  }
+  .loyaltyContainer{
+    padding-right: .2em;
+    display: flex;
+    justify-content: right;
+  }
+  .loyaltyBox{
+    border-width: .2em;
+    transform:translateY(-5.5em);
+    font-weight: bold;
+    padding-top: .2em;
+    padding-bottom: .2em;
+    padding-left: .4em;
+    padding-right: .4em;
+    border-style: groove;
+    background: #000;
+    text-shadow: .2em #FFF;
+    color: #C0C0C0;
+    box-shadow: #000 -.2em .1em 5px;
+  }
+
+  .lightBackgroundButton{
+      background: rgba(0,0,0,.1);
+      border-radius: 4px;
+      border: none;
+      font-weight: bold;
+      color: black;
+      color: #333;
+  }
+  .lightBackgroundButton:hover{
+      background: rgba(0,0,0,.6);
+      color: #DDD;
+  }
+  .lightBackgroundButton:active{
+      background: rgba(0,0,0,.4);
+      color: #AAA;
+  }
+  .blackBackgroundButton{
+      border-radius: 4px;
+      background: rgba(255,255,255,.1);
+      color: white;
+  }
+  .blackBackgroundButton:hover{
+      background: rgba(255,255,255,.3);
+  }
+  .blackBackgroundButton:active{
+      background: rgba(255,255,255,.2);
+      color: #EEE;
+  }

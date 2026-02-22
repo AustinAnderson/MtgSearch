@@ -1,0 +1,135 @@
+.holder {
+  display: flex;
+  flex-direction: row;
+  border-radius: 8px;
+  background: #AAA;
+  gap: .5em;
+  height: 2.75em;
+  align-content: center;
+  align-items: center;
+  padding: .25em;
+}
+
+.removeIcon {
+  border: 2px solid #444;
+  border-radius: 4px;
+  padding-left: .3em;
+  padding-right: .2em;
+  padding-bottom: .1em;
+  height: 1.2em;
+  display: flex;
+  align-items: center;
+}
+
+.rotateIcon {
+  user-select: none;
+  transform: rotate(45deg);
+  font-family: Consolas;
+  font-size: 1.5em;
+}
+
+.removeIcon:hover {
+  background: #888;
+}
+
+.removeIcon:active {
+  background: #444;
+  border: 2px solid #888;
+  color: #888;
+}
+
+.dragIcon {
+  border-radius: 4px;
+  height: 1.5em;
+  margin-right: -.5em;
+}
+
+.dragIcon:hover {
+  background: #888;
+}
+
+.allOrAnyToggle{
+  font-family: Consolas;
+  border-radius: 4px;
+  padding: .0625em;
+  border: 2px solid #444;
+}
+.allOrAnyToggle:hover{
+  background: #888;
+}
+.allOrAnyToggle:active{
+  background: #444;
+  border: 2px solid #888;
+  color: #888;
+}
+.label {
+  font-family: Consolas;
+  width: fit-content;
+  margin-left: .125em;
+  margin-right: .125em;
+}
+
+.textArea {
+  display:flex;
+  flex-direction: row;
+  margin-right: .125em;
+  flex: 1;
+  border: 1px solid #333;
+  border-radius: 4px;
+  background: #CCC;
+  padding: .125em;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #888 rgba(0,0,0,0);
+}
+
+.textInput {
+  width: 95%;
+  font-family: Consolas;
+  height: 1.5em;
+  border-radius: 4px;
+}
+.typeInputBox{
+  display:flex;
+  flex-direction: row;
+  border: 1px solid #444;
+  border-radius: 4px;
+}
+.typeBox{
+  width: 11.25ch;
+}
+.typeBoxRemoveButton{
+    font-family: Consolas;
+  border-radius: 4px;
+  padding-left: .125em;
+  padding-right: .125em;
+}
+.typeBoxRemoveButton:hover{
+  background: #999;
+
+}
+.typeBoxRemoveButton:active{
+  background: #888;
+  color: #AAA;
+}
+.addNextButton{
+  padding-left: .0625em;
+  padding-right: .0625em;
+  font-family: Consolas;
+  border-radius: 4px;
+  border: 1px solid #444;
+
+}
+.addNextButton:hover{
+  background: #999;
+
+}
+.addNextButton:active {
+  background: #888;
+  color: #AAA;
+}
+
+.negationIcon {
+  display: flex;
+  flex-direction: column;
+}

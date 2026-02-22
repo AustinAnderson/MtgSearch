@@ -33,6 +33,7 @@ export class UnSeparatedFormFragmentComponent implements
   public uuid: string;
   public fetchFragment(): string {
     let regex = VisualPredicateAccumulator.escapeRegex(this.input.queryText).replaceAll('\\.\\.\\.', '.*');
+    regex = regex.replaceAll("{\\?}", "{.}");
     let query = `text("${regex}")`;
     if (this.input.isNegative) {
       query = `(not ${query})`;

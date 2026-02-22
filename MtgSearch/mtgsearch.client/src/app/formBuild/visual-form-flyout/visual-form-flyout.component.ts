@@ -4,6 +4,8 @@ import { UnSeparatedFormFragmentComponent, UnSepInputs } from '../un-separated-f
 import { CharSeparatedFormFragmentComponent, CharSepInputs } from '../char-separated-form-fragment/char-separated-form-fragment.component';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { CardAttributeType } from '../attribute-filter-form-fragment/attribute-filter-form-fragment.component';
+import { NameLikeFormFragmentComponent, NameLikeInput } from '../name-like-form-fragment/name-like-form-fragment.component';
+import { TypeLineFormFragmentComponent, TypeLineFormInput } from '../type-line-form-fragment/type-line-form-fragment.component';
 interface IInputHolder {
   inputs: Record<string, unknown>
   component: Type<any>
@@ -66,6 +68,19 @@ export class VisualFormFlyoutComponent {
   }
   public matchColonSep() {
     this.matched.push(CharSeparatedFormFragmentComponent, new CharSepInputs(false, ':'));
+  }
+  public matchNameLike() {
+    this.matched.push(NameLikeFormFragmentComponent, new NameLikeInput(false));
+  }
+  public matchSuperTypes() {
+    this.matched.push(TypeLineFormFragmentComponent, new TypeLineFormInput(false, "Supertype"));
+  }
+  public matchTypes() {
+    this.matched.push(TypeLineFormFragmentComponent, new TypeLineFormInput(false, "Type"));
+  }
+  public matchSubTypes() {
+    this.matched.push(TypeLineFormFragmentComponent, new TypeLineFormInput(false, "Subtype"));
+
   }
   public dropped(event: CdkDragDrop<IInputHolder[]>, target: RemovableComponentList) {
     if (event.previousContainer === event.container) return;//don't care about reorder

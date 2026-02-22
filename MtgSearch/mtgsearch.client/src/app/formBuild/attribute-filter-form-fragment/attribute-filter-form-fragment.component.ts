@@ -47,7 +47,8 @@ export class AttributeFilterFormFragmentComponent implements
   uuid: string;
   fetchFragment(): string {
     let result = "";
-    if (this.showLeftSide) {
+    let leftSideIsDefault = this.selectedLeftSideOp == Operator.lte && this.leftSideValue == 0;
+    if (this.showLeftSide && ! leftSideIsDefault) { 
       let op = Operator.gt;
       if (this.selectedLeftSideOp == Operator.lte) {
         op = Operator.gte;

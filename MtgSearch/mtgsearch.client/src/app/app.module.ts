@@ -19,6 +19,9 @@ import { VisualFormFlyoutComponent } from './formBuild/visual-form-flyout/visual
 import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 import { AttributeFilterFormFragmentComponent } from './formBuild/attribute-filter-form-fragment/attribute-filter-form-fragment.component';
 import { FormDropDownComponent } from './formBuild/form-drop-down/form-drop-down.component';
+import { AttributeButtonsComponent } from './formBuild/attribute-buttons/attribute-buttons.component';
+import { NameLikeFormFragmentComponent } from './formBuild/name-like-form-fragment/name-like-form-fragment.component';
+import { TypeLineFormFragmentComponent } from './formBuild/type-line-form-fragment/type-line-form-fragment.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +38,10 @@ import { FormDropDownComponent } from './formBuild/form-drop-down/form-drop-down
     CharSeparatedFormFragmentComponent,
     VisualFormFlyoutComponent,
     AttributeFilterFormFragmentComponent,
-    FormDropDownComponent
+    FormDropDownComponent,
+    AttributeButtonsComponent,
+    NameLikeFormFragmentComponent,
+    TypeLineFormFragmentComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,
