@@ -22,22 +22,18 @@ namespace MtgSearch.Server.Models.Logic.Predicates
     }
     public class XorStar
     {
+        private static Dictionary<string,XorStar> values = new Dictionary<string, XorStar>(StringComparer.OrdinalIgnoreCase);
         public static XorStar X = new("X");
         public static XorStar XX = new("XX");
         public static XorStar XXX = new("XXX");
         public static XorStar Star = new("*");
-        public static readonly IReadOnlyDictionary<string, XorStar> ByString = new Dictionary<string, XorStar>
-        {
-            { "X", X},
-            { "XX", XX},
-            { "XXX", XXX},
-            { "*", Star },
-        };
+        public static IReadOnlyDictionary<string, XorStar> ByString => values;
         public readonly string Name;
         public readonly string Symbol;
         public override string ToString() => Name;
         private XorStar(string symbol, [CallerMemberName] string toStr = "") 
-        { 
+        {
+            values.Add(symbol, this);
             Name = toStr;
             Symbol = symbol;
         }
