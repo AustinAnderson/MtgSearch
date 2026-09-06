@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "MtgSearch.Server\\MtgSearch.Server.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "mtgsearch.client\\mtgsearch.client.esproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

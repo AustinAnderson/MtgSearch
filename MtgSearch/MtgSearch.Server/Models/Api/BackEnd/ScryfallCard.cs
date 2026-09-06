@@ -4,6 +4,8 @@ namespace MtgSearch.Server.Models.Api.BackEnd
 {
     public class ScryfallCard
     {
+        [JsonProperty("oracle_id")] 
+        public string? OracleId { get; set; }
         [JsonProperty("card_faces")] 
         public ScryfallCardFace[] ScryfallCardFaces { get; set; }
         [JsonProperty("cmc")] 
@@ -32,7 +34,14 @@ namespace MtgSearch.Server.Models.Api.BackEnd
         /// yyyy-MM-dd, Assume UTC? not specified in their docs
         /// </summary>
         [JsonProperty("released_at")] 
-        public string ReleasedAt { get; set; }
+        public string ReleasedAt {
+            get => ReleasedAtDate.ToString("yyyy-MM-dd");
+            set
+            {
+                ReleasedAtDate = DateTime.SpecifyKind(DateTime.Parse(value), DateTimeKind.Utc);
+            }
+        }
+        public DateTime ReleasedAtDate { get; set; }
         /// <summary>
         /// 'legal' or 'not_legal' or 'restricted' or 'banned'
         /// </summary>
@@ -41,7 +50,7 @@ namespace MtgSearch.Server.Models.Api.BackEnd
         public bool IsFunny
         {
             get {
-                bool isFunny = TypeLine.ToLower().Contains("attraction") ||
+                bool isFunny = (TypeLine!=null && TypeLine.ToLower().Contains("attraction")) ||
                     (ScryfallCardFaces != null 
                     && 
                      ScryfallCardFaces.Any(x => x.TypeLine.ToLower().Contains("attraction")));
@@ -60,8 +69,7 @@ namespace MtgSearch.Server.Models.Api.BackEnd
         }
         [JsonIgnore]
         public bool IsLegal => Legalities.Commander.ToLower() == "legal";
-        public bool IsPreReleaseAsOf(DateTime utcDate) =>
-                DateTime.SpecifyKind(DateTime.Parse(ReleasedAt), DateTimeKind.Utc) > utcDate;
+        public bool IsPreReleaseAsOf(DateTime utcDate) => ReleasedAtDate > utcDate;
     }
     public class Legalities
     {

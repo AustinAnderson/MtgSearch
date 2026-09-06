@@ -46,19 +46,15 @@ namespace MtgSearch.Server.Models.Logic.Predicates
                 }
                 else if (Type == CardAttributeType.Power)
                 {
-                    compareAgainst = HandleStarable(card.Power, compareAgainst, Type.ToString(), card.Name);
+                    compareAgainst = card.GetNumericPower();
                 } 
                 else if (Type == CardAttributeType.Toughness)
                 {
-                    compareAgainst = HandleStarable(card.Toughness, compareAgainst, Type.ToString(), card.Name);
+                    compareAgainst = card.GetNumericToughness();
                 } 
                 else if (Type == CardAttributeType.Loyalty)
                 {
-                    if(card.Loyalty != null)
-                    {
-                        if (card.Loyalty.Contains('X')) compareAgainst = 0;
-                        else compareAgainst = int.Parse(card.Loyalty);
-                    }
+                    compareAgainst = card.GetNumericLoyalty();
                 }
                 else
                 {
@@ -80,36 +76,7 @@ namespace MtgSearch.Server.Models.Logic.Predicates
             };
         }
 
-        private static Regex ParsePtStar=new Regex("(?<val1>[0-9]+)(?:(?<op>[\\+\\-])(?<val2>[0-9]+))?", RegexOptions.Compiled);
-        private static int HandleStarable(string? pt, int deflt, string type, string cardName)
-        {
-            if(pt == null) return deflt;
-            var val = deflt;
-            if (pt.Contains("*"))
-            {
-                var numeric=pt.Replace("*", "0");
-                if (!ParsePtStar.IsMatch(numeric))
-                {
-                    throw new QueryParseException($"Couldn't parse {type} value `{pt}` for card `{cardName}`");
-                }
-                var match = ParsePtStar.Match(numeric);
-                var groups = match.Groups;
-                var val1 = int.Parse(groups["val1"].Value);
-                var val2 = 0;
-                var op = 1;
-                if (groups["op"].Value != "" && groups["val2"].Value != "")
-                {
-                    val2 = int.Parse(groups["val2"].Value);
-                    if (groups["op"].Value == "-") op = -1;
-                }
-                val = val1 + op * val2;
-            }
-            else
-            {
-                val = int.Parse(pt);
-            }
-            return val;
-        }
+        
 
         public List<Highlighter> FetchHighlighters() => [];
     }

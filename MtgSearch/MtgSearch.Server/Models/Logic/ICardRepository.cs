@@ -1,4 +1,5 @@
-﻿using MtgSearch.Server.Models.Data;
+﻿using MtgSearch.Server.Models.Api;
+using MtgSearch.Server.Models.Data;
 using MtgSearch.Server.Models.Logic.Predicates;
 
 namespace MtgSearch.Server.Models.Logic
@@ -14,7 +15,7 @@ namespace MtgSearch.Server.Models.Logic
     {
         RepoState RepoState { get; }
         int TimeUntilReadyInSeconds { get; }
-        Task<List<ServerCardModel>> Search(ColorIdentity colors, ISearchPredicate predicate);
+        Task<List<ServerCardModel>> Search(ColorIdentity colors, ISearchPredicate predicate, SortCriteria criteria);
         Task<bool> Update(CancellationToken cancellation);
         Task Initialize(CancellationToken cancellation);
     }

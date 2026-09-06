@@ -1,4 +1,5 @@
 ﻿using MtgSearch.Server.Models.Api.BackEnd;
+using MtgSearch.Server.Models.Logic.Parsing;
 using Newtonsoft.Json;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -17,7 +18,8 @@ namespace MtgSearch.Server.Models.Data
                 IsLegal = jsonCard.IsLegal,
                 IsFunny = jsonCard.IsFunny,
                 IsPreRelease = jsonCard.IsPreReleaseAsOf(utcNow),
-                SetCode = jsonCard.SetCode
+                SetCode = jsonCard.SetCode,
+                ReleasedAt = jsonCard.ReleasedAtDate
             };
             if(jsonCard.ScryfallCardFaces!=null && jsonCard.ScryfallCardFaces.Length > 0)
             {
@@ -98,6 +100,50 @@ namespace MtgSearch.Server.Models.Data
             }
         }
 
+        public int GetNumericPower() => HandleStarable(Power, -1, "power", Name);
+        public int GetNumericToughness() => HandleStarable(Toughness, -1, "toughness", Name);
+        public int GetNumericLoyalty()
+        {
+            var value = -1;
+            if (Loyalty != null)
+            {
+                if (Loyalty.Contains('X')) value = 0;
+                else value = int.Parse(Loyalty);
+            }
+            return value;
+        }
+
+        private static Regex ParsePtStar=new Regex("(?<val1>[0-9]+)(?:(?<op>[\\+\\-])(?<val2>[0-9]+))?", RegexOptions.Compiled);
+        private static int HandleStarable(string? pt, int dfault, string type, string cardName)
+        {
+            if(pt == null) return dfault;
+            var val = dfault;
+            if (pt.Contains("*"))
+            {
+                var numeric=pt.Replace("*", "0");
+                if (!ParsePtStar.IsMatch(numeric))
+                {
+                    throw new QueryParseException($"Couldn't parse {type} value `{pt}` for card `{cardName}`");
+                }
+                var match = ParsePtStar.Match(numeric);
+                var groups = match.Groups;
+                var val1 = int.Parse(groups["val1"].Value);
+                var val2 = 0;
+                var op = 1;
+                if (groups["op"].Value != "" && groups["val2"].Value != "")
+                {
+                    val2 = int.Parse(groups["val2"].Value);
+                    if (groups["op"].Value == "-") op = -1;
+                }
+                val = val1 + op * val2;
+            }
+            else
+            {
+                val = int.Parse(pt);
+            }
+            return val;
+        }
+
 
 
         public ServerCardModel(string name) 
@@ -113,6 +159,7 @@ namespace MtgSearch.Server.Models.Data
         public List<string> Supertypes { get; private set; } = [];
         public List<string> Types { get; private set; } = [];
         public string[] Subtypes { get; private set; } = [];
+        public DateTime ReleasedAt { get; private set; }
         public string TypeLine => string.Join(
             SubTypesSplitOn, 
             [string.Join(

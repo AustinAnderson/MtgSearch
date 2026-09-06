@@ -4,6 +4,8 @@ namespace MtgSearch.Server.Models.Api.BackEnd
 {
     public class ScryfallCardFace
     {
+        [JsonProperty("oracle_id")] 
+        public string? OracleId { get; set; }
         public string Name { get; set; }
         [JsonProperty("oracle_text")]
         public string? Text { get; set; }

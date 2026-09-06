@@ -1,14 +1,18 @@
-﻿using MtgSearch.Server.Models.Api.BackEnd;
+﻿using MtgSearch.Server.Models.Api;
+using MtgSearch.Server.Models.Api.BackEnd;
 using MtgSearch.Server.Models.Data;
+using MtgSearch.Server.Models.Logic.Parsing.Util;
 using MtgSearch.Server.Models.Logic.Predicates;
 using Newtonsoft.Json;
+using System.IO.Compression;
 
 namespace MtgSearch.Server.Models.Logic
 {
     public class ScryfallCardRepository : ICardRepository
     {
         private readonly static string CacheFilePath = Environment.ExpandEnvironmentVariables("%APPDATA%/MtgSearch/Data/");
-        private const string TargetBulkDataType = "oracle_cards";
+        //private const string TargetBulkDataType = "oracle_cards";
+        private const string TargetBulkDataType = "default_cards";
         private const string BulkDataEndpoint = "https://api.scryfall.com/bulk-data";
         private readonly HttpClient scryfallClient;
         private readonly ILogger<ScryfallCardRepository> logger;
@@ -26,13 +30,15 @@ namespace MtgSearch.Server.Models.Logic
             this.logger = logger;
         }
 
-        public Task<List<ServerCardModel>> Search(ColorIdentity colors, ISearchPredicate predicate)
+        public Task<List<ServerCardModel>> Search(ColorIdentity colors, ISearchPredicate predicate, SortCriteria criteria)
         {
             if (cardList.Count == 0)
             {
                 throw new ArgumentException($"RAM card cache empty, {nameof(Initialize)} was never called");
             }
-            return Task.FromResult(cardList.Where(c=>c.ColorIdentity.IncludedIn(colors) && predicate.Apply(c)).ToList());
+            var list = cardList.Where(c => c.ColorIdentity.IncludedIn(colors) && predicate.Apply(c)).ToList();
+            list.Sort(criteria);
+            return Task.FromResult(list);
         }
 
         public async Task Initialize(CancellationToken cancellation)
@@ -52,7 +58,7 @@ namespace MtgSearch.Server.Models.Logic
             }
 
             using var fileStream = File.OpenRead(current);
-            var jsonParseStream = new JsonParseStream<ScryfallCard>(fileStream);
+            var jsonParseStream = new JsonArrayParseStream<ScryfallCard>(fileStream);
             //TODO: make .Read() return IAsyncEnumerable if we ever call Initialize via api instead of background startup
             cardList = jsonParseStream.Read(cancellation)
                 .Where(x => (x.IsLegal || x.IsPreReleaseAsOf(now)) && !x.IsFunny)
@@ -74,11 +80,12 @@ namespace MtgSearch.Server.Models.Logic
             {
                 lastUpdate = DateTime.Parse(Path.GetFileNameWithoutExtension(current).Replace(";",":"));
             }
+            string? chosenFilePath = null;
             try
             {
                 var bulkListings = await GetResultOrThrow<BulkDataApiResponse>(scryfallClient.GetAsync(BulkDataEndpoint, cancellation));
                 var oracleCardsInfo = bulkListings.Data.FirstOrDefault(x => x.Type.ToLower() == TargetBulkDataType.ToLower());
-                if (oracleCardsInfo == null)
+                if (oracleCardsInfo == null || oracleCardsInfo.DownloadUri == null)
                 {
                     string context = "unable to serialize bulkData response ";
                     try
@@ -89,7 +96,6 @@ namespace MtgSearch.Server.Models.Logic
                     {
                         context += $"{ex.GetType().Name}: {ex.Message}";
                     }
-                    //TODO: log.Info(bulkData response) instead of in exception?
                     throw new CardDataFetchException($"couldn't find {TargetBulkDataType} in bulk data response {context}");
                 }
                 if (lastUpdate > oracleCardsInfo.UpdatedAt)
@@ -102,8 +108,20 @@ namespace MtgSearch.Server.Models.Logic
 
                 //scryfall docs say they would like a delay between calls to manage load
                 await Task.Delay(100);
-                await using var fileStream = File.OpenWrite(Path.Combine(CacheFilePath, fileName));
-                await (await GetStreamJsonOrThrow(scryfallClient.GetAsync(oracleCardsInfo.DownloadUri))).CopyToAsync(fileStream, cancellation);
+                chosenFilePath = Path.Combine(CacheFilePath, fileName);
+
+                var netStream = await GetStreamOrThrow(scryfallClient.GetAsync(oracleCardsInfo.DownloadUri));
+                await using var gZipStream = new GZipStream(netStream, CompressionMode.Decompress);
+                var parser = new JsonLParseStream<ScryfallCard>(gZipStream);
+                var condenser = new OracleIdCondensingCardList();
+                foreach(var read in parser.Read(cancellation))
+                {
+                    condenser.Add(read);
+                }
+
+                File.WriteAllText(chosenFilePath, JsonConvert.SerializeObject(condenser.Results));
+                
+                //clean up the old cards, list created before making chosenFilePath
                 foreach (var path in cardListJsons)
                 {
                     File.Delete(path);
@@ -113,6 +131,17 @@ namespace MtgSearch.Server.Models.Logic
             catch(CardDataFetchException ex)
             {
                 logger.LogWarning(ex, "unable to fetch data from scryfall");
+                if (chosenFilePath != null)
+                {
+                    try
+                    {
+                        File.Delete(chosenFilePath);
+                    }
+                    catch(Exception ex2)
+                    {
+                        logger.LogWarning($"failed to delete corrupted cache file {chosenFilePath}{Environment.NewLine}{ex2}");
+                    }
+                }
                 if (current == null)
                 {
                     throw;
@@ -157,7 +186,7 @@ namespace MtgSearch.Server.Models.Logic
             }
             return data;
         }
-        private async Task<Stream> GetStreamJsonOrThrow(Task<HttpResponseMessage> response)
+        private async Task<Stream> GetStreamOrThrow(Task<HttpResponseMessage> response)
         {
             var resp = await response;
             if (!resp.IsSuccessStatusCode)

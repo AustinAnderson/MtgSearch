@@ -14,7 +14,7 @@ namespace MtgSearch.Server.Models.Api.BackEnd
         [JsonProperty("updated_at")]
         public DateTime UpdatedAt { get; set; }
 
-        [JsonProperty("download_uri")]
+        [JsonProperty("jsonl_download_uri")]
         public string DownloadUri { get; set; }
     }
 }

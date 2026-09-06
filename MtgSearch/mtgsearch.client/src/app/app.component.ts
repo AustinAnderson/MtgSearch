@@ -104,7 +104,8 @@ export class AppComponent implements OnInit {
     await this.executeSearchAndHandleErrors(async () => {
       let req = {
         ColorIdentity: this.colorId,
-        Query: this.query
+        Query: this.query,
+        SortCriteria: []
       };
       this.searchResultCount = await this.http.post<number>('/Search/CheckSearchCount', req).toPromise();
     });
@@ -115,7 +116,8 @@ export class AppComponent implements OnInit {
     await this.executeSearchAndHandleErrors(async () => {
       let req = {
         ColorIdentity: this.colorId,
-        Query: this.query
+        Query: this.query,
+        SortCriteria: [{Name: 'Release Date', IsAscending: true}]
       };
       this.searchResultList = await this.http.post<Card[]>('/Search/RunSearch', req).toPromise() ?? [];
     });

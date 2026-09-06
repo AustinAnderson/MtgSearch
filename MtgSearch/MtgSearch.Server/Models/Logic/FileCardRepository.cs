@@ -1,4 +1,5 @@
-﻿using MtgSearch.Server.Models.Data;
+﻿using MtgSearch.Server.Models.Api;
+using MtgSearch.Server.Models.Data;
 using MtgSearch.Server.Models.Logic.Predicates;
 using Newtonsoft.Json;
 
@@ -16,9 +17,11 @@ namespace MtgSearch.Server.Models.Logic
             await Update(cancellation);
         }
 
-        public Task<List<ServerCardModel>> Search(ColorIdentity colors, ISearchPredicate predicate)
+        public Task<List<ServerCardModel>> Search(ColorIdentity colors, ISearchPredicate predicate, SortCriteria sortCriteria)
         {
-            return Task.FromResult(cards.Where(x => x.ColorIdentity.IncludedIn(colors) && predicate.Apply(x)).ToList());
+            var list = cards.Where(x => x.ColorIdentity.IncludedIn(colors) && predicate.Apply(x)).ToList();
+            list.Sort(sortCriteria);
+            return Task.FromResult(list);
         }
 
         //eventually repalce with scryfall bulk data api only update if cache older

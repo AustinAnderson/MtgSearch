@@ -6,6 +6,7 @@ using MtgSearch.Server.Models.Logic.Highlighting;
 using MtgSearch.Server.Models.Logic.Parsing;
 using MtgSearch.Server.Models.Logic.Parsing.Tokens;
 using MtgSearch.Server.Models.Logic.Predicates;
+using System.Linq;
 
 namespace MtgSearch.Server.Controllers
 {
@@ -43,7 +44,7 @@ namespace MtgSearch.Server.Controllers
         public async Task<IActionResult> CountSearch([FromBody] SearchRequest request)
         {
             if (repo.RepoState != RepoState.Ready) return Make503UnavailableResponse();
-            var res = await TryDoSearch(request);
+            var res = await TryDoSearch(request,true);
             if (res.Error != null) return res.Error;
             return Ok(res.Matches.Count);
         }
@@ -51,9 +52,23 @@ namespace MtgSearch.Server.Controllers
         public async Task<IActionResult> DoSearch([FromBody] SearchRequest request)
         {
             if (repo.RepoState != RepoState.Ready) return Make503UnavailableResponse();
-            var res = await TryDoSearch(request);
+            var res = await TryDoSearch(request,false);
             if (res.Error != null) return res.Error;
-            return Ok(res.Matches.Select(x=>new SearchResultCard(x) { TextLines = textMarker.MarkText(x, res.Highlighters)}).ToList());
+            var highlighted = res.Matches.Select(x => new SearchResultCard(x)
+            {
+                TextLines = textMarker.MarkText(x, res.Highlighters).Concat([ new CardTextLine{
+                    Segments = [
+                        new CardTextLineSegment
+                        {
+                            IsSymbol = false,
+                            IsHighlighted = false,
+                            IsPlaneswalkerPlaque = false,
+                            Text = "released " + x.ReleasedAt.ToString("yyyy-MM-dd")
+                        }
+                    ]
+                }]).ToList()
+            }).ToList();
+            return Ok(highlighted);
         }
 
         private class SearchResult
@@ -62,7 +77,7 @@ namespace MtgSearch.Server.Controllers
             public List<ServerCardModel> Matches { get; set; }
             public List<Highlighter> Highlighters { get; set; }
         }
-        private async Task<SearchResult> TryDoSearch(SearchRequest request)
+        private async Task<SearchResult> TryDoSearch(SearchRequest request, bool skipSort)
         {
             ColorIdentity colorId;
             try
@@ -82,10 +97,25 @@ namespace MtgSearch.Server.Controllers
             {
                 return new SearchResult { Error = BadRequest(ex.Message) };
             }
+
+            if (skipSort)
+            {
+                request.SortCriteria = [];
+            }
+            SortCriteria criteria;
+            try
+            {
+                criteria = new SortCriteria(request.SortCriteria);
+            }
+            catch(QueryParseException ex)
+            {
+                return new SearchResult { Error = BadRequest(ex.Message) };
+            }
+
             return new SearchResult
             {
                 Highlighters = predicate.FetchHighlighters(),
-                Matches = await repo.Search(colorId, predicate)
+                Matches = await repo.Search(colorId, predicate, criteria)
             };
         }
     }
