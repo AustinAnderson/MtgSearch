@@ -56,17 +56,7 @@ namespace MtgSearch.Server.Controllers
             if (res.Error != null) return res.Error;
             var highlighted = res.Matches.Select(x => new SearchResultCard(x)
             {
-                TextLines = textMarker.MarkText(x, res.Highlighters).Concat([ new CardTextLine{
-                    Segments = [
-                        new CardTextLineSegment
-                        {
-                            IsSymbol = false,
-                            IsHighlighted = false,
-                            IsPlaneswalkerPlaque = false,
-                            Text = "released " + x.ReleasedAt.ToString("yyyy-MM-dd")
-                        }
-                    ]
-                }]).ToList()
+                TextLines = textMarker.MarkText(x, res.Highlighters)
             }).ToList();
             return Ok(highlighted);
         }

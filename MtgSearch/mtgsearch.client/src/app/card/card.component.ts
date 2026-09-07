@@ -19,6 +19,8 @@ export class CardComponent implements AfterViewInit{
   public imageUrl: string | undefined;
   public altImageUrl: string | undefined;
   public hasAlt: boolean = false;
+  public setCode: string | undefined = "---";
+  public releaseDate: string | undefined = "";
 
 
   @ViewChild('typeBox') typeBox!: ElementRef;
@@ -40,6 +42,8 @@ export class CardComponent implements AfterViewInit{
 
   @Input() public set data(value: Card)
   {
+    this.setCode = value.setCode?.toUpperCase();
+    this.releaseDate = value.releaseDate??"";
     this.imageUrl = value.imageUrl;
     this.altFaceName = value.altFaceName;
     this.altImageUrl = value.altImageUrl;

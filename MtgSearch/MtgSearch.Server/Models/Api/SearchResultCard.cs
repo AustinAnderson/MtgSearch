@@ -20,6 +20,9 @@ namespace MtgSearch.Server.Models.Api
             AltImageUrl = card.AltFaceImageUrl;
             AltFaceName = card.AltFaceName;
             ColorId = card.ColorIdentity.Colors;
+            SetCode = card.SetCode??"---";
+            //expressed from server as a date with no time (utc midnight), so don't localize or let ui localize
+            ReleaseDate = card.ReleasedAt.ToString("yyyy-MM-dd");
         }
         public string Name { get; set; }
         public string? Power { get; set; }
@@ -35,6 +38,7 @@ namespace MtgSearch.Server.Models.Api
         public string? AltFaceName { get; set; }
         public string? AltImageUrl { get; set; }
         public string SetCode { get; set; }
+        public string ReleaseDate { get; set; }
         public List<CardTextLine> TextLines { get; set; }
     }
 }

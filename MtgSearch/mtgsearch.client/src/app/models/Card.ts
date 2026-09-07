@@ -13,6 +13,8 @@ export class Card {
   public altFaceName: undefined | string;
   public setCode: undefined | string;
   public subTypes: string[] = [];
+
+  public releaseDate: undefined | string ;
   public textLines: CardTextLine[] = [];
 }
 export class CardTextLine {

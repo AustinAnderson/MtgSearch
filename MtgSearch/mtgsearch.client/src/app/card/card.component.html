@@ -244,6 +244,15 @@
     display: flex;
     justify-content: right;
   }
+  .infoText {
+    margin-left: .2em;
+    margin-top: .2em;
+    font-family: Arial;
+    font-size: .7em;
+    color: grey;
+    display: flex;
+    justify-content: left;
+  }
   .ptTextBox{
     font-weight: bold;
     padding-top: .2em;
@@ -253,7 +262,7 @@
     border-radius: .5em;
     border-style: groove;
     border-width: .2em;
-    transform:translateY(-1em);
+    transform:translateY(-1.9em);
     box-shadow: -.2em .1em 5px;
   }
   .loyaltyContainer{
@@ -263,7 +272,7 @@
   }
   .loyaltyBox{
     border-width: .2em;
-    transform:translateY(-1em);
+    transform:translateY(-1.7em);
     font-weight: bold;
     padding-top: .2em;
     padding-bottom: .2em;
@@ -332,8 +341,12 @@
       </p>
     </div>
   </div>
+  <div class="infoText">
+    [{{setCode}}] {{releaseDate}}
+  </div>
   <div *ngIf="powerToughness" class="ptContainer">
     <!--pt or loyalty container-->
+    
       <div class="ptTextBox {{cardColor}}">
         <!--pt text, css shenanigains float on top-->
         {{powerToughness}}
